@@ -4,7 +4,7 @@ potion and explore the world from the back of a paper airplane.
 They discovered an uninhabited island amid the sparkling Pacific ocean and
 named it Peruácru.
 
-They alighted upon a grassy knoll and drank their red growing potions, only to
+They alighted upon a green knoll and drank their red growing potions, only to
 damage their plane and lose their stock of potions.
 
 The clever pair set out to explore the island and hopefully find a way home
@@ -12,6 +12,12 @@ with their four hands and two cunning heads.
 
 + [Continue... ]
 >
+
+# bamboo / hand
+# flower / hand
+# pumpkin / sap.pumpkin / brine.pumpkin / freshwater.pumpkin / 2 hands
+# mushroom / hand
+# reed / hand
 
 ! hills = 0
   jungle = 1
@@ -45,6 +51,7 @@ with their four hands and two cunning heads.
   hammer = 0
   paper = 0
   airplane = 0
+  ballista = 0
 
   # world state
   homestead = 0
@@ -56,11 +63,26 @@ with their four hands and two cunning heads.
 
 - @hills
   ! at = hills
-  Hills. There is a tall, grassy knoll and a broad wide valley with a
+  Hills. There is a tall, green knoll and a broad wide valley with a
   freshwater stream. There are uncountable pumpkins.
-  - {ballista} This looks like a good spot for a ballista.
-  - {launch.pad} Your giant airplane stands on the giant slingshot.
-    All systems are go. Awaiting a tiny crew for launch.
+  - {placed.ballista}
+    Your ballista stands waiting for a launch vehicle large
+    enough to carry two, tiny passengers.
+  - {ballista and not placed.ballista}
+    This looks like a good spot for a ballista.
+  - {launch.pad} /
+    {(shrinking.potion)|
+      {(mushroom)
+      | You might be too heavy for the plane to carry you both away.
+      | {(mushroom)||This mushroom|These mushrooms}
+        might be handy if we were to shrink ourselves and fly
+        away on this plane, and an animal might well eat it straight,
+        but we should prepare potions.
+      }
+    | You'}ve got one shrinking potion, but it'}s dangerous to go alone.
+    | Your giant airplane stands on the giant slingshot.
+      All systems are go. Awaiting a tiny crew for launch.
+    }
   @hills.choice
   + {launch.pad} {-2shrinking.potion} {+2vial}
     [You q[Q]uaff your shrinking potions[.]] and board your
@@ -71,16 +93,12 @@ with their four hands and two cunning heads.
     [You g[G]et a pumpkin[.]], grasping it with two hands.
   + {not flower} {+flower} {-hand}
     [You p[P]luck a blue flower. ]
-    ->flower.choice
   ->common()
-  + {not bridge}
-    [You v[V]isit the little {~creek|brook|stream}. ]
-    ->stream
   + {homestead}
     [You f[F]ollow the path into the jungle. ]
     //->jungle
   + {bridge}
-    [You c[C]ross the bridge down to the beach. ]
+    [You c[C]ut accross the bridge down to the beach. ]
     //->beach
   >
   ->hills.choice
@@ -93,22 +111,10 @@ with their four hands and two cunning heads.
     You may need to find a way to make a growing potion without a pumpkin.
     // The two of you establish a base around
     the house, planting a garden and laying a path that leads to the southerly
-    jungle. //
+    jungle.
+    + [Continue... ]
+    >
     ->jungle
-
-- @stream
-  - {not bridge} The little river flows swiftly, too swiftly to cross.
-    - {bamboo>0 and bamboo<3}
-      You might make a safe bridge with more bamboo.
-    ->bridge.formula()
-  + {-pumpkin} {+freshwater.pumpkin}
-    [You f[F]ill your pumpkin with fresh water from the stream. ]
-  + {-vial} {+freshwater.vial}
-    [You f[F]ill {(vial)|the|a} vial with fresh water from the stream. ]
-  + [You r[R]eturn to the hills. ]
-    ->return
-  >
-  ->return
 
 - @jungle
   ! at = jungle
@@ -116,8 +122,12 @@ with their four hands and two cunning heads.
   - {not tap} There are rubber trees and stands of bamboo.
   - {tap} There are stands of bamboo and sap flows from a rubber tree.
   Little red mushrooms litter the forest floor.
-  - {ballista} Your ballista is getting heavy, but this doesn'}t look
-    like a good place to keep it.
+  - {not bridge} A stream runs to the sea along the eastern margin
+    of the jungle.
+  - {bridge} The path through the jungle runs from the hills to the
+    north and across a bridge to the east.
+  - {ballista} Your ballista is getting heavy, but neither of you can see a
+    clearing large enough to put it down {~nearby|near here}.
   @jungle.choice
   + {not bamboo} {not bridge}
     [You f[F]ill your {(hand<4)?remaining} arms with bamboo. ]
@@ -127,11 +137,13 @@ with their four hands and two cunning heads.
     ->bamboo.choice
   + {not mushroom} {+mushroom} {-hand}
     [You p[P]ick a mushroom. ]
-    ->mushroom.choice
   ->common()
   + [You r[R]eturn to your homestead in the hills. ]
     //->hills
-  + {bridge} [You c[C]ut through the jungle back to the beach. ]
+  + {not bridge} [You w[W]alk through the jungle to a stream. ]
+    ->stream
+  + {bridge} [You c[C]ross the bridge over the stream[ to the beach.]]
+    and head down to the beach.
     //->beach
   >
   ->jungle.choice
@@ -144,10 +156,25 @@ with their four hands and two cunning heads.
     ->jungle.choice
 
 - @bridge.formula()
-  + {-3bamboo} {+bridge} {+3hand}
-    [You b[B]uild a bridge from three shoots of bamboo[.]],
+  + {at==jungle} {-3bamboo} {+bridge} {+3hand}
+    [You b[B]uild a bridge from three bundles of bamboo[.]],
     crossing over and walking down to the beach.
     //->beach
+
+- @stream
+  - {bamboo>0 and bamboo<3}
+    You might make a safe bridge with more bamboo.
+  ->bridge.formula()
+  + {-pumpkin} {+freshwater.pumpkin}
+    [You f[F]ill your pumpkin with fresh water from the stream. ]
+  + {-vial} {+freshwater.vial}
+    [You f[F]ill {(vial)|the|a} vial with fresh water from the stream. ]
+  + {bridge} [You c[C]ross the bridge to the beach. ]
+    ->beach
+  + [You r[R]eturn to the jungle. ]
+    ->jungle
+  >
+  ->return
 
 - @beach
   ! at = beach
@@ -166,13 +193,13 @@ with their four hands and two cunning heads.
     [You c[C]ut a reed from the marsh grasses. ]
     ->reed.choice
   ->common()
-  + [You c[C]ross the bridge back to your homestead in the hills. ]
-    //->hills
-  + [You c[C]ut up the beach into the jungle. ]
+  + [You c[C]ross the bridge and return to the jungle. ]
     //->jungle
+  + [You c[C]ross the bridge and cut back to your homestead in the hills. ]
+    //->hills
   + {not lion and not ballista}
     [You m[M]ake your way over the isthmus to the volcano'}s
-    {~summit|peak}. ]
+    {~summit|peak|caldera}. ]
     //->mountain
   >
   ->beach.choice
@@ -404,6 +431,7 @@ with their four hands and two cunning heads.
   {(mushroom)||->number(mushroom)} hand{(mushroom)|s||s}.
   @mushroom.choice
   ->shrinking.potion.formula()
+  ->growing.potion.formula()
   + {at==beach} {-lion} {+cat} {-mushroom} {+hand}
     [You o[O]ffer the lion a mushroom. ]
     The lion greedily accepts and shrinks to a diminuitive size, becoming a
@@ -426,6 +454,9 @@ with their four hands and two cunning heads.
 - @reed
   You have {(reed)||a few reeds|a bundle of reeds} held in ->number(reed)
   hand{(reed)|s||s}.
+  - {not launch.pad and not airplane and not paper and not soaked.reed}
+    These reeds might be useful for making paper.
+    They would need to be made plyable somehow.
   @reed.choice
   ->vial.formula()
   ->soaked.reed.formula()
@@ -449,6 +480,10 @@ with their four hands and two cunning heads.
 - @soaked.reed
   You have {(soaked.reed)||a few soaked reeds|a bundle of soaked reeds} held in
   ->number(soaked.reed) hand{(soaked.reed)|s||s}.
+  - {not launch.pad and not airplane and not paper}
+    You might be able to mash these reeds into pulp.
+    - {rock and not hammer}
+      Sadly, this rock alone would make hard work of paper making.
   @soaked.reed.choice
   ->hammer.formula()
   ->paper.formula()
@@ -489,14 +524,14 @@ with their four hands and two cunning heads.
     [You s[S]plash the growing potion on your little paper airplane[.]]
     and it grows into a fabulous paper jet liner for two very small people.
     One of you has to hold it with both hands to keep it from catching the
-    wind.
+    wind. The other keeps the now empty vial.
     ->giant.airplane.choice
 
 - @airplane
   You have a paper airplane.
   @airplane.choice
   + {-airplane} {+hand}
-    [You t[T]row the airplane. ]
+    [You t[T]hrow the airplane. ]
     It catches the wind and flies away into the sea.
   + [You k[K]eep the airplane. ]
   >
@@ -524,9 +559,14 @@ with their four hands and two cunning heads.
 
 - @hammer
   You have a hammer.
+  - {not airplane and not paper and not soaked.reed}
+    A hammer might be better than a rock for making pulp for paper.
+    You'}ll after all need to make a paper airplane to fly away from this
+    island.
   @hammer.choice
+  ->paper.formula()
   + {-hammer} {+hand}
-    [You d[D]rop the hammer[.]], losing it
+    [You d[D]rop the hammer[.]], (in the quite literal sense) losing it
     {(at)
     | in the grass.
     | in a thicket of bamboo.
@@ -541,11 +581,16 @@ with their four hands and two cunning heads.
 - @rock
   You have {(rock)||a rock|load of stones} held in ->number(rock)
   hand{(rock)|s||s}.
+  - {soaked.reed and not bamboo and not hammer}
+    You might be able to use these soaked reeds to bind the rock
+    to something and make a hammer.
   ->tap.formula()
   ->hammer.formula()
-  + {-rock} {+hand} [You d[D]rop {(rock)|the|a} rock. ]
+  + {-rock} {+hand}
+    [You d[D]rop {(rock)|the|a} rock. ]
     {(not rock)?->return}
-  + [You k[K]eep the rock{(rock)|s||s}. ] ->return
+  + [You k[K]eep the rock{(rock)|s||s}. ]
+    ->return
   >
   ->rock
 
@@ -558,6 +603,7 @@ with their four hands and two cunning heads.
     ->return
   + [You k[K]eep the rubber. ]
     ->return
+  >
 
 - @ballista.formula()
   + {not ballista} {-bamboo} {-rubber} {+ballista}
@@ -585,7 +631,7 @@ with their four hands and two cunning heads.
   ->return
 
 - @vial.formula()
-  + {at==mountain} {reed} {-sand.pumpkin} {+2vial}
+  + {at==mountain} {reed or bamboo} {-sand.pumpkin} {+2vial}
     [You b[B]low a pair of of glass vials from molten sand in the cinder cone. ]
     ->mountain.choice
 
@@ -619,6 +665,7 @@ with their four hands and two cunning heads.
   ->number(brine.vial) hand{(brine.vial)|s||s}.
   @brine.vial.choice
   ->shrinking.potion.formula()
+  ->growing.potion.formula()
   + {-brine.vial} {+vial}
     [You s[S]pill the brine from the vial. ]
     ->vial.choice
@@ -628,6 +675,10 @@ with their four hands and two cunning heads.
   ->brine.vial.choice
 
 - @shrinking.potion.formula()
+  - {mushroom and freshwater.vial and not brine.vial}
+    You might be able to make a shrinking potion with this mushroom,
+    since it did quite well on the lion, but perhaps sweet water
+    won'}t ferment a mushroom like it does the blue flowers.
   + {-mushroom} {-brine.vial} {+shrinking.potion} {+hand}
     [You f[F]erment a mushroom in the vial of brine. ]
     ->shrinking.potion.choice
@@ -654,6 +705,7 @@ with their four hands and two cunning heads.
   You have {(freshwater.vial)||a vial|->number(freshwater.vial) vials} of fresh
   water held in ->number(freshwater.vial) hand{(freshwater.vial)|s||s}.
   @freshwater.vial.choice
+  ->shrinking.potion.formula()
   ->growing.potion.formula()
   + {-freshwater.vial} {+vial}
     [You s[S]pill the water from the vial. ]
@@ -664,6 +716,9 @@ with their four hands and two cunning heads.
   ->freshwater.vial.choice
 
 - @growing.potion.formula()
+  - {flower and brine.vial and not freshwater.vial}
+    You recall that you grew your homestead with a pumpkin filled with fresh
+    water. This vial of brine might not be the key to a growing potion.
   + {-flower} {-freshwater.vial} {+growing.potion} {+hand}
     [You f[F]erment a flower in the vial of brine. ]
     The water turns into a blue potion for growing.
@@ -686,7 +741,8 @@ with their four hands and two cunning heads.
 - @slingshot.formula()
   + {not slingshot} {-ballista} {-shrinking.potion} {+vial} {+slingshot} {+hand}
     [You a[A]pply the potion to your ballista,
-    shrinking it to the size of a handheld slingshot. ]
+    shrinking it to the size of a handheld slingshot[.]],
+    emptying the vial.
     ->slingshot
 
 - @slingshot
