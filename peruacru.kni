@@ -101,10 +101,10 @@ with their four hands and two cunning heads.
     [You p[P]luck a blue flower. ]
     ->grow.airplane.clue()
   ->common()
-  + <go homestead> {homestead}
+  + <go jungle> {homestead}
     [You f[F]ollow the path into the jungle. ]
     //->jungle
-  + <go bridge> {bridge}
+  + <go beach> {bridge}
     [You c[C]ut accross the bridge down to the beach. ]
     //->beach
   ->maybe.chat()
@@ -187,7 +187,7 @@ with their four hands and two cunning heads.
     [You f[F]ill {(vial)|the|a} vial with fresh water from the river. ]
   + <go beach> {bridge} [You c[C]ross the bridge to the beach. ]
     ->beach
-  + [You r[R]eturn to the jungle. ]
+  + <> [You r[R]eturn to the jungle. ]
     ->jungle
   ->maybe.chat()
   >
@@ -199,8 +199,14 @@ with their four hands and two cunning heads.
   - {lion}
     Beyond the beach, there is an isthmus that leads to a great volcano, but
     the way is guarded by a ferocious lion.
+    + <lion> []
+      The lion looks hungry and fiercely protective of its den on the mountain.
+      ->beach.choice
   - {lion and mushroom} // The lion roars. You must be carrying something
     delicious.
+    + <give lion mushroom> []
+      You offer the mushroom to the lion.
+      ->give.lion.mushroom
   - {cat} The gentle cat {~trills|meows}.
   - {ballista} Your ballista is getting heavy, but this doesn'}t look
     like a good place to keep it. It'}ll get stuck in the sand, and
@@ -216,7 +222,7 @@ with their four hands and two cunning heads.
   + <go hills>
     [You c[C]ross the bridge and cut back to your homestead in the hills. ]
     //->hills
-  + <go volcano>
+  + <go mountain>
     {not lion and not ballista}
     [You m[M]ake your way over the isthmus to the volcano'}s
     {~summit|peak|caldera}. ]
@@ -342,7 +348,7 @@ with their four hands and two cunning heads.
 - @drops
   Perhaps you can drop something to free up some hands.
   ->inventory()
-  + [You k[K]eep everything. ]
+  + <> [You k[K]eep everything. ]
   >
   ->return
 
@@ -490,9 +496,10 @@ with their four hands and two cunning heads.
   + <give lion mushroom>
     {at==beach} {-lion} {+cat} {-mushroom} {+hand}
     [You o[O]ffer the lion a mushroom. ]
+    @give.lion.mushroom
     The lion greedily accepts and shrinks to a diminuitive size, becoming a
     gentle cat, opening the isthmus to the volcano.
-    + <go volcano>
+    + <go mountain>
       [You t[T]ravel across the isthmus up the vulcan terraces. ]
       //->mountain
     + <go beach>
@@ -504,7 +511,7 @@ with their four hands and two cunning heads.
     The {~boy|girl} tastes the mushroom and exclaims, {"Oh, this
     is surely edible, but far too bitter to eat raw."}
     - {lion} Maybe this island has animals that would find it palatable.
-    + [Continue. ]
+    + <> <continue> [ Continue. ]
     >
     ->return
   + <get mushroom>
@@ -568,7 +575,7 @@ with their four hands and two cunning heads.
   @soaked.reed.choice
   ->hammer.formula()
   ->paper.formula()
-  + <drop reed>
+  + <drop soaked reed>
     {-soaked.reed} {+hand}
     [You d[D]iscard {(reed)|the|some} reeds. ]
     {(not soaked.reed)?->return}
@@ -637,10 +644,10 @@ with their four hands and two cunning heads.
   You prevent the wind from carrying it off with all of two hands.
   - {at<>hills} You need to find somewhere to put this down.
   @giant.airplane.choice
-  + <put airplane on ballista>
+  + <put giant airplane on ballista>
     {at==hills} {-placed.ballista} {+launch.pad} {-giant.airplane} {+2hand}
     [You p[P]lace the plane on the ballista launch platform. ]
-  + <drop airplane> <throw airplane>
+  + <drop giant airplane> <throw airplane>
     {-giant.airplane} {+2hand}
     [You l[L]et the wind take the plane. ]
   + <> <keep> [You h[H]old the plane firmly. ]
@@ -717,7 +724,7 @@ with their four hands and two cunning heads.
     ->return
 
 - @grow.ballista.formula()
-  + <grow slingshot>
+  + <grow ballista>
     {-slingshot} {+ballista} {-growing.potion} {+vial} {-hand}
     [You s[S]plash the growing potion on your slingshot[.]],
     and it grows into a great rubber band ballista,
@@ -737,7 +744,7 @@ with their four hands and two cunning heads.
     [You b[B]reak down the ballista. ]
   + <drop ballista> {-ballista} {+2hand}
     [You d[D]estroy the ballista. ]
-  + <put ballista down> <put ballista>
+  + <put ballista>
     {at==hills} {-ballista} {+placed.ballista} {+2hand}
     [You p[P]ut your ballista down. ]
     You aim it toward home.
@@ -859,7 +866,7 @@ with their four hands and two cunning heads.
   # TODO grow slingshot to ballista formula
   # TODO grow cat to lion
   ->grow.airplane.formula()
-  + <spill growing potion from vial>
+  + <spill growing potion>
     {-growing.potion} {+vial}
     [You s[S]pill the growing potion from the vial. ]
     ->vial.choice
@@ -896,7 +903,7 @@ with their four hands and two cunning heads.
   }
 
 - @maybe.chat()
-  + <chat> [{~Talk|Discuss|Chat|Take a break|Rest}. ]
+  + <> <chat> [{~Talk|Discuss|Chat|Take a break|Rest}. ]
     ->chat() ->return
 
 - @chat()
