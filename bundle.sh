@@ -22,12 +22,21 @@ function tree() {
     echo "040000 tree $(git mktree < $2)"$'\t'"$1"
 }
 
+function assets() {
+    cd assets
+    blob hills.jpg hills.jpg
+    blob jungle.jpg jungle.jpg
+    blob beach.jpg beach.jpg
+    blob mountain.jpg mountain.jpg
+}
+
 function genroot() {
     blob CNAME CNAME
     blob index.html bundle.html
     blob index.css index.css
-    kni peruacru.kni -j > peruacru.json
-    blob index.js <(bundle index.js)
+    tree assets <(assets)
+    blob peruacru.json <(kni peruacru.kni -j)
+    blob index.js <(sysjs index.js)
 }
 
 OVERLAY=$(genroot | git mktree)

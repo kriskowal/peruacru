@@ -7,53 +7,21 @@
         <link rel="tag" href="./entity.html">
     </head>
     <body>
-        <a id="reset" class="reset" href="#">reset</a>
-        <div id="narrative"></div>
         <div id="viewport" class="viewport">
-
-            <div class="inventory">
-                <entity id="inventory" name="inventory" id="inventoryTarget"></entity>
-                <repeat id="items">
-                    <entity id="item" draggable="true"></entity>
-                </repeat>
-            </div>
-            <!-- static entities in the viewport -->
-            <div id="frame" class="frame">
-                <div id="peruacru">
-                    <div id="hills" class="scene hills">
-                        <entity id="entity" name="pumpkin" class="pumpkin" draggable="true"></entity>
-                        <entity id="entity" name="flower" class="flower" draggable="true"></entity>
-                        <entity id="entity" name="homestead"></entity>
-                        <entity id="entity" name="ballista" draggable="true"></entity>
-                        <entity id="entity" name="launchpad"></entity>
-                        <entity id="entity" name="river" draggable="true"></entity>
-                        <entity id="entity" name="beach"></entity>
-                        <entity id="entity" name="jungle"></entity>
+            <a id="reset" class="reset" href="#">reset</a>
+            <div id="scene" class="scene">
+                <div id="peruacru" class="peruacru">
+                    <div id="hills" class="hills">
                     </div>
-                    <div id="jungle" class="scene jungle">
-                        <entity id="entity" name="bamboo" class="bamboo" draggable="true"></entity>
-                        <entity id="entity" name="mushroom" class="mushroom" draggable="true"></entity>
-                        <entity id="entity" name="river" draggable="true"></entity>
-                        <entity id="entity" name="tree"></entity>
-                        <entity id="entity" name="hills"></entity>
-                        <entity id="entity" name="beach"></entity>
+                    <div id="jungle" class="jungle">
                     </div>
-                    <div id="beach" class="scene beach">
-                        <entity id="entity" name="lion" draggable="true"></entity>
-                        <entity id="entity" name="cat" draggable="true"></entity>
-                        <entity id="entity" name="reeds" draggable="true"></entity>
-                        <entity id="entity" name="sea" draggable="true"></entity>
-                        <entity id="entity" name="hills"></entity>
-                        <entity id="entity" name="jungle"></entity>
-                        <entity id="entity" name="mountain"></entity>
+                    <div id="beach" class="beach">
                     </div>
-                    <div id="mountain" class="scene mountain">
-                        <entity id="entity" name="rock" draggable="true"></entity>
-                        <entity id="entity" name="caldera"></entity>
-                        <entity id="entity" name="beach"></entity>
+                    <div id="mountain" class="mountain">
                     </div>
                 </div>
             </div>
+            <div id="narrative" class="narrative"></div>
         </div>
     </body>
 </html>
