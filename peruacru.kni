@@ -1,25 +1,3 @@
-There were once a brother and sister who would shrink themselves with red
-potions and explore the world from the back of a giant paper airplane.
-
-They discovered an uninhabited island amid the sparkling Pacific ocean and
-named it Peruácru.
-
-They alighted upon a green knoll and drank their blue growing potions, only to
-damage their plane and lose their stock of potions.
-
-The clever pair set out to explore the island and hopefully find a way home
-with their four hands and two cunning heads.
-
-+ <> <continue> [Continue. ]
-->maybe.chat()
->
-
-# bamboo / hand
-# flower / hand
-# pumpkin / sap.pumpkin / brine.pumpkin / freshwater.pumpkin / 2 hands
-# mushroom / hand
-# reed / hand
-
 ! hills = 0
   jungle = 1
   beach = 2
@@ -62,6 +40,28 @@ with their four hands and two cunning heads.
   tap = 0
   placed.ballista = 0
   launch.pad = 0
+
+There were once a brother and sister who would shrink themselves with red
+potions and explore the world from the back of a giant paper airplane.
+
+They discovered an uninhabited island amid the sparkling Pacific ocean and
+named it Peruácru.
+
+They alighted upon a green knoll and drank their blue growing potions, only to
+damage their plane and lose their stock of potions.
+
+The clever pair set out to explore the island and hopefully find a way home
+with their four hands and two cunning heads.
+
++ <> <continue> [Continue. ]
+->maybe.chat()
+>
+
+# bamboo / hand
+# flower / hand
+# pumpkin / sap.pumpkin / brine.pumpkin / freshwater.pumpkin / 2 hands
+# mushroom / hand
+# reed / hand
 
 - @hills
   ! at = hills
