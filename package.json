@@ -8,13 +8,14 @@
     "json": "./json"
   },
   "devDependencies": {
+    "eslint": "^3.13.1",
     "kni": "^1.0.0-1",
     "system": "^1.0.6"
   },
   "dependencies": {
     "blick": "^1.1.0",
     "gutentag": "^2.2.0",
-    "kni": "^1.1.2",
+    "kni": "^2.0.0",
     "ndim": "^1.5.1",
     "system": "^1.2.0"
   },

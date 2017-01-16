@@ -101,10 +101,10 @@ with their four hands and two cunning heads.
     [You p[P]luck a blue flower. ]
     ->grow.airplane.clue()
   ->common()
-  + <go jungle> {homestead}
+  + <go jungle> <south> {homestead}
     [You f[F]ollow the path into the jungle. ]
     //->jungle
-  + <go beach> {bridge}
+  + <go beach> <south east> {bridge}
     [You c[C]ut accross the bridge down to the beach. ]
     //->beach
   ->maybe.chat()
@@ -123,7 +123,7 @@ with their four hands and two cunning heads.
     // The two of you establish a base around
     the house, planting a garden and laying a path that leads to the southerly
     jungle.
-    + <> <continue> [Continue... ]
+    + <> <south> <continue> [Continue... ]
     >
     ->jungle
 
@@ -149,11 +149,11 @@ with their four hands and two cunning heads.
   + <get mushroom> {not mushroom} {+mushroom} {-hand}
     [You p[P]ick a mushroom. ]
   ->common()
-  + <go hills> [You r[R]eturn to your homestead in the hills. ]
+  + <go hills> <north> [You r[R]eturn to your homestead in the hills. ]
     //->hills
-  + <go river> {not bridge} [You w[W]alk through the jungle to a river. ]
+  + <go river> <east> {not bridge} [You w[W]alk through the jungle to a river. ]
     ->river
-  + <go beach> {bridge} [You c[C]ross the bridge over the river[ to the beach.]]
+  + <go beach> <east> {bridge} [You c[C]ross the bridge over the river[ to the beach.]]
     and head down to the beach.
     //->beach
   ->maybe.chat()
@@ -185,7 +185,7 @@ with their four hands and two cunning heads.
   + <fill vial with fresh water>
     {-vial} {+freshwater.vial}
     [You f[F]ill {(vial)|the|a} vial with fresh water from the river. ]
-  + <go beach> {bridge} [You c[C]ross the bridge to the beach. ]
+  + <go beach> <east> {bridge} [You c[C]ross the bridge to the beach. ]
     ->beach
   + <> [You r[R]eturn to the jungle. ]
     ->jungle
@@ -216,13 +216,13 @@ with their four hands and two cunning heads.
     [You c[C]ut a reed from the marsh grasses. ]
     ->reed.choice
   ->common()
-  + <go jungle>
+  + <go jungle> <west>
     [You c[C]ross the bridge and return to the jungle. ]
     //->jungle
-  + <go hills>
+  + <go hills> <north west>
     [You c[C]ross the bridge and cut back to your homestead in the hills. ]
     //->hills
-  + <go mountain>
+  + <go mountain> <north>
     {not lion and not ballista}
     [You m[M]ake your way over the isthmus to the volcano'}s
     {~summit|peak|caldera}. ]
@@ -246,7 +246,7 @@ with their four hands and two cunning heads.
     [You p[P]ick up a volcanic rock[.]],
     holding it with one hand.
   ->common()
-  + <go beach>
+  + <go beach> <south> <down>
     [You d[D]escend to the beach. ]
     //->beach
   ->maybe.chat()
@@ -272,7 +272,7 @@ with their four hands and two cunning heads.
     [You have a pumpkin full of fresh water. ]
     ->freshwater.pumpkin
   + <brine pumpkin> {brine.pumpkin}
-    [You have a pumpkin full of briney sea water. ]
+    [You have a pumpkin full of briny sea water. ]
     ->brine.pumpkin
   + <sap pumpkin> {sap.pumpkin}
     [You have a pumpkin full of rubber sap. ]
@@ -370,7 +370,7 @@ with their four hands and two cunning heads.
     [You f[F]ill the pumpkin with white beach sand. ]
     ->sand.pumpkin.choice
   + <fill pumpkin with brine> {at==beach} {-pumpkin} {+brine.pumpkin}
-    [You f[F]ill the pumpkin with briney water from the sea. ]
+    [You f[F]ill the pumpkin with briny water from the sea. ]
     ->brine.pumpkin.choice
   + <drop pumpkin> {-pumpkin} {+2hand}
     [You d[D]rop the pumpkin[.]], smashing it to pulpy bits.
@@ -430,8 +430,12 @@ with their four hands and two cunning heads.
 
 - @sand.pumpkin
   You hold a pumpkin full of beach sand with two hands.
-  - {at==mountain} {reed} {sand.pumpkin}
-    You could blow glass with your reed and bucket of beach sand.
+  - {at==mountain} {sand.pumpkin}
+    - {not reed}
+      You might be able to blow glass from beach sand if you found a tube to
+      blow through.
+    - {reed}
+      You could blow glass with your reed and bucket of beach sand.
   @sand.pumpkin.choice
   ->vial.formula()
   + <drop sand pumpkin>
@@ -456,6 +460,8 @@ with their four hands and two cunning heads.
   + <drop flower>
     {-flower} {+hand}
     [You t[T]oss {(flower)|the|a} blue flower {~away|aside}. ]
+    - {at == mountain}
+      The flower withers to dust in the fiery chasm.
     {(flower)?->flower}
     ->return
   + <get flower>
@@ -630,6 +636,7 @@ with their four hands and two cunning heads.
 
 - @airplane
   You have a paper airplane.
+  It isn'}t quite big enough to carry the boy and girl, even if they were tiny.
   @airplane.choice
   + <drop airplane> <throw airplane>
     {-airplane} {+hand}
@@ -903,7 +910,7 @@ with their four hands and two cunning heads.
   }
 
 - @maybe.chat()
-  + <> <chat> [{~Talk|Discuss|Chat|Take a break|Rest}. ]
+  + <chat> [{~Talk|Discuss|Chat|Take a break|Rest}. ]
     ->chat() ->return
 
 - @chat()

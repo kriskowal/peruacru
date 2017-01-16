@@ -3,6 +3,8 @@
 }
 
 html {
+    background-color: hsl(190, 48%, 63%);
+    color: hsla(240, 42.00%, 25.00%, 1);
     height: 100%;
     width: 100%;
     clip: auto;
@@ -11,8 +13,6 @@ html {
 }
 
 body {
-    background-color: hsl(190, 48%, 63%);
-    /* color: hsla(240, 42.00%, 25.00%, 1); */
     overflow: none;
 }
 
@@ -20,10 +20,17 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 1024px;
-    height: 714px;
+    width: 1536px;
+    height: 842px;
     transform-origin: 0 0;
     overflow: hidden;
+    font-size: 24px;
+}
+
+.viewport.portrait {
+    width: 1024px;
+    height: 1684px;
+    font-size: 36px;
 }
 
 .scene {
@@ -34,6 +41,7 @@ body {
     height: 714px;
     background-image: url(assets/hills.jpg);
     background-repeat: no-repeat;
+    overflow: hidden;
 }
 
 .peruacru {
@@ -92,32 +100,82 @@ body {
     background-image: url(assets/mountain.jpg);
 }
 
+.inventory {
+    position: absolute;
+    top: 714px;
+    height: 128px;
+    left: 0;
+    width: 1024px;
+}
+
+.item {
+    position: absolute;
+    height: 128px;
+    width: 128px;
+    transform: scale(0.80);
+    background-repeat: no-repeat;
+}
+
+.item-0 {
+    left: calc((1024px - 128px * 4) / 5 * 1);
+}
+
+.item-0-1 {
+    left: calc((1024px - 128px * 4) / 5 * 1.5 + 128px * 0.5);
+}
+
+.item-1 {
+    left: calc((1024px - 128px * 4) / 5 * 2 + 128px);
+}
+
+.item-1-2 {
+    left: calc(50% - 64px);
+}
+
+.item-2 {
+    left: calc((1024px - 128px * 4) / 5 * 3 + 128px * 2);
+}
+
+.item-2-3 {
+    left: calc((1024px - 128px * 4) / 5 * 3.5 + 128px * 2.5);
+}
+
+.item-3 {
+    left: calc((1024px - 128px * 4) / 5 * 4 + 128px * 3);
+}
+
 .narrative {
     position: absolute;
     top: 0px;
-    left: 0px;
+    left: 1024px;
     height: 714px;
+    width: 512px;
+}
+
+.narrative.portrait {
+    top: 842px;
+    left: 0px;
+    height: 842px;
     width: 1024px;
 }
 
 .narrative.at-hills {
-    color: hsl(45, 65%, 52%);
+    /* color: hsl(45, 65%, 52%); */
 }
 
 .narrative.at-jungle {
-    color: hsl(45, 65%, 52%);
+    /* color: hsl(45, 65%, 52%); */
 }
 
 .narrative.at-beach {
-    color: black;
+    /* color: black; */
 }
 
 .narrative.at-mountain {
-    color: white;
+    /* color: white; */
 }
 
 .kni-frame {
-    font-size: 24px;
     padding: 24px;
     height: 100%;
     width: 100%;
@@ -151,7 +209,7 @@ body {
 .kni-body {
     display: flex-item;
     flex: 0 1 auto;
-    max-width: 40ex;
+    max-width: 60ex;
     text-align: justify;
 }
 
@@ -165,3 +223,116 @@ td {
     cursor: pointer;
 }
 
+/*
+ * ITEMS
+ */
+
+.airplane {
+    /* TODO */
+    background-image: url(assets/sand.png);
+}
+
+.giant-airplane {
+    /* TODO */
+    background-image: url(assets/sand.png);
+}
+
+.bamboo {
+    background-image: url(assets/bamboo.png);
+}
+
+.ballista {
+    background-image: url(assets/ballista.png);
+}
+
+.brine-pumpkin {
+    background-image: url(assets/brine-pumpkin.png);
+}
+
+.brine-vial {
+    background-image: url(assets/brine-vial.png);
+}
+
+.flower {
+    background-image: url(assets/flower.png);
+}
+
+.freshwater-pumpkin {
+    background-image: url(assets/freshwater-pumpkin.png);
+}
+
+.freshwater-vial {
+    /* TODO */
+    background-image: url(assets/sand.png);
+}
+
+.growing-potion {
+    background-image: url(assets/growing-potion.png);
+}
+
+.hammer {
+    background-image: url(assets/hammer.png);
+}
+
+.mushroom {
+    background-image: url(assets/mushroom.png);
+}
+
+.paper {
+    background-image: url(assets/paper.png);
+}
+
+.pumpkin {
+    background-image: url(assets/pumpkin.png);
+}
+
+.reed {
+    background-image: url(assets/reed.png);
+}
+
+.rock {
+    background-image: url(assets/rock.png);
+}
+
+.rubber {
+    background-image: url(assets/rubber.png);
+}
+
+.sand-pumpkin {
+    background-image: url(assets/sand-pumpkin.png);
+}
+
+.sap-pumpkin {
+    background-image: url(assets/sap-pumpkin.png);
+}
+
+.slingshot {
+    /* TODO */
+    background-image: url(assets/sand.png);
+}
+
+.shrinking-potion {
+    background-image: url(assets/shrinking-potion.png);
+}
+
+.soaked-reed {
+    background-image: url(assets/soaked-reed.png);
+}
+
+.vial {
+    background-image: url(assets/vial.png);
+}
+
+/*
+ * PROPS
+ */
+
+.homestead {
+    position: absolute;
+    width: 256px;
+    height: 256px;
+    background: url(assets/homestead.png) no-repeat;
+    top: 128px;
+    left: 128px;
+    display: none;
+}
