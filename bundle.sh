@@ -24,10 +24,10 @@ function tree() {
 
 function assets() {
     cd assets
-    blob hills.jpg hills.jpg
-    blob jungle.jpg jungle.jpg
-    blob beach.jpg beach.jpg
-    blob mountain.jpg mountain.jpg
+    find . -type file -depth 1 | while read path; do
+        file=$(basename $path)
+        blob $file $file
+    done
 }
 
 function genroot() {

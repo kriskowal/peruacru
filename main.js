@@ -437,6 +437,11 @@ Main.prototype.ask = function ask(engine) {
     this.updateProps();
 };
 
+Main.prototype.end = function end(engine) {
+    this.updateItems();
+    this.updateProps();
+};
+
 Main.prototype.resetItems = function resetItems() {
     for (var i = 0; i < items.length; i++) {
         var name = items[i];

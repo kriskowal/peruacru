@@ -228,13 +228,11 @@ td {
  */
 
 .airplane {
-    /* TODO */
-    background-image: url(assets/sand.png);
+    background-image: url(assets/airplane.png);
 }
 
 .giant-airplane {
-    /* TODO */
-    background-image: url(assets/sand.png);
+    background-image: url(assets/giant-airplane.png);
 }
 
 .bamboo {
@@ -262,8 +260,7 @@ td {
 }
 
 .freshwater-vial {
-    /* TODO */
-    background-image: url(assets/sand.png);
+    background-image: url(assets/freshwater-vial.png);
 }
 
 .growing-potion {
@@ -304,11 +301,6 @@ td {
 
 .sap-pumpkin {
     background-image: url(assets/sap-pumpkin.png);
-}
-
-.slingshot {
-    /* TODO */
-    background-image: url(assets/sand.png);
 }
 
 .shrinking-potion {
@@ -362,7 +354,21 @@ td {
 }
 
 .placed-ballista {
+    position: absolute;
+    width: 256px;
+    height: 256px;
+    background: url(assets/placed-ballista.png) no-repeat;
+    top: 128px;
+    left: 400px;
+    display: none;
 }
 
 .launch-pad {
+    position: absolute;
+    width: 256px;
+    height: 256px;
+    background: url(assets/launch-pad.png) no-repeat;
+    top: 128px;
+    left: 400px;
+    display: none;
 }

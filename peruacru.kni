@@ -22,7 +22,6 @@
   sap.pumpkin = 0
   shrinking.potion = 0
   growing.potion = 0
-  slingshot = 0
   vial = 0
   brine.vial = 0
   # TODO sap.vial (rubber band + growing potion -> rubber)
@@ -90,7 +89,7 @@ with their four hands and two cunning heads.
       All systems are go. Awaiting a tiny crew for launch.
     }
   @hills.choice
-  + <launch> {launch.pad} {-2shrinking.potion} {+2vial}
+  + <launch> <quaff> {-launch.pad} {+placed.ballista} {-2shrinking.potion} {+2vial}
     [You q[Q]uaff your shrinking potions[.]] and board your
     paper airliner. As one, you pull the pin and slingshot
     into the sky toward home!
@@ -137,7 +136,7 @@ with their four hands and two cunning heads.
     of the jungle.
   - {bridge} The path through the jungle runs from the hills to the
     north and across a bridge to the east.
-  - {ballista} Your ballista is getting heavy, but neither of you can see a
+  - {ballista} Your giant slingshot is getting heavy, but neither of you can see a
     clearing large enough to put it down {~nearby|near here}.
   @jungle.choice
   + <get all bamboo> {not bamboo} {not bridge}
@@ -196,7 +195,7 @@ with their four hands and two cunning heads.
 - @beach
   ! at = beach
   Beach. There is a marsh of reeds and a sandy beach.
-  - {ballista} Your ballista is getting heavy, but this doesn'}t look
+  - {ballista} Your giant slingshot is getting heavy, but this doesn'}t look
     like a good place to keep it. It'}ll get stuck in the sand, and
     it would be a burden to carry up the mountain.
   @beach.choice
@@ -338,10 +337,8 @@ with their four hands and two cunning heads.
     vial{(growing.potion)|s||s} of growing potion. ]
     ->growing.potion
   + <ballista> {ballista}
-    [You have a heavy ballista. ]
+    [You have a giant slingshot. ]
     ->ballista
-  + <slingshot> {slingshot} [You have a slingshot. ]
-    ->slingshot
   + <hammer> {hammer} [You have a hammer. ]
     ->hammer
   + <paper> {paper} [You have some paper. ]
@@ -664,7 +661,7 @@ with their four hands and two cunning heads.
   @giant.airplane.choice
   + <put giant airplane on ballista>
     {at==hills} {-placed.ballista} {+launch.pad} {-giant.airplane} {+2hand}
-    [You p[P]lace the plane on the ballista launch platform. ]
+    [You p[P]lace the plane on the launch platform. ]
   + <drop giant airplane> <throw airplane>
     {-giant.airplane} {+2hand}
     [You l[L]et the wind take the plane. ]
@@ -741,17 +738,8 @@ with their four hands and two cunning heads.
     - {shrinking.potion} ->ballista
     ->return
 
-- @grow.ballista.formula()
-  + <grow ballista>
-    {-slingshot} {+ballista} {-growing.potion} {+vial} {-hand}
-    [You s[S]plash the growing potion on your slingshot[.]],
-    and it grows into a great rubber band ballista,
-    capable of launching intercontinental aircraft.
-    ->ballista.choice
-
 - @ballista
   You have a ballista held in two hands.
-  ->slingshot.formula()
   + <throw rock with ballista> {-rock} {+hand}
     [You t[T]hrow a rock with the ballista[.]],
     sending it sailing far out to sea.
@@ -839,7 +827,6 @@ with their four hands and two cunning heads.
   of shrinking potion.
   @shrinking.potion.choice
   # TODO shrink lion back to cat
-  ->slingshot.formula()
   + <spill shrinking potion> {-shrinking.potion} {+vial}
     [You s[S]pill the shrinking potion from the vial. ]
     ->vial.choice
@@ -881,7 +868,6 @@ with their four hands and two cunning heads.
   You have {(growing.potion)||a vial|->number(growing.potion) vials}
   of growing potion.
   @growing.potion.choice
-  # TODO grow slingshot to ballista formula
   # TODO grow cat to lion
   ->grow.airplane.formula()
   + <spill growing potion>
@@ -891,25 +877,6 @@ with their four hands and two cunning heads.
   + <> <keep> [You r[R]etain the vial of growing potion. ]
     ->return
   >
-
-- @slingshot.formula()
-  + <shrink ballista>
-    {not slingshot} {-ballista} {-shrinking.potion} {+vial} {+slingshot} {+hand}
-    [You a[A]pply the potion to your ballista,
-    shrinking it to the size of a handheld slingshot[.]],
-    emptying the vial.
-    ->slingshot.choice
-
-- @slingshot
-  You have a slingshot held in one hand.
-  @slingshot.choice
-  ->grow.ballista.formula()
-  + <drop slingshot>
-    {-slingshot} {+hand}
-    [You t[T]oss the slingshot[.]], losing it.
-  + <> <keep> [You k[K]eep the slingshot. ]
-  >
-  ->return
 
 - @return
   //

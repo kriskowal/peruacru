@@ -19,14 +19,13 @@ convert 'images/raw materials/bamboo shoot.png' -resize 128x128 assets/bamboo.pn
 convert 'images/formed materials/hammer.png' -resize 128x128 assets/hammer.png
 convert 'images/formed materials/paper.png' -resize 128x128 assets/paper.png
 convert 'images/formed materials/vial brine.png' -resize 128x128 assets/brine-vial.png
-# TODO  convert 'images/formed materials/vial freshwater.png' -resize 128x128 assets/freshwater-vial.png
+convert 'images/formed materials/vial fresh water.png' -resize 128x128 assets/freshwater-vial.png
 convert 'images/formed materials/vial empty.png' -resize 128x128 assets/vial.png
 convert 'images/formed materials/vial growing potion.png' -resize 128x128 assets/growing-potion.png
 convert 'images/formed materials/vial shrinking potion.png' -resize 128x128 assets/shrinking-potion.png
-# TODO airplane
-# TODO giant airplane
+convert 'images/formed materials/airplane.png' -resize 128x128 assets/airplane.png
+convert 'images/formed materials/airplane.png' -resize 128x128 assets/giant-airplane.png
 convert 'images/formed materials/launchpad + rubberband.png' -resize 128x128 assets/ballista.png
-# TODO slingshot
 
 # this is a place holder for missing materials
 convert 'images/raw materials/sand.png' -resize 128x128 assets/sand.png
@@ -35,3 +34,5 @@ convert 'images/raw materials/sand.png' -resize 128x128 assets/sand.png
 convert 'images/formed materials/pumpkin home.png' -resize 256x256 assets/homestead.png
 convert 'images/raw materials/lion.png' -resize 128x128 assets/lion.png
 convert 'images/formed materials/kitty.png' -resize 64x64 assets/cat.png
+convert 'images/formed materials/launchpad + rubberband.png' -resize 256x256 assets/placed-ballista.png
+convert 'images/formed materials/launchpad + rubberband + plane.png' -resize 256x256 assets/launch-pad.png
