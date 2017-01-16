@@ -53,6 +53,7 @@ var big = {
     'sand-pumpkin': true,
     'brine-pumpkin': true,
     'ballista': true,
+    'giant-airplane': true,
 };
 
 var triggers = {
@@ -126,7 +127,8 @@ var triggers = {
         this.replace('freshwater-vial', 'growing-potion');
     },
     'grow airplane': function () {
-        this.replace('airplane', 'giant-airplane');
+        this.drop('airplane');
+        this.take('giant-airplane');
         this.replace('growing-potion', 'vial');
     },
     'launch': function () {
@@ -196,7 +198,24 @@ Main.prototype.drop = function (name) {
 Main.prototype.replace = function (beforeName, afterName) {
     var before = this.popFromInventory(beforeName);
     var after = this.createItem(afterName);
+
     after.position = before.position;
+    if (after.position == 'item-0') {
+        this.boyLeft = this.boy = after;
+    } else if (after.position === 'item-1') {
+        this.boyRight = this.boy = after;
+    } else if (after.position === 'item-2') {
+        this.girlLeft = this.girl = after;
+    } else if (after.position === 'item-3') {
+        this.girlRight = this.girl = after;
+    } else if (after.position === 'item-0-1') {
+        this.boyLeft = this.boyRight = this.boy = after;
+    } else if (after.position === 'item-1-2') {
+        this.boyRight = this.girlsLeft = this.boy = this.girl = after;
+    } else if (after.position === 'item-2-3') {
+        this.girlLeft = this.girlRight = this.girl = after;
+    }
+
     this.addToInventory(after);
     this.removeFromScene(before);
     this.addToScene(after);
@@ -321,17 +340,19 @@ Main.prototype.retain2 = function retain2(item) {
         item.position = 'item-1-2';
         return 'item-1-2';
     } else if (this.boyRight != null) {
-        this.removeFromScene(this.boyRight);
-        this.release(this.boyRight);
+        var move = this.boyRight;
+        this.removeFromScene(move);
+        this.release(move);
         this.retain2(item);
-        this.retain(this.boyRight);
-        this.addToScene(this.boyRight);
+        this.retain(move);
+        this.addToScene(move);
     } else if (this.girlLeft != null) {
-        this.removeFromScene(this.girlLeft);
-        this.release(this.girlLeft);
+        var move = this.girlLeft;
+        this.removeFromScene(move);
+        this.release(move);
         this.retain2(item);
-        this.retain(this.girlLeft);
-        this.addToScene(this.girlLeft);
+        this.retain(move);
+        this.addToScene(move);
     } else {
         console.error('retain2 failure');
     }
