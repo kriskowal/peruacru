@@ -196,18 +196,6 @@ with their four hands and two cunning heads.
 - @beach
   ! at = beach
   Beach. There is a marsh of reeds and a sandy beach.
-  - {lion}
-    Beyond the beach, there is an isthmus that leads to a great volcano, but
-    the way is guarded by a ferocious lion.
-    + <lion> []
-      The lion looks hungry and fiercely protective of its den on the mountain.
-      ->beach.choice
-  - {lion and mushroom} // The lion roars. You must be carrying something
-    delicious.
-    + <give lion mushroom> []
-      You offer the mushroom to the lion.
-      ->give.lion.mushroom
-  - {cat} The gentle cat {~trills|meows}.
   - {ballista} Your ballista is getting heavy, but this doesn'}t look
     like a good place to keep it. It'}ll get stuck in the sand, and
     it would be a burden to carry up the mountain.
@@ -223,6 +211,10 @@ with their four hands and two cunning heads.
     [You c[C]ross the bridge and cut back to your homestead in the hills. ]
     //->hills
   + <go mountain> <north>
+    {lion and not ballista}
+    [You w[W]alk north across an isthmus to the foot of a volcano. ]
+    //->mountain.gate
+  + <go mountain> <north>
     {not lion and not ballista}
     [You m[M]ake your way over the isthmus to the volcano'}s
     {~summit|peak|caldera}. ]
@@ -230,6 +222,25 @@ with their four hands and two cunning heads.
   ->maybe.chat()
   >
   ->beach.choice
+
+- @mountain.gate
+  ! at = mountain
+  Foot of the mountain.
+  You stand on a path that leads up the slopes of an active volcano.
+  A lion guards the way.
+  - {not mushroom}
+    It looks hungry.
+  - {mushroom}
+    The lion roars. You must be carrying something delicious.
+  @mountain.gate.choice
+  + <give lion mushroom> []
+    You offer the mushroom to the lion.
+    ->give.lion.mushroom
+  ->common()
+  + <go beach> <south> <down>
+    [You f[F]lee back to the beach. ]
+    //->beach
+  >
 
 - @mountain
   ! at = mountain
@@ -500,17 +511,17 @@ with their four hands and two cunning heads.
   ->shrinking.potion.formula()
   ->growing.potion.formula()
   + <give lion mushroom>
-    {at==beach} {-lion} {+cat} {-mushroom} {+hand}
+    {at==mountain} {-lion} {+cat} {-mushroom} {+hand}
     [You o[O]ffer the lion a mushroom. ]
     @give.lion.mushroom
     The lion greedily accepts and shrinks to a diminuitive size, becoming a
-    gentle cat, opening the isthmus to the volcano.
+    gentle cat, opening the way to the volcano.
     + <go mountain>
       [You t[T]ravel across the isthmus up the vulcan terraces. ]
       //->mountain
     + <go beach>
-      [You r[R]emain on the beach. ]
-      ->beach.choice
+      [You r[R]eturn to the beach. ]
+      //->beach
     >
   + <eat mushroom>
     [Eat {(mushroom)||the|a} mushroom.]

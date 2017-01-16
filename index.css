@@ -336,3 +336,33 @@ td {
     left: 128px;
     display: none;
 }
+
+.lion {
+    position: absolute;
+    width: 128px;
+    height: 128px;
+    background: url(assets/lion.png) no-repeat;
+    top: 125px;
+    left: calc(1024px + 350px);
+    display: none;
+}
+
+.cat {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    background: url(assets/cat.png) no-repeat;
+    top: 189px;
+    left: calc(1024px + 320px);
+    display: none;
+}
+
+/* TODO tap */
+.tap {
+}
+
+.placed-ballista {
+}
+
+.launch-pad {
+}

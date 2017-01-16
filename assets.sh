@@ -33,3 +33,5 @@ convert 'images/raw materials/sand.png' -resize 128x128 assets/sand.png
 
 # props
 convert 'images/formed materials/pumpkin home.png' -resize 256x256 assets/homestead.png
+convert 'images/raw materials/lion.png' -resize 128x128 assets/lion.png
+convert 'images/formed materials/kitty.png' -resize 64x64 assets/cat.png
