@@ -39,6 +39,7 @@ var items = [
 
 var props = [
     'homestead',
+    'bridge',
     'lion',
     'cat',
     'tap',

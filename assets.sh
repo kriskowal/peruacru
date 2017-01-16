@@ -32,7 +32,9 @@ convert 'images/raw materials/sand.png' -resize 128x128 assets/sand.png
 
 # props
 convert 'images/formed materials/pumpkin home.png' -resize 256x256 assets/homestead.png
+convert 'images/formed materials/tap.png' -resize 64x64 assets/tap.png
 convert 'images/raw materials/lion.png' -resize 128x128 assets/lion.png
 convert 'images/formed materials/kitty.png' -resize 64x64 assets/cat.png
 convert 'images/formed materials/launchpad + rubberband.png' -resize 256x256 assets/placed-ballista.png
 convert 'images/formed materials/launchpad + rubberband + plane.png' -resize 256x256 assets/launch-pad.png
+convert 'images/formed materials/bridge.png' -resize 256x256 assets/bridge.png

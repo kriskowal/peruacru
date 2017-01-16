@@ -329,6 +329,16 @@ td {
     display: none;
 }
 
+.bridge {
+    position: absolute;
+    width: 256px;
+    height: 256px;
+    background: url(assets/bridge.png) no-repeat;
+    left: calc(1024px - 128px);
+    top: calc(714px + 170px);
+    display: none;
+}
+
 .lion {
     position: absolute;
     width: 128px;
@@ -349,8 +359,14 @@ td {
     display: none;
 }
 
-/* TODO tap */
 .tap {
+    position: absolute;
+    width: 256px;
+    height: 256px;
+    background: url(assets/tap.png) no-repeat;
+    left: 518px;
+    top: calc(714px + 375px);
+    display: none;
 }
 
 .placed-ballista {
