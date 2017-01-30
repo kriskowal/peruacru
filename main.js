@@ -2,10 +2,13 @@
 
 var Engine = require('kni/engine');
 var Story = require('kni/story');
-var Document = require('./document');
+var Document = require('kni/document');
 var story = require('./peruacru.json');
 var Point2 = require('ndim/point2');
 var Region2 = require('ndim/region2');
+var A = require('./animation');
+
+var aspectBias = 1.5;
 
 module.exports = Main;
 
@@ -59,82 +62,110 @@ var big = {
 
 var triggers = {
     'fill pumpkin with fresh water': function () {
-        this.replace('pumpkin', 'freshwater-pumpkin');
+        this.animate(this.replace('pumpkin', 'freshwater-pumpkin'));
     },
     'fill pumpkin with brine': function () {
-        this.replace('pumpkin', 'brine-pumpkin');
+        this.animate(this.replace('pumpkin', 'brine-pumpkin'));
     },
     'fill pumpkin with sap': function () {
-        this.replace('pumpkin', 'sap-pumpkin');
+        this.animate(this.replace('pumpkin', 'sap-pumpkin'));
     },
     'fill pumpkin with sand': function () {
-        this.replace('pumpkin', 'sand-pumpkin');
+        this.animate(this.replace('pumpkin', 'sand-pumpkin'));
     },
     'spill freshwater pumpkin': function () {
-        this.replace('freshwater-pumpkin', 'pumpkin');
+        this.animate(this.replace('freshwater-pumpkin', 'pumpkin'));
     },
     'spill sand pumpkin': function () {
-        this.replace('sand-pumpkin', 'pumpkin');
+        this.animate(this.replace('sand-pumpkin', 'pumpkin'));
     },
     'spill sap from pumpkin': function () {
-        this.replace('sap-pumpkin', 'pumpkin');
+        this.animate(this.replace('sap-pumpkin', 'pumpkin'));
     },
     'spill brine pumpkin': function () {
-        this.replace('brine-pumpkin', 'pumpkin');
+        this.animate(this.replace('brine-pumpkin', 'pumpkin'));
     },
     'fill vial with brine': function () {
-        this.replace('vial', 'brine-vial');
+        this.animate(this.replace('vial', 'brine-vial'));
     },
     'spill freshwater vial': function () {
-        this.replace('freshwater-vial', 'vial');
+        this.animate(this.replace('freshwater-vial', 'vial'));
     },
     'spill brine vial': function () {
-        this.replace('brine-vial', 'vial');
+        this.animate(this.replace('brine-vial', 'vial'));
     },
     'fill vial with freshwater': function () {
-        this.replace('vial', 'freshwater-vial');
+        this.animate(this.replace('vial', 'freshwater-vial'));
     },
     'fill vial with brine from pumpkin': function () {
-        this.replace('vial', 'brine-vial');
+        this.animate(this.replace('vial', 'brine-vial'));
     },
     'fill vial with freshwater from pumpkin': function () {
-        this.replace('vial', 'freshwater-vial');
+        this.animate(this.replace('vial', 'freshwater-vial'));
     },
     'grow homestead': function () {
-        this.drop('freshwater-pumpkin');
-        this.drop('flower');
-        // TODO reveal homestead
+        var pumpkin = this.move('freshwater-pumpkin', 'over-homestead');
+        var flower = this.move('flower', 'over-homestead');
+        this.animate(new A.Parallel([
+            pumpkin.move,
+            flower.move,
+        ]));
+        this.animate(new A.Parallel([
+            pumpkin.drop,
+            flower.drop,
+            this.showProp('homestead')
+        ]));
+    },
+    'build bridge': function () {
+        this.animate(
+            new A.Parallel([
+                this.drop('bamboo'),
+                this.drop('bamboo'),
+                this.drop('bamboo'),
+            ])
+        );
+        this.animate(this.showProp('bridge'));
     },
     'put ballista': function () {
-        this.drop('ballista');
-        // TODO animate ballista to launch pad and reveal launch pad.
+        this.animate(this.drop('ballista'));
+        // TODO animate ballista to launch pad and show launch pad.
     },
     'put giant airplane on ballista': function () {
-        this.drop('giant-airplane');
+        this.animate(this.drop('giant-airplane'));
         // TODO animate airplane onto ballista
     },
     'mash reed': function () {
-        this.replace('soaked-reed', 'paper');
+        this.animate(this.replace('soaked-reed', 'paper'));
     },
     'make airplane': function () {
-        this.replace('paper', 'airplane');
+        this.animate(this.replace('paper', 'airplane'));
     },
     'make shrinking potion': function () {
-        this.drop('mushroom');
-        this.replace('brine-vial', 'shrinking-potion');
+        this.animate(this.drop('mushroom'));
+        this.animate(this.replace('brine-vial', 'shrinking-potion'));
     },
     'make growing potion': function () {
-        this.drop('flower');
-        this.replace('freshwater-vial', 'growing-potion');
+        this.animate(this.drop('flower'));
+        this.animate(this.replace('freshwater-vial', 'growing-potion'));
     },
     'grow airplane': function () {
-        this.drop('airplane');
-        this.take('giant-airplane');
-        this.replace('growing-potion', 'vial');
+        this.animate(this.drop('airplane'));
+        // TODO parallelize animation
+        this.animate(this.take('giant-airplane'));
+        this.animate(this.replace('growing-potion', 'vial'));
     },
     'launch': function () {
-        this.replace('shrinking-potion', 'vial');
-        this.replace('shrinking-potion', 'vial');
+        this.animate(new A.Parallel([
+            this.replace('shrinking-potion', 'vial'),
+            this.replace('shrinking-potion', 'vial')
+        ]));
+    },
+    'give lion mushroom': function () {
+        this.animate(new A.Parallel([
+            this.drop('mushroom', 'over-lion'),
+            this.showProp('cat'),
+            this.hideProp('lion')
+        ]));
     }
 };
 
@@ -171,14 +202,33 @@ function Main(body, scope) {
 
     // Inventory contents
     this.inventory = {};
+    this.props = {};
+
+    this.tail = A.idle;
 }
 
-Main.prototype.take = function (name) {
+Main.prototype.animate = function animate(action) {
+    var next = this.tail.then(action);
+    if (!next.then) {
+        console.error('wat', this.tail.constructor.name, '->', next.constructor.name, action.constructor.name);
+    }
+    this.tail = next;
+};
+
+Main.prototype.take = function (name, over) {
     console.log('take', name);
     var item = this.createItem(name);
     this.retain(item);
     this.addToScene(item);
     this.addToInventory(item);
+    item.element.classList.add(over || 'trash');
+    return new A.Series([
+        new A.AwaitDraw(),
+        new A.AddClass(item.element, 'item-store'),
+        new A.AddClass(item.slot, item.position),
+        new A.RemoveClass(item.element, over || 'trash'),
+        new A.AwaitTransitionEnd(item.element)
+    ]);
 };
 
 Main.prototype.retake = function (name) {
@@ -187,46 +237,43 @@ Main.prototype.retake = function (name) {
     this.retain(item);
     this.addToScene(item);
     this.addToInventory(item);
+    item.element.classList.add('item-store');
+    item.element.classList.add('item-show');
+    item.slot.classList.add(item.position);
 };
 
-Main.prototype.drop = function (name) {
+Main.prototype.drop = function (name, over) {
     console.log('drop', name);
     var item = this.popFromInventory(name);
     this.release(item);
-    this.removeFromScene(item);
+    return new A.Series([
+        new A.RemoveClass(item.element, 'item-show'),
+        new A.RemoveClass(item.element, 'item-store'),
+        new A.AddClass(item.element, over || 'trash'),
+        new A.RemoveClass(item.slot, item.position),
+        new A.AwaitTransitionEnd(item.element),
+        new RemoveFromScene(this, item)
+    ]);
 };
 
-Main.prototype.replace = function (beforeName, afterName) {
-    var before = this.popFromInventory(beforeName);
-    var after = this.createItem(afterName);
-
-    after.position = before.position;
-    if (after.position == 'item-0') {
-        this.boyLeft = this.boy = after;
-    } else if (after.position === 'item-1') {
-        this.boyRight = this.boy = after;
-    } else if (after.position === 'item-2') {
-        this.girlLeft = this.girl = after;
-    } else if (after.position === 'item-3') {
-        this.girlRight = this.girl = after;
-    } else if (after.position === 'item-0-1') {
-        this.boyLeft = this.boyRight = this.boy = after;
-    } else if (after.position === 'item-1-2') {
-        this.boyRight = this.girlsLeft = this.boy = this.girl = after;
-    } else if (after.position === 'item-2-3') {
-        this.girlLeft = this.girlRight = this.girl = after;
-    }
-
-    this.addToInventory(after);
-    this.removeFromScene(before);
-    this.addToScene(after);
-};
-
-Main.prototype.count = function (name) {
-    if (!this.inventory[name]) {
-        return 0;
-    }
-    return this.inventory[name].length;
+Main.prototype.move = function (name, over) {
+    console.log('move', name, over);
+    var item = this.popFromInventory(name);
+    this.release(item);
+    return {
+        move: new A.Series([
+            new A.RemoveClass(item.element, 'item-store'),
+            new A.AddClass(item.element, over),
+            new A.RemoveClass(item.slot, item.position),
+            new A.AwaitTransitionEnd(item.element),
+        ]),
+        drop: new A.Series([
+            new A.Mark('dropping', name),
+            new A.RemoveClass(item.element, 'item-show'),
+            new A.AwaitTransitionEnd(item.element),
+            new RemoveFromScene(this, item)
+        ])
+    };
 };
 
 Main.prototype.createItem = function (name) {
@@ -248,6 +295,9 @@ Main.prototype.popFromInventory = function (name) {
 
 Main.prototype.addToScene = function (item) {
     this.items.value.push(item);
+    this.animate(new A.AwaitDraw());
+    this.animate(new A.AwaitDraw());
+    this.animate(new A.AddClass(item.element, 'item-show'));
 };
 
 Main.prototype.removeFromScene = function (item) {
@@ -263,60 +313,29 @@ Main.prototype.retain = function retain(item) {
     }
 };
 
-Main.prototype.release = function release(item) {
-    var name = item.name;
-    if (big[name]) {
-        this.release2(item);
-    } else {
-        this.release1(item);
-    }
-};
-
 Main.prototype.retain1 = function retain1(item) {
     if (this.boyLeft == null) {
         this.boyLeft = item;
         this.boy = item;
-        item.position = 'item-0';
-        return 'item-0';
+        item.position = 'slot-0';
+        return 'slot-0';
     } else if (this.boyRight == null) {
         this.boyRight = item;
         this.boy = item;
-        item.position = 'item-1';
-        return 'item-1';
+        item.position = 'slot-1';
+        return 'slot-1';
     } else if (this.girlRight == null) {
         this.girlRight = item;
         this.girl = item;
-        item.position = 'item-3';
-        return 'item-3';
+        item.position = 'slot-3';
+        return 'slot-3';
     } else if (this.girlLeft == null) {
         this.girlLeft = item;
         this.girl = item;
-        item.position = 'item-2';
-        return 'item-2';
+        item.position = 'slot-2';
+        return 'slot-2';
     } else {
         console.error('retain1 failure');
-    }
-};
-
-Main.prototype.release1 = function release1(item) {
-    var position = item.position;
-    item.position = null;
-    if (position === 'item-0') {
-        this.boyLeft = null;
-        this.boy = this.boyRight;
-        return 'item-0';
-    } else if (position === 'item-1') {
-        this.boyRight = null;
-        this.boy = this.boyLeft;
-        return 'item-1';
-    } else if (position === 'item-2') {
-        this.girlLeft = null;
-        this.girl = this.girlRight;
-        return 'item-2';
-    } else if (position === 'item-3') {
-        this.girlRight = null;
-        this.girl = this.girlLeft;
-        return 'item-3';
     }
 };
 
@@ -325,21 +344,21 @@ Main.prototype.retain2 = function retain2(item) {
         this.boyLeft = item;
         this.boyRight = item;
         this.boy = item;
-        item.position = 'item-0-1';
-        return 'item-0-1';
+        item.position = 'slot-0-1';
+        return 'slot-0-1';
     } else if (this.girl == null) {
         this.girlLeft = item;
         this.girlRight = item;
         this.girl = item;
-        item.position = 'item-2-3';
-        return 'item-2-3';
+        item.position = 'slot-2-3';
+        return 'slot-2-3';
     } else if (this.boyRight == null && this.girlLeft == null) {
         this.girl = item;
         this.boy = item;
         this.girlLeft = item;
         this.boyRight = item;
-        item.position = 'item-1-2';
-        return 'item-1-2';
+        item.position = 'slot-1-2';
+        return 'slot-1-2';
     } else if (this.boyRight != null) {
         var move = this.boyRight;
         this.removeFromScene(move);
@@ -359,26 +378,89 @@ Main.prototype.retain2 = function retain2(item) {
     }
 };
 
+Main.prototype.release = function release(item) {
+    var name = item.name;
+    if (big[name]) {
+        this.release2(item);
+    } else {
+        this.release1(item);
+    }
+};
+
+Main.prototype.release1 = function release1(item) {
+    var position = item.position;
+    if (position === 'slot-0') {
+        this.boyLeft = null;
+        this.boy = this.boyRight;
+        return 'slot-0';
+    } else if (position === 'slot-1') {
+        this.boyRight = null;
+        this.boy = this.boyLeft;
+        return 'slot-1';
+    } else if (position === 'slot-2') {
+        this.girlLeft = null;
+        this.girl = this.girlRight;
+        return 'slot-2';
+    } else if (position === 'slot-3') {
+        this.girlRight = null;
+        this.girl = this.girlLeft;
+        return 'slot-3';
+    }
+};
+
 Main.prototype.release2 = function release2(item) {
     var position = item.position;
-    item.position = null;
-    if (position === 'item-0-1') {
+    if (position === 'slot-0-1') {
         this.boy = null;
         this.boyLeft = null;
         this.boyRight = null;
-        return 'item-0-1';
-    } else if (position === 'item-1-2') {
+        return 'slot-0-1';
+    } else if (position === 'slot-1-2') {
         this.girlLeft = null;
         this.girl = this.girlRight;
         this.boyRight = null;
         this.boy = this.boyLeft;
-        return 'item-2-3';
-    } else if (position === 'item-2-3') {
+        return 'slot-2-3';
+    } else if (position === 'slot-2-3') {
         this.girl = null;
         this.girlLeft = null;
         this.girlRight = null;
-        return 'item-2-3';
+        return 'slot-2-3';
     }
+};
+
+Main.prototype.replace = function (beforeName, afterName) {
+    var before = this.popFromInventory(beforeName);
+    var after = this.createItem(afterName);
+
+    after.position = before.position;
+    if (after.position == 'slot-0') {
+        this.boyLeft = this.boy = after;
+    } else if (after.position === 'slot-1') {
+        this.boyRight = this.boy = after;
+    } else if (after.position === 'slot-2') {
+        this.girlLeft = this.girl = after;
+    } else if (after.position === 'slot-3') {
+        this.girlRight = this.girl = after;
+    } else if (after.position === 'slot-0-1') {
+        this.boyLeft = this.boyRight = this.boy = after;
+    } else if (after.position === 'slot-1-2') {
+        this.boyRight = this.girlsLeft = this.boy = this.girl = after;
+    } else if (after.position === 'slot-2-3') {
+        this.girlLeft = this.girlRight = this.girl = after;
+    }
+
+    this.addToInventory(after);
+    this.addToScene(after);
+
+    after.element.classList.add('item-store');
+    after.slot.classList.add(before.position);
+    return new A.Series([
+        new A.AwaitDraw(),
+        new A.AddClass(after.element, 'item-show'),
+        new A.AwaitTransitionEnd(after.element),
+        new RemoveFromScene(this, before)
+    ]);
 };
 
 Main.prototype.measure = function measure() {
@@ -389,12 +471,12 @@ Main.prototype.measure = function measure() {
 
 Main.prototype.draw = function draw() {
     this.frameSize.copyFrom(this.sceneSize);
-    if (this.viewportSize.x > this.viewportSize.y * 1.5) {
-        this.frameSize.x *= 3/2;
+    if (this.viewportSize.x > this.viewportSize.y * aspectBias) {
+        this.frameSize.x *= aspectBias;
         this.narrative.classList.remove('portrait');
         this.viewport.classList.remove('portrait');
     } else {
-        this.frameSize.y *= 2;
+        this.frameSize.y += 714;
         this.narrative.classList.add('portrait');
         this.viewport.classList.add('portrait');
     }
@@ -423,14 +505,6 @@ Main.prototype.handleEvent = function handleEvent(event) {
     }
 };
 
-Main.prototype.hookup = function hookup(id, component, scope) {
-    if (id === 'this') {
-        this.init(scope);
-    } else if (id === 'items:iteration') {
-        this.initItem(component, scope);
-    }
-};
-
 Main.prototype.answer = function _answer(answer, engine) {
 };
 
@@ -449,14 +523,29 @@ Main.prototype.choice = function _choice(choice, engine) {
 Main.prototype.ask = function ask(engine) {
     var at = engine.global.get('at');
     if (this.at !== at) {
-        this.peruacru.classList.remove('at-' + scenes[this.at]);
-        this.narrative.classList.remove('at-' + scenes[this.at]);
+        this.animate(new SceneChange(this, this.at, at));
+        if (this.at !== -1) {
+            this.animate(new A.AwaitTransitionEnd(this.peruacru));
+        }
         this.at = at;
-        this.peruacru.classList.add('at-' + scenes[this.at]);
-        this.narrative.classList.add('at-' + scenes[this.at]);
     }
     this.updateItems();
     this.updateProps();
+};
+
+function SceneChange(main, source, target) {
+    this.main = main;
+    this.source = source;
+    this.target = target;
+}
+
+SceneChange.prototype.act = function act() {
+    console.log('scene change');
+    var main = this.main;
+    main.peruacru.classList.remove('at-' + scenes[this.source]);
+    main.narrative.classList.remove('at-' + scenes[this.source]);
+    main.peruacru.classList.add('at-' + scenes[this.target]);
+    main.narrative.classList.add('at-' + scenes[this.target]);
 };
 
 Main.prototype.end = function end(engine) {
@@ -465,15 +554,49 @@ Main.prototype.end = function end(engine) {
 };
 
 Main.prototype.resetItems = function resetItems() {
+    this.dropItems();
+    this.retakeItems();
+};
+
+Main.prototype.updateItems = function updateItems() {
+    this.dropItems();
+    if (this.initialized) {
+        this.takeItems();
+    } else {
+        this.initialized = true;
+        this.retakeItems();
+    }
+};
+
+Main.prototype.dropItems = function dropItems() {
+    var animations = [];
     for (var i = 0; i < items.length; i++) {
         var name = items[i];
         var actual = this.count(name);
         var expected = this.engine.global.get(name.replace('-', '.'));
         while (expected < actual) {
-            this.drop(name);
+            animations.push(this.drop(name));
             actual--;
         }
     }
+    this.animate(new A.Parallel(animations));
+};
+
+Main.prototype.takeItems = function takeItems() {
+    var animations = [];
+    for (var i = 0; i < items.length; i++) {
+        var name = items[i];
+        var actual = this.count(name);
+        var expected = this.engine.global.get(name.replace('-', '.'));
+        while (expected > actual) {
+            animations.push(this.take(name));
+            actual++;
+        }
+    }
+    this.animate(new A.Parallel(animations));
+};
+
+Main.prototype.retakeItems = function retakeItems() {
     for (var i = 0; i < items.length; i++) {
         var name = items[i];
         var actual = this.count(name);
@@ -485,39 +608,79 @@ Main.prototype.resetItems = function resetItems() {
     }
 };
 
-Main.prototype.updateItems = function updateItems() {
-    for (var i = 0; i < items.length; i++) {
-        var name = items[i];
-        var actual = this.count(name);
-        var expected = this.engine.global.get(name.replace('-', '.'));
-        while (expected < actual) {
-            this.drop(name);
-            actual--;
-        }
-    }
-    for (var i = 0; i < items.length; i++) {
-        var name = items[i];
-        var actual = this.count(name);
-        var expected = this.engine.global.get(name.replace('-', '.'));
-        while (expected > actual) {
-            this.take(name);
-            actual++;
-        }
-    }
-};
-
 Main.prototype.updateProps = function updateProps() {
     for (var i = 0; i < props.length; i++) {
         var name = props[i];
         var show = this.engine.global.get(name.replace('-', '.'));
-        this.scope.components[name].style.display = show ? 'block' : 'none';
+        if (show) {
+            A.idle.then(this.showProp(name));
+        } else {
+            A.idle.then(this.hideProp(name));
+        }
     }
+};
+
+Main.prototype.showProp = function (prop) {
+    if (!this.props[prop]) {
+        console.log('show prop', prop);
+        this.props[prop] = true;
+        return new ShowProp(this.scope.components[prop]);
+    }
+    return A.noop;
+};
+
+function ShowProp(component) {
+    this.component = component;
+}
+
+ShowProp.prototype.act = function act() {
+    if (!this.component.classList.contains('show-prop')) {
+        this.component.classList.add('show-prop');
+        return new A.AwaitTransitionEnd(this.component).act();
+    }
+    return A.idle;
+};
+
+Main.prototype.hideProp = function (prop) {
+    if (this.props[prop]) {
+        console.log('hide prop', prop);
+        this.props[prop] = false;
+        return new HideProp(this.scope.components[prop]);
+    }
+    return A.noop;
+};
+
+function HideProp(component) {
+    this.component = component;
+}
+
+HideProp.prototype.act = function act() {
+    if (this.component.classList.contains('show-prop')) {
+        this.component.classList.remove('show-prop');
+        return new A.AwaitTransitionEnd(this.component).act();
+    }
+    return A.idle;
+};
+
+Main.prototype.count = function (name) {
+    if (!this.inventory[name]) {
+        return 0;
+    }
+    return this.inventory[name].length;
 };
 
 Main.prototype.waypoint = function (waypoint) {
     var json = JSON.stringify(waypoint);
     window.history.pushState(waypoint, '', '#' + btoa(json));
     localStorage.setItem('peruacru.kni', json);
+};
+
+Main.prototype.hookup = function hookup(id, component, scope) {
+    if (id === 'this') {
+        this.init(scope);
+    } else if (id === 'items:iteration') {
+        this.initItem(component, scope);
+    }
 };
 
 Main.prototype.init = function init(scope) {
@@ -567,8 +730,6 @@ Main.prototype.init = function init(scope) {
 
     engine.resume(waypoint);
 
-    this.resetItems();
-
     window.onkeypress = function onkeypress(event) {
         var key = event.code;
         var match = /^Digit(\d+)$/.exec(key);
@@ -603,6 +764,14 @@ Main.prototype.init = function init(scope) {
     };
 };
 
+Main.prototype.initItem = function initItem(iteration, scope) {
+    var item = iteration.value;
+    item.iteration = iteration;
+    item.slot = scope.components.slot;
+    item.element = scope.components.item;
+    item.element.classList.add(item.name);
+};
+
 Main.prototype.go = function _go(answer) {
     var engine = this.engine;
     if (
@@ -614,10 +783,11 @@ Main.prototype.go = function _go(answer) {
     engine.answer(answer);
 };
 
-Main.prototype.initItem = function initItem(iteration, scope) {
-    var item = iteration.value;
-    item.iteration = iteration;
-    item.element = scope.components.item;
-    item.element.classList.add(item.position);
-    item.element.classList.add(item.name);
+function RemoveFromScene(main, item) {
+    this.main = main;
+    this.item = item;
+}
+
+RemoveFromScene.prototype.act = function act() {
+    this.main.removeFromScene(this.item);
 };

@@ -10,6 +10,7 @@ html {
     clip: auto;
     position: absolute;
     overflow: hidden;
+    font-family: 'Quicksand', sans-serif;
 }
 
 body {
@@ -109,39 +110,56 @@ body {
 }
 
 .item {
-    position: absolute;
+    position: relative;
+    left: calc((1024px / 2) - (128px / 2));
+    top: 0;
     height: 128px;
     width: 128px;
-    transform: scale(0.80);
     background-repeat: no-repeat;
+    transition: opacity 1s ease, transform 1s ease, position 1s ease;
+    opacity: 0;
+    transform: translate(0, -450px) scale(0.5);
 }
 
-.item-0 {
-    left: calc((1024px - 128px * 4) / 5 * 1);
+.item-store {
+    transform: scale(0.8);
 }
 
-.item-0-1 {
-    left: calc((1024px - 128px * 4) / 5 * 1.5 + 128px * 0.5);
+.item-show {
+    opacity: 1;
 }
 
-.item-1 {
-    left: calc((1024px - 128px * 4) / 5 * 2 + 128px);
+.slot {
+    height: 0;
+    width: 0;
+    transition: transform ease 1s;
 }
 
-.item-1-2 {
-    left: calc(50% - 64px);
+.slot-0 {
+    transform: translate(calc((1024px - 102.4px) / 8 * -3));
 }
 
-.item-2 {
-    left: calc((1024px - 128px * 4) / 5 * 3 + 128px * 2);
+.slot-0-1 {
+    transform: translate(calc((1024px - 102.4px) / 8 * -2));
 }
 
-.item-2-3 {
-    left: calc((1024px - 128px * 4) / 5 * 3.5 + 128px * 2.5);
+.slot-1 {
+    transform: translate(calc((1024px - 102.4px) / 8 * -1));
 }
 
-.item-3 {
-    left: calc((1024px - 128px * 4) / 5 * 4 + 128px * 3);
+.slot-1-2 {
+}
+
+.slot-2 {
+    transform: translate(calc((1024px - 102.4px) / 8 * 1));
+}
+
+.slot-2-3 {
+    transform: translate(calc((1024px - 102.4px) / 8 * 2));
+}
+
+.slot-3 {
+    transform: translate(calc((1024px - 102.4px) / 8 * 3));
 }
 
 .narrative {
@@ -155,7 +173,7 @@ body {
 .narrative.portrait {
     top: 842px;
     left: 0px;
-    height: 842px;
+    height: 714px;
     width: 1024px;
 }
 
@@ -176,13 +194,14 @@ body {
 }
 
 .kni-frame {
+    position: absolute;
     padding: 24px;
     height: 100%;
     width: 100%;
     top: 0;
     right: 0;
     overflow-y: scroll;
-    transition: transform 1s ease, opacity 1s ease-out;
+    transition: transform .5s ease, opacity .5s ease-out;
 }
 
 .kni-frame-a {
@@ -253,10 +272,12 @@ td {
 
 .flower {
     background-image: url(assets/flower.png);
+    z-index: 2;
 }
 
 .freshwater-pumpkin {
     background-image: url(assets/freshwater-pumpkin.png);
+    z-index: 1;
 }
 
 .freshwater-vial {
@@ -319,72 +340,89 @@ td {
  * PROPS
  */
 
-.homestead {
+.prop {
     position: absolute;
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: scale(0.8);
+}
+
+.show-prop {
+    opacity: 1;
+    transform: scale(1.0);
+}
+
+.homestead {
     width: 256px;
     height: 256px;
     background: url(assets/homestead.png) no-repeat;
     top: 128px;
     left: 128px;
-    display: none;
+    z-index: 3;
+}
+
+.over-homestead {
+    transform: translate(-300px, -460px);
 }
 
 .bridge {
-    position: absolute;
     width: 256px;
     height: 256px;
     background: url(assets/bridge.png) no-repeat;
     left: calc(1024px - 128px);
     top: calc(714px + 170px);
-    display: none;
 }
 
 .lion {
-    position: absolute;
     width: 128px;
     height: 128px;
     background: url(assets/lion.png) no-repeat;
     top: 125px;
     left: calc(1024px + 350px);
-    display: none;
+    transform: translate(-40px, 15px) scale(0.5);
+}
+
+.lion.show-prop {
+    transform: none;
+}
+
+.over-lion {
+    transform: translate(-180px, -520px) scale(0.6);
 }
 
 .cat {
-    position: absolute;
     width: 64px;
     height: 64px;
     background: url(assets/cat.png) no-repeat;
     top: 189px;
     left: calc(1024px + 320px);
-    display: none;
+    transform: scale(1.5) translate(20px, -15px);
+}
+
+.cat.show-prop {
+    transform: none;
 }
 
 .tap {
-    position: absolute;
     width: 256px;
     height: 256px;
     background: url(assets/tap.png) no-repeat;
     left: 518px;
     top: calc(714px + 375px);
-    display: none;
 }
 
 .placed-ballista {
-    position: absolute;
     width: 256px;
     height: 256px;
     background: url(assets/placed-ballista.png) no-repeat;
     top: 128px;
     left: 400px;
-    display: none;
 }
 
 .launch-pad {
-    position: absolute;
     width: 256px;
     height: 256px;
     background: url(assets/launch-pad.png) no-repeat;
     top: 128px;
     left: 400px;
-    display: none;
 }

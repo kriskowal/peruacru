@@ -71,9 +71,9 @@ with their four hands and two cunning heads.
     You would need to drop something to pick up a pumpkin.
     One of you would need two free hands.
   - {ballista and not placed.ballista}
-    This looks like a good spot for a ballista.
+    This looks like a good spot for a giant slingshot.
   - {placed.ballista}
-    Your ballista stands waiting for a launch vehicle large
+    Your giant slingshot stands waiting for a launch vehicle large
     enough to carry two, tiny passengers.
   - {launch.pad} /
     {(shrinking.potion)|
@@ -93,8 +93,16 @@ with their four hands and two cunning heads.
     [You q[Q]uaff your shrinking potions[.]] and board your
     paper airliner. As one, you pull the pin and slingshot
     into the sky toward home!
-    <- # THE END
-  + <get pumpkin> {not pumpkin} {+pumpkin} {-2hand}
+    //->credits
+  + <get pumpkin>
+    {
+      not pumpkin and
+      not sap.pumpkin and
+      not sand.pumpkin and
+      not brine.pumpkin and
+      not freshwater.pumpkin
+    }
+    {+pumpkin} {-2hand}
     [You g[G]et a pumpkin[.]], grasping it with two hands.
   + <get flower> {not flower} {+flower} {-hand}
     [You p[P]luck a blue flower. ]
@@ -170,7 +178,7 @@ with their four hands and two cunning heads.
 - @bridge.formula()
   + <build bridge>
     {at==jungle} {-3bamboo} {+bridge} {+3hand}
-    [You b[B]uild a bridge from three bundles of bamboo[.]],
+    [You b[B]uild a bridge with the bamboo[.]],
     crossing over and walking down to the beach.
     //->beach
 
@@ -243,6 +251,7 @@ with their four hands and two cunning heads.
 
 - @mountain
   ! at = mountain
+  - {lion} ->mountain.gate
   Mountain.
   You stand at the peak of an active volcano.
   Liquid hot lava bubbles in the cinder cone, flowing from the far end down to
@@ -479,7 +488,7 @@ with their four hands and two cunning heads.
   >
 
 - @bamboo
-  You hold bundle{(bamboo)|s||s} of bamboo with ->number(bamboo)
+  You hold ->number(bamboo) bamboo shoot{(bamboo)|s||s} with ->number(bamboo)
   hand{(bamboo)|s||s}.
   @bamboo.choice
   # TODO giant bamboo formula
@@ -490,7 +499,7 @@ with their four hands and two cunning heads.
   ->hammer.formula()
   + <drop bamboo>
     {-bamboo} {+hand}
-    [You d[D]rop {(bamboo)|the|a} bundle of bamboo. ]
+    [You d[D]rop {(bamboo)|the|a} bamboo shoot. ]
     {(bamboo)?->bamboo}
     ->return
   + <get bamboo>
@@ -513,10 +522,10 @@ with their four hands and two cunning heads.
     @give.lion.mushroom
     The lion greedily accepts and shrinks to a diminuitive size, becoming a
     gentle cat, opening the way to the volcano.
-    + <go mountain>
+    + <go mountain> <north>
       [You t[T]ravel across the isthmus up the vulcan terraces. ]
       //->mountain
-    + <go beach>
+    + <go beach> <south>
       [You r[R]eturn to the beach. ]
       //->beach
     >
@@ -733,33 +742,33 @@ with their four hands and two cunning heads.
 - @ballista.formula()
   + <make ballista>
     {not ballista} {-bamboo} {-rubber} {+ballista}
-    [You a[A]ssemble a ballista with the rubber and a forked pair of
-    bamboo shoots. ]
+    [You a[A]ssemble a sort of giant slingshot with the rubber and a forked
+    pair of bamboo shoots. ]
     - {shrinking.potion} ->ballista
     ->return
 
 - @ballista
-  You have a ballista held in two hands.
+  You have a giant slingshot, held in two hands.
   + <throw rock with ballista> {-rock} {+hand}
-    [You t[T]hrow a rock with the ballista[.]],
+    [You t[T]hrow a rock with the giant slingshot[.]],
     sending it sailing far out to sea.
     You don'}t even see it splash.
     {"It seems a waste of a stone,"} the {~boy|girl}
     says, {"but it freed a hand."}
   + <break ballista> {-ballista} {+bamboo} {+rubber}
-    [You b[B]reak down the ballista. ]
+    [You b[B]reak down the giant slingshot. ]
   + <drop ballista> {-ballista} {+2hand}
-    [You d[D]estroy the ballista. ]
+    [You d[D]estroy the giant slingshot. ]
   + <put ballista>
     {at==hills} {-ballista} {+placed.ballista} {+2hand}
-    [You p[P]ut your ballista down. ]
+    [You p[P]ut your giant slingshot down. ]
     You aim it toward home.
     - {not airplane and not giant.airplane}
       Now you need something to launch.
     - {airplane} You could send an airplane really far with this,
       if the airplane were big enough for it.
     ->hills.choice
-  + <> <keep> [You k[K]eep the ballista. ]
+  + <> <keep> [You k[K]eep the giant slingshot. ]
   >
   ->return
 
@@ -919,6 +928,14 @@ with their four hands and two cunning heads.
   + <more> [{"Let'}s {~chat|rest|talk} more."} ] ->chat
   + <> <back> [{"Let'}s get back to work."} ] <-
   >
+
+- @credits
+  {"Escape from Peruácru Island"} /
+  © 2017 Kris and Kathy Kowal /
+  Illustration -- Kathleen Kowal /
+  Scripts -- Kris Kowal /
+  Based on a true fantasy /
+  <- # the end
 
 - @number(number)
   {(number)|no|one|two|three|four}
