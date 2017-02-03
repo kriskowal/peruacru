@@ -342,14 +342,18 @@ td {
 
 .prop {
     position: absolute;
-    opacity: 0;
     transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 0;
     transform: scale(0.8);
 }
 
 .show-prop {
     opacity: 1;
     transform: scale(1.0);
+}
+
+.prop-no-transition {
+    transition: none;
 }
 
 .homestead {
@@ -362,7 +366,7 @@ td {
 }
 
 .over-homestead {
-    transform: translate(-300px, -460px);
+    transform: translate(-250px, -470px);
 }
 
 .bridge {
@@ -371,6 +375,10 @@ td {
     background: url(assets/bridge.png) no-repeat;
     left: calc(1024px - 128px);
     top: calc(714px + 170px);
+}
+
+.over-bridge {
+    transform: translate(480px, -460px);
 }
 
 .lion {
@@ -387,7 +395,7 @@ td {
 }
 
 .over-lion {
-    transform: translate(-180px, -520px) scale(0.6);
+    transform: translate(-150px, -530px) scale(0.6);
 }
 
 .cat {
@@ -415,14 +423,20 @@ td {
     width: 256px;
     height: 256px;
     background: url(assets/placed-ballista.png) no-repeat;
-    top: 128px;
-    left: 400px;
+    top: 50px;
+    left: 420px;
+    z-index: 2;
+}
+
+.over-ballista {
+    transform: translate(120px, -625px) rotate(9deg) scale(0.65);
+    z-index: 1;
 }
 
 .launch-pad {
     width: 256px;
     height: 256px;
     background: url(assets/launch-pad.png) no-repeat;
-    top: 128px;
-    left: 400px;
+    top: 50px;
+    left: 420px;
 }

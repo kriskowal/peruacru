@@ -117,11 +117,17 @@ var triggers = {
         ]));
     },
     'build bridge': function () {
+        var moves = [];
+        var drops = [];
+        for (var i = 0; i < 3; i++) {
+            var anim = this.move('bamboo', 'over-bridge');
+            moves.push(anim.move);
+            drops.push(anim.drop);
+        }
         this.animate(
-            new A.Parallel([
-                this.drop('bamboo'),
-                this.drop('bamboo'),
-                this.drop('bamboo'),
+            new A.Series([
+                new A.Parallel(moves),
+                new A.Parallel(drops),
             ])
         );
         this.animate(this.showProp('bridge'));
@@ -160,11 +166,29 @@ var triggers = {
             this.replace('shrinking-potion', 'vial')
         ]));
     },
+    'soak reeds in pumpkin': function () {
+        this.animate(this.replace('reed', 'soaked-reed'));
+    },
+    'put giant airplane on ballista': function () {
+        var airplane = this.move('giant-airplane', 'over-ballista');
+        this.animate(new A.Series([
+            airplane.move,
+            new A.Parallel([
+                airplane.drop,
+                this.hideProp('placed-ballista'),
+                this.showProp('launch-pad')
+            ])
+        ]));
+    },
     'give lion mushroom': function () {
-        this.animate(new A.Parallel([
-            this.drop('mushroom', 'over-lion'),
-            this.showProp('cat'),
-            this.hideProp('lion')
+        var mushroom = this.move('mushroom', 'over-lion');
+        this.animate(new A.Series([
+            mushroom.move,
+            new A.Parallel([
+                mushroom.drop,
+                this.showProp('cat'),
+                this.hideProp('lion')
+            ])
         ]));
     }
 };
@@ -268,7 +292,7 @@ Main.prototype.move = function (name, over) {
             new A.AwaitTransitionEnd(item.element),
         ]),
         drop: new A.Series([
-            new A.Mark('dropping', name),
+            new A.AwaitDraw(),
             new A.RemoveClass(item.element, 'item-show'),
             new A.AwaitTransitionEnd(item.element),
             new RemoveFromScene(this, item)
@@ -622,7 +646,6 @@ Main.prototype.updateProps = function updateProps() {
 
 Main.prototype.showProp = function (prop) {
     if (!this.props[prop]) {
-        console.log('show prop', prop);
         this.props[prop] = true;
         return new ShowProp(this.scope.components[prop]);
     }
@@ -643,7 +666,6 @@ ShowProp.prototype.act = function act() {
 
 Main.prototype.hideProp = function (prop) {
     if (this.props[prop]) {
-        console.log('hide prop', prop);
         this.props[prop] = false;
         return new HideProp(this.scope.components[prop]);
     }

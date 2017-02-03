@@ -2,6 +2,8 @@
 
 var raf = require('raf');
 
+var timeout = 1000;
+
 exports.Noop = Noop;
 function Noop() {
 }
@@ -88,7 +90,7 @@ AwaitTransitionEnd.prototype.act = function act() {
     // console.log('wait for transition', this.element.className);
     this.timeout = setTimeout(function onTimeout() {
         self.handleEvent();
-    }, 2000);
+    }, timeout);
     return this.wait;
 };
 
@@ -183,8 +185,8 @@ RemoveClass.prototype.act = function act() {
 };
 
 exports.Mark = Mark;
-function Mark(message) {
-    this.message = message;
+function Mark(/*...args*/) {
+    this.message = Array.prototype.join.call(arguments, ' ');
 }
 
 Mark.prototype.act = function act() {
