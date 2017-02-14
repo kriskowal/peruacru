@@ -62,59 +62,61 @@ var big = {
 
 var triggers = {
     'fill pumpkin with fresh water': function () {
-        this.animate(this.replace('pumpkin', 'freshwater-pumpkin'));
+        return this.replace('pumpkin', 'freshwater-pumpkin');
     },
     'fill pumpkin with brine': function () {
-        this.animate(this.replace('pumpkin', 'brine-pumpkin'));
+        return this.replace('pumpkin', 'brine-pumpkin');
     },
     'fill pumpkin with sap': function () {
-        this.animate(this.replace('pumpkin', 'sap-pumpkin'));
+        return this.replace('pumpkin', 'sap-pumpkin');
     },
     'fill pumpkin with sand': function () {
-        this.animate(this.replace('pumpkin', 'sand-pumpkin'));
+        return this.replace('pumpkin', 'sand-pumpkin');
     },
     'spill freshwater pumpkin': function () {
-        this.animate(this.replace('freshwater-pumpkin', 'pumpkin'));
+        return this.replace('freshwater-pumpkin', 'pumpkin');
     },
     'spill sand pumpkin': function () {
-        this.animate(this.replace('sand-pumpkin', 'pumpkin'));
+        return this.replace('sand-pumpkin', 'pumpkin');
     },
     'spill sap from pumpkin': function () {
-        this.animate(this.replace('sap-pumpkin', 'pumpkin'));
+        return this.replace('sap-pumpkin', 'pumpkin');
     },
     'spill brine pumpkin': function () {
-        this.animate(this.replace('brine-pumpkin', 'pumpkin'));
+        return this.replace('brine-pumpkin', 'pumpkin');
     },
     'fill vial with brine': function () {
-        this.animate(this.replace('vial', 'brine-vial'));
+        return this.replace('vial', 'brine-vial');
     },
     'spill freshwater vial': function () {
-        this.animate(this.replace('freshwater-vial', 'vial'));
+        return this.replace('freshwater-vial', 'vial');
     },
     'spill brine vial': function () {
-        this.animate(this.replace('brine-vial', 'vial'));
+        return this.replace('brine-vial', 'vial');
     },
     'fill vial with freshwater': function () {
-        this.animate(this.replace('vial', 'freshwater-vial'));
+        return this.replace('vial', 'freshwater-vial');
     },
     'fill vial with brine from pumpkin': function () {
-        this.animate(this.replace('vial', 'brine-vial'));
+        return this.replace('vial', 'brine-vial');
     },
     'fill vial with freshwater from pumpkin': function () {
-        this.animate(this.replace('vial', 'freshwater-vial'));
+        return this.replace('vial', 'freshwater-vial');
     },
     'grow homestead': function () {
         var pumpkin = this.move('freshwater-pumpkin', 'over-homestead');
         var flower = this.move('flower', 'over-homestead');
-        this.animate(new A.Parallel([
-            pumpkin.move,
-            flower.move,
-        ]));
-        this.animate(new A.Parallel([
-            pumpkin.drop,
-            flower.drop,
-            this.showProp('homestead')
-        ]));
+        return new A.Series([
+            new A.Parallel([
+                pumpkin.move,
+                flower.move,
+            ]),
+            new A.Parallel([
+                pumpkin.drop,
+                flower.drop,
+                this.showProp('homestead')
+            ])
+        ]);
     },
     'build bridge': function () {
         var moves = [];
@@ -124,72 +126,79 @@ var triggers = {
             moves.push(anim.move);
             drops.push(anim.drop);
         }
-        this.animate(
-            new A.Series([
-                new A.Parallel(moves),
-                new A.Parallel(drops),
-            ])
-        );
-        this.animate(this.showProp('bridge'));
+        return new A.Series([
+            new A.Parallel(moves),
+            new A.Parallel(drops),
+            this.showProp('bridge')
+        ]);
     },
     'put ballista': function () {
-        this.animate(this.drop('ballista'));
-        // TODO animate ballista to launch pad and show launch pad.
-    },
-    'put giant airplane on ballista': function () {
-        this.animate(this.drop('giant-airplane'));
-        // TODO animate airplane onto ballista
+        var ballista = this.move('ballista', 'over-ballista');
+        return new A.Series([
+            ballista.move,
+            new A.Parallel([
+                ballista.drop,
+                this.showProp('placed-ballista')
+            ])
+        ]);
     },
     'mash reed': function () {
-        this.animate(this.replace('soaked-reed', 'paper'));
+        return this.replace('soaked-reed', 'paper');
     },
     'make airplane': function () {
-        this.animate(this.replace('paper', 'airplane'));
+        return this.replace('paper', 'airplane');
     },
     'make shrinking potion': function () {
-        this.animate(this.drop('mushroom'));
-        this.animate(this.replace('brine-vial', 'shrinking-potion'));
+        var vial = this.replaceUtility('brine-vial', 'shrinking-potion');
+        return new A.Series([
+            this.drop('mushroom', vial.before.position),
+            vial.animation,
+        ]);
     },
     'make growing potion': function () {
-        this.animate(this.drop('flower'));
-        this.animate(this.replace('freshwater-vial', 'growing-potion'));
+        var vial = this.replaceUtility('freshwater-vial', 'growing-potion');
+        return new A.Series([
+            this.drop('flower', vial.before.position),
+            vial.animation,
+        ]);
     },
     'grow airplane': function () {
-        this.animate(this.drop('airplane'));
-        // TODO parallelize animation
-        this.animate(this.take('giant-airplane'));
-        this.animate(this.replace('growing-potion', 'vial'));
+        return new A.Series([
+            this.drop('airplane'),
+            this.replace('growing-potion', 'vial'),
+            this.take('giant-airplane')
+        ]);
     },
     'launch': function () {
-        this.animate(new A.Parallel([
+        return new A.Parallel([
             this.replace('shrinking-potion', 'vial'),
             this.replace('shrinking-potion', 'vial')
-        ]));
+        ]);
     },
     'soak reeds in pumpkin': function () {
-        this.animate(this.replace('reed', 'soaked-reed'));
+        return this.replace('reed', 'soaked-reed');
     },
     'put giant airplane on ballista': function () {
         var airplane = this.move('giant-airplane', 'over-ballista');
-        this.animate(new A.Series([
+        return new A.Series([
             airplane.move,
             new A.Parallel([
                 airplane.drop,
                 this.hideProp('placed-ballista'),
                 this.showProp('launch-pad')
             ])
-        ]));
+        ]);
     },
     'give lion mushroom': function () {
         var mushroom = this.move('mushroom', 'over-lion');
-        this.animate(new A.Series([
+        return new A.Series([
             mushroom.move,
             new A.Parallel([
                 mushroom.drop,
                 this.showProp('cat'),
                 this.hideProp('lion')
             ])
-        ]));
+        ]);
     }
 };
 
@@ -453,7 +462,11 @@ Main.prototype.release2 = function release2(item) {
     }
 };
 
-Main.prototype.replace = function (beforeName, afterName) {
+Main.prototype.replace = function replace(beforeName, afterName) {
+    return this.replaceUtility(beforeName, afterName).animation;
+};
+
+Main.prototype.replaceUtility = function (beforeName, afterName) {
     var before = this.popFromInventory(beforeName);
     var after = this.createItem(afterName);
 
@@ -475,16 +488,30 @@ Main.prototype.replace = function (beforeName, afterName) {
     }
 
     this.addToInventory(after);
-    this.addToScene(after);
+    return {
+        before: before,
+        after: after,
+        animation: new Replace(this, before, after, before.position)
+    };
+};
 
-    after.element.classList.add('item-store');
-    after.slot.classList.add(before.position);
+function Replace(main, before, after, position) {
+    this.main = main;
+    this.before = before;
+    this.after = after;
+    this.position = position;
+}
+
+Replace.prototype.act = function act() {
+    this.main.addToScene(this.after);
+    this.after.element.classList.add('item-store');
+    this.after.slot.classList.add(this.position);
     return new A.Series([
         new A.AwaitDraw(),
-        new A.AddClass(after.element, 'item-show'),
-        new A.AwaitTransitionEnd(after.element),
-        new RemoveFromScene(this, before)
-    ]);
+        new A.AddClass(this.after.element, 'item-show'),
+        new A.AwaitTransitionEnd(this.after.element),
+        new RemoveFromScene(this.main, this.before)
+    ]).act();
 };
 
 Main.prototype.measure = function measure() {
@@ -538,7 +565,7 @@ Main.prototype.choice = function _choice(choice, engine) {
     for (var i = 0; i < keywords.length; i++) {
         var keyword = choice.keywords[i];
         if (triggers[keyword]) {
-            triggers[keyword].call(this);
+            this.animate(triggers[keyword].call(this) || A.idle);
             return;
         }
     }

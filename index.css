@@ -380,7 +380,7 @@ td:hover {
     height: 256px;
     background: url(assets/bridge.png) no-repeat;
     left: calc(1024px - 128px);
-    top: calc(714px + 170px);
+    top: calc(714px + 125px);
 }
 
 .over-bridge {

@@ -82,11 +82,11 @@ function AwaitTransitionEnd(element) {
     this.element = element;
     this.wait = new Wait();
     this.timeout = null;
-    this.element.addEventListener('transitionend', this);
 }
 
 AwaitTransitionEnd.prototype.act = function act() {
     var self = this;
+    this.element.addEventListener('transitionend', this);
     // console.log('wait for transition', this.element.className);
     this.timeout = setTimeout(function onTimeout() {
         self.handleEvent();
