@@ -529,10 +529,11 @@ with their four hands and two cunning heads.
       [You r[R]eturn to the beach. ]
       //->beach
     >
-  + <eat mushroom>
-    [Eat {(mushroom)||the|a} mushroom.]
+  + <taste mushroom>
+    [Taste {(mushroom)||the|a} mushroom.]
     The {~boy|girl} tastes the mushroom and exclaims, {"Oh, this
-    is surely edible, but far too bitter to eat raw."}
+    is surely edible, but far too bitter to eat raw,"} and sets
+    the mushroom aside uneaten.
     - {lion} Maybe this island has animals that would find it palatable.
     + <> <continue> [ Continue. ]
     >
