@@ -1,4 +1,4 @@
-function resize() {
+resize() {
     FROM=$1
     SIZE=$2
     TO=$3
