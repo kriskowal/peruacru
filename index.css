@@ -243,6 +243,11 @@ td {
     cursor: pointer;
 }
 
+td:hover {
+    font-weight: bold;
+    text-shadow: 0 0 15px hsl(60, 50%, 79%);
+}
+
 /*
  * ITEMS
  */
