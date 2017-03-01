@@ -869,8 +869,8 @@ with their four hands and two cunning heads.
     You recall that you grew your homestead with a pumpkin filled with fresh
     water. This vial of brine might not be the key to a growing potion.
   + <make growing potion>
-    {-flower} {-brine.vial} {+growing.potion} {+hand}
-    [You f[F]erment a flower in the vial of brine. ]
+    {-flower} {-freshwater.vial} {+growing.potion} {+hand}
+    [You f[F]erment a flower in the vial of fresh water. ]
     The water turns into a blue potion for growing.
     ->growing.potion.choice
 
