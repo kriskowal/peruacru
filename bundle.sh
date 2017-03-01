@@ -10,7 +10,7 @@ function blob() {
     # usage: blob entry source
     # generates an entry for a tree, suitable for piping into git mktree.
     # e.g., blob bundle.js <(bundle essays/digger/index.js)
-    echo "100644 blob $(git hash-object -w $2)"$'\t'"$1"
+    echo "100644 blob $(git hash-object -w "$2")"$'\t'"$1"
 }
 
 function tree() {
@@ -19,24 +19,26 @@ function tree() {
     # the source must also be a file/named-pipe suitable for piping into
     # mktree.
     # e.g., tree docs <(gendocs)
-    echo "040000 tree $(git mktree < $2)"$'\t'"$1"
+    echo "040000 tree $(git mktree < "$2")"$'\t'"$1"
 }
 
 function assets() {
     cd assets
     find . -type file -depth 1 | while read path; do
-        file=$(basename $path)
-        blob $file $file
+        file=$(basename "$path")
+        blob "$file" "$file"
     done
 }
 
 function genroot() {
+    # update local peruacru.json, can't bundle from git database
+    kni peruacru.kni -j > peruacru.json
+
     blob CNAME CNAME
     blob index.html bundle.html
     blob index.css index.css
-    tree assets <(assets)
-    blob peruacru.json <(kni peruacru.kni -j)
     blob index.js <(sysjs index.js)
+    tree assets <(assets)
 }
 
 OVERLAY=$(genroot | git mktree)
