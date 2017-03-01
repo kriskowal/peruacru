@@ -93,7 +93,7 @@ with their four hands and two cunning heads.
     [You q[Q]uaff your shrinking potions[.]] and board your
     paper airliner. As one, you pull the pin and slingshot
     into the sky toward home!
-    //->credits
+    <- # The End
   + <get pumpkin>
     {
       not pumpkin and
@@ -929,14 +929,6 @@ with their four hands and two cunning heads.
   + <more> [{"Let'}s {~chat|rest|talk} more."} ] ->chat
   + <> <back> [{"Let'}s get back to work."} ] <-
   >
-
-- @credits
-  {"Escape from Peruácru Island"} /
-  © 2017 Kris and Kathy Kowal /
-  Illustration -- Kathleen Kowal /
-  Scripts -- Kris Kowal /
-  Based on a true fantasy /
-  <- # the end
 
 - @number(number)
   {(number)|no|one|two|three|four}
