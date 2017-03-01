@@ -164,9 +164,14 @@ var triggers = {
     },
     'grow airplane': function () {
         return new A.Series([
-            this.drop('airplane'),
-            this.replace('growing-potion', 'vial'),
-            this.take('giant-airplane')
+            new A.Parallel([
+                this.drop('airplane'),
+                this.drop('growing-potion'),
+            ]),
+            new A.Parallel([
+                this.take('giant-airplane'),
+                this.take('vial'),
+            ]),
         ]);
     },
     'launch': function () {
@@ -199,7 +204,17 @@ var triggers = {
                 this.hideProp('lion')
             ])
         ]);
-    }
+    },
+    'tap rubber tree': function () {
+        return new A.Series([
+            new A.Parallel([
+                this.drop('rock'),
+                this.drop('bamboo'),
+            ]),
+            this.showProp('tap'),
+            this.take('rock')
+        ]);
+    },
 };
 
 function Item(name, main) {
@@ -257,6 +272,8 @@ Main.prototype.take = function (name, over) {
     item.element.classList.add(over || 'trash');
     return new A.Series([
         new A.AwaitDraw(),
+        new A.AwaitDraw(),
+        new A.AddClass(item.element, 'item-show'),
         new A.AddClass(item.element, 'item-store'),
         new A.AddClass(item.slot, item.position),
         new A.RemoveClass(item.element, over || 'trash'),
@@ -270,8 +287,7 @@ Main.prototype.retake = function (name) {
     this.retain(item);
     this.addToScene(item);
     this.addToInventory(item);
-    item.element.classList.add('item-store');
-    item.element.classList.add('item-show');
+    item.element.classList.add('item-store', 'item-show');
     item.slot.classList.add(item.position);
 };
 
@@ -328,9 +344,6 @@ Main.prototype.popFromInventory = function (name) {
 
 Main.prototype.addToScene = function (item) {
     this.items.value.push(item);
-    this.animate(new A.AwaitDraw());
-    this.animate(new A.AwaitDraw());
-    this.animate(new A.AddClass(item.element, 'item-show'));
 };
 
 Main.prototype.removeFromScene = function (item) {
@@ -393,6 +406,8 @@ Main.prototype.retain2 = function retain2(item) {
         item.position = 'slot-1-2';
         return 'slot-1-2';
     } else if (this.boyRight != null) {
+        // TODO these cases are dubious in correctness, since they adjust
+        // positions without triggering move animations or CSS adjustments.
         var move = this.boyRight;
         this.removeFromScene(move);
         this.release(move);
