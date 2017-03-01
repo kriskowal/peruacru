@@ -1,8 +1,8 @@
 'use strict';
 
 var Engine = require('kni/engine');
+var Document = require('./document');
 var Story = require('kni/story');
-var Document = require('kni/document');
 var story = require('./peruacru.json');
 var Point2 = require('ndim/point2');
 var Region2 = require('ndim/region2');
