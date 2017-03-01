@@ -446,3 +446,13 @@ td:hover {
     top: 50px;
     left: 420px;
 }
+
+@media
+    screen and (max-device-width: 480px),
+    screen (-webkit-min-device-pixel-ratio: 2),
+    screen (min-resolution: 300dpi)
+{
+    td, th {
+        font-size: 50px;
+    }
+}
