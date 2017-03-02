@@ -10,7 +10,7 @@ var A = require('./animation');
 
 var aspectBias = 1.5;
 
-module.exports = Main;
+module.exports = Play;
 
 var scenes = ['hills', 'jungle', 'beach', 'mountain'];
 
@@ -225,7 +225,7 @@ function Item(name, main) {
     this.iteration = null;
 }
 
-function Main(body, scope) {
+function Play(body, scope) {
     this.engine = null;
     this.at = -1;
     this.animator = scope.animator.add(this);
@@ -255,7 +255,7 @@ function Main(body, scope) {
     this.tail = A.idle;
 }
 
-Main.prototype.animate = function animate(action) {
+Play.prototype.animate = function animate(action) {
     var next = this.tail.then(action);
     if (!next.then) {
         console.error('wat', this.tail.constructor.name, '->', next.constructor.name, action.constructor.name);
@@ -263,7 +263,7 @@ Main.prototype.animate = function animate(action) {
     this.tail = next;
 };
 
-Main.prototype.take = function (name, over) {
+Play.prototype.take = function (name, over) {
     console.log('take', name);
     var item = this.createItem(name);
     this.retain(item);
@@ -281,7 +281,7 @@ Main.prototype.take = function (name, over) {
     ]);
 };
 
-Main.prototype.retake = function (name) {
+Play.prototype.retake = function (name) {
     console.log('retake', name);
     var item = this.createItem(name);
     this.retain(item);
@@ -291,7 +291,7 @@ Main.prototype.retake = function (name) {
     item.slot.classList.add(item.position);
 };
 
-Main.prototype.drop = function (name, over) {
+Play.prototype.drop = function (name, over) {
     console.log('drop', name);
     var item = this.popFromInventory(name);
     this.release(item);
@@ -305,7 +305,7 @@ Main.prototype.drop = function (name, over) {
     ]);
 };
 
-Main.prototype.move = function (name, over) {
+Play.prototype.move = function (name, over) {
     console.log('move', name, over);
     var item = this.popFromInventory(name);
     this.release(item);
@@ -325,12 +325,12 @@ Main.prototype.move = function (name, over) {
     };
 };
 
-Main.prototype.createItem = function (name) {
+Play.prototype.createItem = function (name) {
     var item = new Item(name, this);
     return item;
 };
 
-Main.prototype.addToInventory = function (item) {
+Play.prototype.addToInventory = function (item) {
     var name = item.name;
     if (!this.inventory[name]) {
         this.inventory[name] = [];
@@ -338,19 +338,19 @@ Main.prototype.addToInventory = function (item) {
     this.inventory[name].push(item);
 };
 
-Main.prototype.popFromInventory = function (name) {
+Play.prototype.popFromInventory = function (name) {
     return this.inventory[name].pop();
 };
 
-Main.prototype.addToScene = function (item) {
+Play.prototype.addToScene = function (item) {
     this.items.value.push(item);
 };
 
-Main.prototype.removeFromScene = function (item) {
+Play.prototype.removeFromScene = function (item) {
     this.items.value.swap(item.iteration.index, 1);
 };
 
-Main.prototype.retain = function retain(item) {
+Play.prototype.retain = function retain(item) {
     var name = item.name;
     if (big[name]) {
         this.retain2(item);
@@ -359,7 +359,7 @@ Main.prototype.retain = function retain(item) {
     }
 };
 
-Main.prototype.retain1 = function retain1(item) {
+Play.prototype.retain1 = function retain1(item) {
     if (this.boyLeft == null) {
         this.boyLeft = item;
         this.boy = item;
@@ -385,7 +385,7 @@ Main.prototype.retain1 = function retain1(item) {
     }
 };
 
-Main.prototype.retain2 = function retain2(item) {
+Play.prototype.retain2 = function retain2(item) {
     if (this.boy == null) {
         this.boyLeft = item;
         this.boyRight = item;
@@ -426,7 +426,7 @@ Main.prototype.retain2 = function retain2(item) {
     }
 };
 
-Main.prototype.release = function release(item) {
+Play.prototype.release = function release(item) {
     var name = item.name;
     if (big[name]) {
         this.release2(item);
@@ -435,7 +435,7 @@ Main.prototype.release = function release(item) {
     }
 };
 
-Main.prototype.release1 = function release1(item) {
+Play.prototype.release1 = function release1(item) {
     var position = item.position;
     if (position === 'slot-0') {
         this.boyLeft = null;
@@ -456,7 +456,7 @@ Main.prototype.release1 = function release1(item) {
     }
 };
 
-Main.prototype.release2 = function release2(item) {
+Play.prototype.release2 = function release2(item) {
     var position = item.position;
     if (position === 'slot-0-1') {
         this.boy = null;
@@ -477,11 +477,11 @@ Main.prototype.release2 = function release2(item) {
     }
 };
 
-Main.prototype.replace = function replace(beforeName, afterName) {
+Play.prototype.replace = function replace(beforeName, afterName) {
     return this.replaceUtility(beforeName, afterName).animation;
 };
 
-Main.prototype.replaceUtility = function (beforeName, afterName) {
+Play.prototype.replaceUtility = function (beforeName, afterName) {
     var before = this.popFromInventory(beforeName);
     var after = this.createItem(afterName);
 
@@ -529,13 +529,13 @@ Replace.prototype.act = function act() {
     ]).act();
 };
 
-Main.prototype.measure = function measure() {
+Play.prototype.measure = function measure() {
     this.viewportSize.x = window.innerWidth;
     this.viewportSize.y = window.innerHeight;
     this.animator.requestDraw();
 };
 
-Main.prototype.draw = function draw() {
+Play.prototype.draw = function draw() {
     this.frameSize.copyFrom(this.sceneSize);
     if (this.viewportSize.x > this.viewportSize.y * aspectBias) {
         this.frameSize.x *= aspectBias;
@@ -565,16 +565,16 @@ Main.prototype.draw = function draw() {
     );
 };
 
-Main.prototype.handleEvent = function handleEvent(event) {
+Play.prototype.handleEvent = function handleEvent(event) {
     if (event.type === 'resize') {
         this.animator.requestMeasure();
     }
 };
 
-Main.prototype.answer = function _answer(answer, engine) {
+Play.prototype.answer = function _answer(answer, engine) {
 };
 
-Main.prototype.choice = function _choice(choice, engine) {
+Play.prototype.choice = function _choice(choice, engine) {
     var keywords = choice.keywords;
     console.log('> ' + keywords.join(', '));
     for (var i = 0; i < keywords.length; i++) {
@@ -586,7 +586,7 @@ Main.prototype.choice = function _choice(choice, engine) {
     }
 };
 
-Main.prototype.ask = function ask(engine) {
+Play.prototype.ask = function ask(engine) {
     var at = engine.global.get('at');
     if (this.at !== at) {
         this.animate(new SceneChange(this, this.at, at));
@@ -614,17 +614,17 @@ SceneChange.prototype.act = function act() {
     main.narrative.classList.add('at-' + scenes[this.target]);
 };
 
-Main.prototype.end = function end(engine) {
+Play.prototype.end = function end(engine) {
     this.updateItems();
     this.updateProps();
 };
 
-Main.prototype.resetItems = function resetItems() {
+Play.prototype.resetItems = function resetItems() {
     this.dropItems();
     this.retakeItems();
 };
 
-Main.prototype.updateItems = function updateItems() {
+Play.prototype.updateItems = function updateItems() {
     this.dropItems();
     if (this.initialized) {
         this.takeItems();
@@ -634,7 +634,7 @@ Main.prototype.updateItems = function updateItems() {
     }
 };
 
-Main.prototype.dropItems = function dropItems() {
+Play.prototype.dropItems = function dropItems() {
     var animations = [];
     for (var i = 0; i < items.length; i++) {
         var name = items[i];
@@ -648,7 +648,7 @@ Main.prototype.dropItems = function dropItems() {
     this.animate(new A.Parallel(animations));
 };
 
-Main.prototype.takeItems = function takeItems() {
+Play.prototype.takeItems = function takeItems() {
     var animations = [];
     for (var i = 0; i < items.length; i++) {
         var name = items[i];
@@ -662,7 +662,7 @@ Main.prototype.takeItems = function takeItems() {
     this.animate(new A.Parallel(animations));
 };
 
-Main.prototype.retakeItems = function retakeItems() {
+Play.prototype.retakeItems = function retakeItems() {
     for (var i = 0; i < items.length; i++) {
         var name = items[i];
         var actual = this.count(name);
@@ -674,7 +674,7 @@ Main.prototype.retakeItems = function retakeItems() {
     }
 };
 
-Main.prototype.updateProps = function updateProps() {
+Play.prototype.updateProps = function updateProps() {
     for (var i = 0; i < props.length; i++) {
         var name = props[i];
         var show = this.engine.global.get(name.replace('-', '.'));
@@ -686,7 +686,7 @@ Main.prototype.updateProps = function updateProps() {
     }
 };
 
-Main.prototype.showProp = function (prop) {
+Play.prototype.showProp = function (prop) {
     if (!this.props[prop]) {
         this.props[prop] = true;
         return new ShowProp(this.scope.components[prop]);
@@ -706,7 +706,7 @@ ShowProp.prototype.act = function act() {
     return A.idle;
 };
 
-Main.prototype.hideProp = function (prop) {
+Play.prototype.hideProp = function (prop) {
     if (this.props[prop]) {
         this.props[prop] = false;
         return new HideProp(this.scope.components[prop]);
@@ -726,20 +726,20 @@ HideProp.prototype.act = function act() {
     return A.idle;
 };
 
-Main.prototype.count = function (name) {
+Play.prototype.count = function (name) {
     if (!this.inventory[name]) {
         return 0;
     }
     return this.inventory[name].length;
 };
 
-Main.prototype.waypoint = function (waypoint) {
+Play.prototype.waypoint = function (waypoint) {
     var json = JSON.stringify(waypoint);
     window.history.pushState(waypoint, '', '#' + btoa(json));
     localStorage.setItem('peruacru.kni', json);
 };
 
-Main.prototype.hookup = function hookup(id, component, scope) {
+Play.prototype.hookup = function hookup(id, component, scope) {
     if (id === 'this') {
         this.init(scope);
     } else if (id === 'items:iteration') {
@@ -747,7 +747,7 @@ Main.prototype.hookup = function hookup(id, component, scope) {
     }
 };
 
-Main.prototype.init = function init(scope) {
+Play.prototype.init = function init(scope) {
     var main = this;
 
     this.viewport = scope.components.viewport;
@@ -828,7 +828,7 @@ Main.prototype.init = function init(scope) {
     };
 };
 
-Main.prototype.initItem = function initItem(iteration, scope) {
+Play.prototype.initItem = function initItem(iteration, scope) {
     var item = iteration.value;
     item.iteration = iteration;
     item.slot = scope.components.slot;
@@ -836,7 +836,7 @@ Main.prototype.initItem = function initItem(iteration, scope) {
     item.element.classList.add(item.name);
 };
 
-Main.prototype.go = function _go(answer) {
+Play.prototype.go = function _go(answer) {
     var engine = this.engine;
     if (
         engine.keywords[answer] == null &&

@@ -7,6 +7,9 @@
   "translators": {
     "json": "./json"
   },
+  "redirects": {
+    "./main.html": "./play.html"
+  },
   "devDependencies": {
     "eslint": "^3.13.1",
     "kni": "^1.0.0-1",
@@ -18,7 +21,7 @@
     "kni": "^2.0.0",
     "ndim": "^1.5.1",
     "raf": "^3.3.0",
-    "system": "^1.2.0"
+    "system": "^1.2.1"
   },
   "scripts": {
     "build": "kni peruacru.kni -j > peruacru.json"
