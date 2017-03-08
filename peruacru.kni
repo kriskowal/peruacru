@@ -93,7 +93,7 @@ with their four hands and two cunning heads.
     [You q[Q]uaff your shrinking potions[.]] and board your
     paper airliner. As one, you pull the pin and slingshot
     into the sky toward home!
-    <- # The End
+    ->credits
   + <get pumpkin>
     {
       not pumpkin and
@@ -928,7 +928,51 @@ with their four hands and two cunning heads.
   } {+chat}
   + <more> [{"Let'}s {~chat|rest|talk} more."} ] ->chat
   + <> <back> [{"Let'}s get back to work."} ] <-
+  + <> <reset> [{"Let'}s start over from the beginning."} ]
+    Are you certain that you would like to start over?
+    All progress will be lost.
+    + <yes> [The boy and girl clasp their hands in a secret magical handshake
+      and t[T]ravel back in time to the outset on Peruácru Island]
+      + [Continue...] ->start
+      >
+    + <> <no> [You g[G]et back to working on your escape from Peruácru
+      Island. ] <-
+    >
   >
+
+- @credits
+  + [Anything else? ]
+  + [Play again? ] ->start
+  >
+
+  The boy says, {"Escape from Peruácru Island was illustrated by my sister,
+  Kathleen Kowal"}.
+  + [What else then? ]
+  + [Start over? ] ->start
+  >
+
+
+  The girl says, {"Escape from Peruácru Island was written by my brother,
+  Kristopher Kowal"}.
+  + [Is there more? ]
+  + [Try again? ] ->start
+  >
+
+  As one, the boy and girl say, {"We hold the copyright for Escape from
+  Peruácru Island, which we finished in 2017."}
+  + [Does this go on? ]
+  + [One more time. ] ->start
+  >
+
+  The boy says, {"Do you suppose we will do another?"}.
+  The girl replies, {"We just might."}.
+  + [Keep it coming. ]
+  + [Can I try again? ] ->start
+  >
+
+  The girl says, {"Thank you for supporting our game."}, and the boy
+  continues, {"We appreciate you hanging on to the end."}
+  ->credits
 
 - @number(number)
   {(number)|no|one|two|three|four}

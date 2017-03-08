@@ -231,6 +231,9 @@ body {
     flex: 0 1 auto;
     max-width: 60ex;
     text-align: justify;
+
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 th {
@@ -447,12 +450,19 @@ td:hover {
     left: 420px;
 }
 
-@media
-    screen and (max-device-width: 480px),
-    screen (-webkit-min-device-pixel-ratio: 2),
-    screen (min-resolution: 300dpi)
-{
-    td, th {
-        font-size: 50px;
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+
+    .viewport {
+        font-size: 48px;
     }
+
+    .viewport.portrait {
+        font-size: 72px;
+    }
+
+    td:hover {
+        font-weight: normal;
+        text-shadow: none;
+    }
+
 }
