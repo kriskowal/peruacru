@@ -34,6 +34,7 @@
   # world state
   chat = 0
   homestead = 0
+  bridge = 0
   lion = 1
   cat = 0
   tap = 0
