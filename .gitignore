@@ -2,3 +2,6 @@
 /peruacru.json
 /images
 /cordova
+/.tmp
+/.dropbox
+.DS_Store
