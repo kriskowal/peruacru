@@ -1,61 +1,67 @@
-! hills = 0
-  jungle = 1
-  beach = 2
-  mountain = 3
-  at = hills
 
-  # brother and sister
-  hand = 4
+- @reset()
+  ! hills = 0
+    jungle = 1
+    beach = 2
+    mountain = 3
+    at = hills
 
-  # inventory
-  bamboo = 0
-  flower = 0
-  freshwater.pumpkin = 0
-  brine.pumpkin = 0
-  mushroom = 0
-  pumpkin = 0
-  reed = 0
-  soaked.reed = 0
-  rock = 0
-  rubber = 0
-  sand.pumpkin = 0
-  sap.pumpkin = 0
-  shrinking.potion = 0
-  growing.potion = 0
-  vial = 0
-  brine.vial = 0
-  # TODO sap.vial (rubber band + growing potion -> rubber)
-  freshwater.vial = 0
-  hammer = 0
-  paper = 0
-  airplane = 0
-  ballista = 0
+    # brother and sister
+    hand = 4
 
-  # world state
-  chat = 0
-  homestead = 0
-  bridge = 0
-  lion = 1
-  cat = 0
-  tap = 0
-  placed.ballista = 0
-  launch.pad = 0
+    # inventory
+    bamboo = 0
+    flower = 0
+    freshwater.pumpkin = 0
+    brine.pumpkin = 0
+    mushroom = 0
+    pumpkin = 0
+    reed = 0
+    soaked.reed = 0
+    rock = 0
+    rubber = 0
+    sand.pumpkin = 0
+    sap.pumpkin = 0
+    shrinking.potion = 0
+    growing.potion = 0
+    vial = 0
+    brine.vial = 0
+    # TODO sap.vial (rubber band + growing potion -> rubber)
+    freshwater.vial = 0
+    hammer = 0
+    paper = 0
+    airplane = 0
+    ballista = 0
 
-There were once a brother and sister who would shrink themselves with red
-potions and explore the world from the back of a giant paper airplane.
+    # world state
+    chat = 0
+    homestead = 0
+    bridge = 0
+    lion = 1
+    cat = 0
+    tap = 0
+    placed.ballista = 0
+    launch.pad = 0
 
-They discovered an uninhabited island amid the sparkling Pacific ocean and
-named it Peruácru.
+->reset()
 
-They alighted upon a green knoll and drank their blue growing potions, only to
-damage their plane and lose their stock of potions.
+- @introduction
 
-The clever pair set out to explore the island and hopefully find a way home
-with their four hands and two cunning heads.
+  There were once a brother and sister who would shrink themselves with red
+  potions and explore the world from the back of a giant paper airplane.
 
-+ <> <continue> [Continue. ]
-->maybe.chat()
->
+  They discovered an uninhabited island amid the sparkling Pacific ocean and
+  named it Peruácru.
+
+  They alighted upon a green knoll and drank their blue growing potions, only to
+  damage their plane and lose their stock of potions.
+
+  The clever pair set out to explore the island and hopefully find a way home
+  with their four hands and two cunning heads.
+
+  + <> <continue> [Continue. ]
+  ->maybe.chat()
+  >
 
 # bamboo / hand
 # flower / hand
@@ -933,8 +939,9 @@ with their four hands and two cunning heads.
     Are you certain that you would like to start over?
     All progress will be lost.
     + <yes> [The boy and girl clasp their hands in a secret magical handshake
-      and t[T]ravel back in time to the outset on Peruácru Island]
-      + [Continue...] ->start
+      and t[T]ravel back in time to the outset on Peruácru Island. ]
+	  ->reset()
+      + [Continue... ] ->introduction
       >
     + <> <no> [You g[G]et back to working on your escape from Peruácru
       Island. ] <-
