@@ -11,28 +11,29 @@ html {
     position: absolute;
     overflow: hidden;
     font-family: 'Quicksand', sans-serif;
+    font-size: 20px;
     touch-action: none;
 }
 
 body {
-    overflow: none;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .viewport {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1536px;
-    height: 842px;
-    transform-origin: 0 0;
     overflow: hidden;
-    font-size: 24px;
 }
 
-.viewport.portrait {
-    width: 1024px;
-    height: 1684px;
-    font-size: 36px;
+.stage {
+    top: 0;
+    left: 0;
+    position: absolute;
+    transform: scale(0.20);
+    transform-origin: 0 0;
 }
 
 .scene {
@@ -166,16 +167,12 @@ body {
 .narrative {
     position: absolute;
     top: 0px;
-    left: 1024px;
-    height: 714px;
-    width: 512px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
 }
 
 .narrative.portrait {
-    top: 842px;
-    left: 0px;
-    height: 714px;
-    width: 1024px;
 }
 
 .narrative.at-hills {
@@ -196,12 +193,12 @@ body {
 
 .kni-frame {
     position: absolute;
-    padding: 24px;
     height: 100%;
     width: 100%;
     top: 0;
     right: 0;
     overflow-y: scroll;
+     -webkit-overflow-scrolling: touch;
     transition: transform .5s ease, opacity .5s ease-out;
 }
 
@@ -453,11 +450,14 @@ td:hover {
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
 
     .viewport {
-        font-size: 48px;
     }
 
     .viewport.portrait {
-        font-size: 72px;
+    }
+
+    td, th {
+        padding-top: .3em;
+        padding-bottom: .7em;
     }
 
     td:hover {

@@ -5,10 +5,10 @@ resize() {
     convert "$FROM" -resize "$SIZE" -gravity center -background transparent -extent "$SIZE" "$TO"
 }
 
-# resize 'images/backgrounds/background beach empty.jpg' 1024x1024 assets/beach.jpg
-# resize 'images/backgrounds/background hills empty.jpg' 1024x1024 assets/hills.jpg
-# resize 'images/backgrounds/background jungle empty.jpg' 1024x1024 assets/jungle.jpg
-# resize 'images/backgrounds/background mountain empty.jpg' 1024x1024 assets/mountain.jpg
+resize 'images/backgrounds/background beach empty.jpg' 1024x1024 assets/beach.jpg
+resize 'images/backgrounds/background hills empty.jpg' 1024x1024 assets/hills.jpg
+resize 'images/backgrounds/background jungle empty.jpg' 1024x1024 assets/jungle.jpg
+resize 'images/backgrounds/background mountain empty.jpg' 1024x1024 assets/mountain.jpg
 
 resize 'images/raw materials/pumpkin + freshwater.png' 128x128 assets/freshwater-pumpkin.png
 resize 'images/raw materials/pumpkin + rubber.png' 128x128 assets/sap-pumpkin.png

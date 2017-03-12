@@ -65,7 +65,8 @@ Document.prototype.startOption = function startOption() {
     th.innerText = this.optionIndex + '.';
     var td = document.createElement('td');
     td.number = this.optionIndex;
-    td.onclick = this.onclick;
+    // td.onclick = this.onclick;
+    td.onmouseup = this.onclick;
     td.setAttribute('aria-role', 'button');
     tr.appendChild(td);
     this.cursor = td;

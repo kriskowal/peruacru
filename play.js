@@ -19,14 +19,9 @@ function Play(body, scope) {
     this.at = -1;
     this.animator = scope.animator.add(this);
     this.animator.requestMeasure();
+    this.stageSize = new Point2(1024, 842);
+    this.stageScaleSize = new Point2();
     this.viewportSize = new Point2();
-    this.viewportCenter = new Point2();
-    this.sceneSize = new Point2(1024, 842);
-    this.frame = null;
-    this.frameSize = new Point2();
-    this.frameOffset = new Point2();
-    this.frameScale = new Point2();
-    this.narrativeRegion = new Region2(new Point2(), new Point2());
 
     this.inventory = new Inventory(this);
 
@@ -34,6 +29,8 @@ function Play(body, scope) {
 
     // provided in init
     this.items = null;
+    // components
+    this.stage = null;
     this.narrative = null;
     this.peruacru = null;
     this.viewport = null;
@@ -42,14 +39,6 @@ function Play(body, scope) {
 
 // -- RESPONSIVE LAYOUT --
 
-Play.prototype.animate = function animate(action) {
-    var next = this.tail.then(action);
-    if (!next.then) {
-        console.error('wat', this.tail.constructor.name, '->', next.constructor.name, action.constructor.name);
-    }
-    this.tail = next;
-};
-
 Play.prototype.measure = function measure() {
     this.viewportSize.x = window.innerWidth;
     this.viewportSize.y = window.innerHeight;
@@ -57,33 +46,10 @@ Play.prototype.measure = function measure() {
 };
 
 Play.prototype.draw = function draw() {
-    this.frameSize.copyFrom(this.sceneSize);
-    if (this.viewportSize.x > this.viewportSize.y * aspectBias) {
-        this.frameSize.x *= aspectBias;
-        this.narrative.classList.remove('portrait');
-        this.viewport.classList.remove('portrait');
-    } else {
-        this.frameSize.y += 714;
-        this.narrative.classList.add('portrait');
-        this.viewport.classList.add('portrait');
-    }
-    this.viewportCenter
-        .copyFrom(this.viewportSize)
-        .scaleThis(0.5);
-    this.frameScale
-        .copyFrom(this.viewportSize)
-        .divThis(this.frameSize);
-    var frameScale = Math.min(this.frameScale.x, this.frameScale.y);
-    this.frameOffset
-        .copyFrom(this.viewportSize)
-        .scaleThis(1/frameScale)
-        .subThis(this.frameSize)
-        .scaleThis(0.5)
-        .roundThis();
-    this.viewport.style.transform = (
-        'scale(' + frameScale + ', ' + frameScale + ') ' +
-        'translate(' + this.frameOffset.x + 'px, ' + this.frameOffset.y + 'px)'
-    );
+    var scale = this.viewportSize.x / this.stageSize.x;
+    this.stageScaleSize.copyFrom(this.stageSize).scaleThis(scale);
+    this.stage.style.transform = 'scale(' + scale + ')';
+    this.narrative.style.top = this.stageScaleSize.y + 'px';
 };
 
 Play.prototype.handleEvent = function handleEvent(event) {
@@ -153,6 +119,7 @@ Play.prototype.init = function init(scope) {
     var main = this;
 
     this.viewport = scope.components.viewport;
+    this.stage = scope.components.stage;
     this.peruacru = scope.components.peruacru;
     this.narrative = scope.components.narrative;
     this.items = scope.components.items;
@@ -244,6 +211,14 @@ Play.prototype.go = function _go(answer) {
 
 // -- SYNCHRONIZE MODEL AND STAGE/INVENTORY --
  
+Play.prototype.animate = function animate(action) {
+    var next = this.tail.then(action);
+    if (!next.then) {
+        console.error('wat', this.tail.constructor.name, '->', next.constructor.name, action.constructor.name);
+    }
+    this.tail = next;
+};
+
 Play.prototype.updateItems = function updateItems() {
     this.dropItems();
     if (this.initialized) {
