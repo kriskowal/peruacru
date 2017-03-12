@@ -78,6 +78,7 @@ Play.prototype.choice = function _choice(choice, engine) {
 
 Play.prototype.ask = function ask(engine) {
     var at = engine.global.get('at');
+    console.log('ask', at, engine.label);
     if (this.at !== at) {
         this.animate(new SceneChange(this, this.at, at));
         if (this.at !== -1) {
@@ -169,6 +170,7 @@ Play.prototype.init = function init(scope) {
         if (match) {
             engine.answer(match[1]);
         } else if (key === 'KeyR') {
+            engine.goto('start');
             engine.resume();
         } else if (key === 'KeyH' || key === 'KeyA') {
             main.go('west');
