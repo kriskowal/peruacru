@@ -175,21 +175,19 @@ Inventory.prototype.retain2 = function retain2(item) {
         item.position = 'slot-1-2';
         return 'slot-1-2';
     } else if (this.boyRight != null) {
-        // TODO these cases are dubious in correctness, since they adjust
-        // positions without triggering move animations or CSS adjustments.
         var move = this.boyRight;
-        this.main.removeFromScene(move);
+        move.element.classList.remove(move.position);
         this.release(move);
         this.retain2(item);
         this.retain(move);
-        this.main.addToScene(move);
+        move.element.classList.add(move.position);
     } else if (this.girlLeft != null) {
         var move = this.girlLeft;
-        this.main.removeFromScene(move);
+        move.element.classList.remove(move.position);
         this.release(move);
         this.retain2(item);
         this.retain(move);
-        this.main.addToScene(move);
+        move.element.classList.add(move.position);
     } else {
         console.error('retain2 failure');
     }

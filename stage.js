@@ -196,13 +196,24 @@ exports.triggers = {
         ]);
     },
     'tap rubber tree': function () {
-        return new A.Series([
-            new A.Parallel([
-                this.drop('rock'),
-                this.drop('bamboo'),
-            ]),
-            this.showProp('tap'),
-            this.take('rock')
-        ]);
+        if (this.count('rock')) {
+            return new A.Series([
+                new A.Parallel([
+                    this.drop('rock'),
+                    this.drop('bamboo'),
+                ]),
+                this.showProp('tap'),
+                this.take('rock')
+            ]);
+        } else {
+            return new A.Series([
+                new A.Parallel([
+                    this.drop('hammer'),
+                    this.drop('bamboo'),
+                ]),
+                this.showProp('tap'),
+                this.take('hammer')
+            ]);
+        }
     },
 };

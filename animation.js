@@ -86,6 +86,9 @@ function AwaitTransitionEnd(element) {
 
 AwaitTransitionEnd.prototype.act = function act() {
     var self = this;
+    if (this.element == null) {
+        return;
+    }
     this.element.addEventListener('transitionend', this);
     // console.log('wait for transition', this.element.className);
     this.timeout = setTimeout(function onTimeout() {
@@ -171,7 +174,9 @@ function AddClass(element, className) {
 }
 
 AddClass.prototype.act = function act() {
-    this.element.classList.add(this.className);
+    if (this.element != null) {
+        this.element.classList.add(this.className);
+    }
 };
 
 exports.RemoveClass = RemoveClass;
@@ -181,7 +186,9 @@ function RemoveClass(element, className) {
 }
 
 RemoveClass.prototype.act = function act() {
-    this.element.classList.remove(this.className);
+    if (this.element != null) {
+        this.element.classList.remove(this.className);
+    }
 };
 
 exports.Mark = Mark;
