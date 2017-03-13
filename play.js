@@ -19,9 +19,17 @@ function Play(body, scope) {
     this.at = -1;
     this.animator = scope.animator.add(this);
     this.animator.requestMeasure();
+
+    // handheld and non-handheld
     this.stageSize = new Point2(1024, 842);
+    this.windowSize = new Point2();
+    // handheld only
     this.stageScaleSize = new Point2();
+    // non-handheld only
+    this.windowCenter = new Point2();
     this.viewportSize = new Point2();
+    this.viewportScale = new Point2();
+    this.viewportOffset = new Point2();
 
     this.inventory = new Inventory(this);
 
@@ -40,16 +48,63 @@ function Play(body, scope) {
 // -- RESPONSIVE LAYOUT --
 
 Play.prototype.measure = function measure() {
-    this.viewportSize.x = window.innerWidth;
-    this.viewportSize.y = window.innerHeight;
+    this.windowSize.x = window.innerWidth;
+    this.windowSize.y = window.innerHeight;
     this.animator.requestDraw();
 };
 
 Play.prototype.draw = function draw() {
-    var scale = this.viewportSize.x / this.stageSize.x;
-    this.stageScaleSize.copyFrom(this.stageSize).scaleThis(scale);
-    this.stage.style.transform = 'scale(' + scale + ')';
-    this.narrative.style.top = this.stageScaleSize.y + 'px';
+    // reset
+    this.viewport.classList.remove('landscape');
+    this.viewport.classList.remove('portrait');
+    this.narrative.classList.remove('landscape');
+    this.narrative.classList.remove('portrait');
+
+    if (this.windowSize.x <= 480 || this.windowSize.y <= 480) {
+        // reset oversize
+        this.viewport.style.transform = 'none';
+
+        // handheld
+        var scale = this.windowSize.x / this.stageSize.x;
+        this.stageScaleSize.copyFrom(this.stageSize).scaleThis(scale);
+        this.stage.style.transform = 'scale(' + scale + ')';
+        this.narrative.style.top = this.stageScaleSize.y + 'px';
+    } else {
+        // reset handheld
+        this.stage.style.transform = 'none';
+        this.narrative.style.top = '';
+
+        // oversize: laptop, desktop, or battlestation
+        this.viewportSize.copyFrom(this.stageSize);
+        if (this.windowSize.x > this.windowSize.y * aspectBias) {
+            this.viewportSize.x *= aspectBias;
+            this.narrative.classList.add('landscape');
+            this.viewport.classList.add('landscape');
+        } else {
+            this.viewportSize.y += 714;
+            this.narrative.classList.add('portrait');
+            this.viewport.classList.add('portrait');
+        }
+
+        // this.windowCenter
+        //     .copyFrom(this.windowSize)
+        //     .scaleThis(0.5);
+        this.viewportScale
+            .copyFrom(this.windowSize)
+            .divThis(this.viewportSize);
+        // var viewportScale = 0.1;
+        var viewportScale = Math.min(this.viewportScale.x, this.viewportScale.y);
+        this.viewportOffset
+            .copyFrom(this.windowSize)
+            .scaleThis(1/viewportScale)
+            .subThis(this.viewportSize)
+            .scaleThis(0.5)
+            .roundThis();
+        this.viewport.style.transform = (
+            'scale(' + viewportScale + ', ' + viewportScale + ') ' +
+            'translate(' + this.viewportOffset.x + 'px, ' + this.viewportOffset.y + 'px)'
+        );
+    }
 };
 
 Play.prototype.handleEvent = function handleEvent(event) {

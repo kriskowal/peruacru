@@ -26,11 +26,24 @@ body {
 
 .viewport {
     overflow: hidden;
+    transform-origin: 0 0;
+}
+
+.viewport.landscape {
+    width: 1536px;
+    height: 842px;
+}
+
+.viewport.portrait {
+    width: 1024px;
+    height: 1556px;
 }
 
 .stage {
     top: 0;
     left: 0;
+    width: 1536px;
+    height: 842px;
     position: absolute;
     transform: scale(0.20);
     transform-origin: 0 0;
@@ -45,6 +58,9 @@ body {
     background-image: url(assets/hills.jpg);
     background-repeat: no-repeat;
     overflow: hidden;
+}
+
+.scene.handheld {
 }
 
 .peruacru {
@@ -172,23 +188,16 @@ body {
     right: 0px;
 }
 
+.narrative.landscape {
+    left: 1024px;
+    height: 714px;
+    font-size: 24px;
+}
+
 .narrative.portrait {
-}
-
-.narrative.at-hills {
-    /* color: hsl(45, 65%, 52%); */
-}
-
-.narrative.at-jungle {
-    /* color: hsl(45, 65%, 52%); */
-}
-
-.narrative.at-beach {
-    /* color: black; */
-}
-
-.narrative.at-mountain {
-    /* color: white; */
+    top: 824px;
+    width: 1024px;
+    font-size: 36px;
 }
 
 .kni-frame {
@@ -448,12 +457,6 @@ td:hover {
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
-
-    .viewport {
-    }
-
-    .viewport.portrait {
-    }
 
     td, th {
         padding-top: .3em;
