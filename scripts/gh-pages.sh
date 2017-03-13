@@ -2,9 +2,13 @@
 set -e
 
 HERE=$(cd -L "$(dirname -- "$0")"; cd ..; pwd)
+
 PATH="$HERE/node_modules/.bin:$PATH"
+
 GIT_DIR="$HERE/.git"
 GIT_INDEX_FILE=$(mktemp "$GIT_DIR/TEMP.XXXXXX")
+export GIT_DIR
+export GIT_INDEX_FILE
 
 blob() {
     # usage: blob entry source
