@@ -267,7 +267,7 @@ Play.prototype.go = function _go(answer) {
 
 
 // -- SYNCHRONIZE MODEL AND STAGE/INVENTORY --
- 
+
 Play.prototype.animate = function animate(action) {
     var next = this.tail.then(action);
     if (!next.then) {
@@ -304,8 +304,8 @@ Play.prototype.takeItems = function takeItems() {
     var animations = [];
     for (var i = 0; i < stage.items.length; i++) {
         var name = stage.items[i];
-        var actual = this.inventory.count(name);
         var expected = this.engine.global.get(name.replace('-', '.'));
+        var actual = this.inventory.count(name);
         while (expected > actual) {
             animations.push(this.inventory.take(name));
             actual++;

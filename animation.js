@@ -78,8 +78,9 @@ Delay.prototype.act = function act() {
 };
 
 exports.AwaitTransitionEnd = AwaitTransitionEnd;
-function AwaitTransitionEnd(element) {
+function AwaitTransitionEnd(element, debugName) {
     this.element = element;
+    this.debugName = debugName;
     this.wait = new Wait();
     this.timeout = null;
 }
@@ -87,10 +88,10 @@ function AwaitTransitionEnd(element) {
 AwaitTransitionEnd.prototype.act = function act() {
     var self = this;
     if (this.element == null) {
+        console.warn('element missing to await transition end');
         return;
     }
     this.element.addEventListener('transitionend', this);
-    // console.log('wait for transition', this.element.className);
     this.timeout = setTimeout(function onTimeout() {
         self.handleEvent();
     }, timeout);
@@ -98,7 +99,6 @@ AwaitTransitionEnd.prototype.act = function act() {
 };
 
 AwaitTransitionEnd.prototype.handleEvent = function handleEvent() {
-    // console.log('transition end', this.element.className);
     clearTimeout(this.timeout);
     this.element.removeEventListener('transitionend', this);
     this.wait.resume();
@@ -168,27 +168,33 @@ WaitGroup.prototype.act = function act() {
 };
 
 exports.AddClass = AddClass;
-function AddClass(element, className) {
+function AddClass(element, className, debugName) {
     this.element = element;
     this.className = className;
+    this.debugName = debugName;
 }
 
 AddClass.prototype.act = function act() {
-    if (this.element != null) {
-        this.element.classList.add(this.className);
+    if (this.element == null) {
+        console.warn('element missing to add class', this.className, 'for', this.debugName);
+        return;
     }
+    this.element.classList.add(this.className);
 };
 
 exports.RemoveClass = RemoveClass;
-function RemoveClass(element, className) {
+function RemoveClass(element, className, debugName) {
     this.element = element;
     this.className = className;
+    this.debugName = debugName;
 }
 
 RemoveClass.prototype.act = function act() {
-    if (this.element != null) {
-        this.element.classList.remove(this.className);
+    if (this.element == null) {
+        console.warn('element missing to remove class', this.className, 'for', this.debugName);
+        return;
     }
+    this.element.classList.remove(this.className);
 };
 
 exports.Mark = Mark;

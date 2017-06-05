@@ -367,6 +367,14 @@ td:hover {
     transform: scale(1.0);
 }
 
+.item-replace-transition {
+    transition: opacity 0.5s ease;
+}
+
+.no-transition {
+    transition: none;
+}
+
 .prop-no-transition {
     transition: none;
 }
