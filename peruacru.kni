@@ -119,7 +119,7 @@
     [You f[F]ollow the path into the jungle. ]
     //->jungle
   + <go beach> <south east> {bridge}
-    [You c[C]ut accross the bridge down to the beach. ]
+    [You c[C]ut across the bridge down to the beach. ]
     //->beach
   ->maybe.chat()
   >
@@ -154,7 +154,7 @@
   - {ballista} Your giant slingshot is getting heavy, but neither of you can see a
     clearing large enough to put it down {~nearby|near here}.
   @jungle.choice
-  + <get all bamboo> {not bamboo} {not bridge}
+  + <get all bamboo> {hand} {not bamboo} {not bridge}
     [You f[F]ill your {(hand<4)?remaining} arms with bamboo. ]
     {+hand bamboo} {=0 hand}
   + <get bamboo> {not bamboo} {bridge} {+bamboo} {-hand}
@@ -263,7 +263,7 @@
   You stand at the peak of an active volcano.
   Liquid hot lava bubbles in the cinder cone, flowing from the far end down to
   the sea.
-  The stench of burning sulfer envelopes you.
+  The stench of burning sulfur envelopes you.
   - {sand.pumpkin and not reed} Perhaps you could blow glass from molten sand
     if you found something to blow through.
   @mountain.choice
@@ -280,9 +280,9 @@
   ->mountain.choice
 
 - @common()
-  - {rock and paper and not roshambo}
+  - {rock and paper and not rochambeau}
     {"Well, we'}ve got rock and paper: all we need are scissors!"} jokes the
-    {~boy|girl}. {+roshambo}
+    {~boy|girl}. {+rochambeau}
   - {not hand and growing.potion}
     You might need a free hand if you wish to grow something with growing
     potion.
@@ -527,7 +527,7 @@
     {at==mountain} {-lion} {+cat} {-mushroom} {+hand}
     [You o[O]ffer the lion a mushroom. ]
     @give.lion.mushroom
-    The lion greedily accepts and shrinks to a diminuitive size, becoming a
+    The lion greedily accepts and shrinks to a diminutive size, becoming a
     gentle cat, opening the way to the volcano.
     + <go mountain> <north>
       [You t[T]ravel across the isthmus up the vulcan terraces. ]
@@ -562,7 +562,7 @@
   hand{(reed)|s||s}.
   - {not launch.pad and not airplane and not paper and not soaked.reed}
     These reeds might be useful for making paper.
-    They would need to be made plyable somehow.
+    They would need to be made pliable somehow.
   @reed.choice
   ->vial.formula()
   ->soaked.reed.formula()
@@ -591,7 +591,7 @@
   + <soak reeds in pumpkin>
     {brine.pumpkin or freshwater.pumpkin} {-reed} {+soaked.reed}
     [You s[S]oak reeds in the pumpkin. ]
-    Some time later, you notice that they have become rather plyable.  Maybe
+    Some time later, you notice that they have become rather pliable.  Maybe
     you can wrap, weave, tie, or mash these reeds.
     ->return
 
