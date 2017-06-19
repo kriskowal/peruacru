@@ -34,7 +34,7 @@
     ballista = 0
 
     # world state
-    chat = 0
+    break = 0
     homestead = 0
     bridge = 0
     lion = 1
@@ -42,6 +42,7 @@
     tap = 0
     placed.ballista = 0
     launch.pad = 0
+    stored.hammer = 0
 
 ->reset()
 
@@ -60,7 +61,7 @@
   with their four hands and two cunning heads.
 
   + <> <continue> [Continue. ]
-  ->maybe.chat()
+  ->maybe.break()
   >
 
 # bamboo / hand
@@ -100,6 +101,8 @@
     [You q[Q]uaff your shrinking potions[.]] and board your
     paper airliner. As one, you pull the pin and slingshot
     into the sky toward home!
+    + [Congratulations! ]
+    >
     ->credits
   + <get pumpkin>
     {
@@ -114,6 +117,10 @@
   + <get flower> {not flower} {+flower} {-hand}
     [You p[P]luck a blue flower. ]
     ->grow.airplane.clue()
+  + <store hammer> {-hammer} {+stored.hammer} {+hand} {not stored.hammer}
+    [You s[S]tore {(hammer)||the|a} hammer in your pumpkin hut. ]
+  + <retrieve hammer> {+hammer} {-stored.hammer} {-hand}
+    [You r[R]etrieve the hammer from your pumpkin hut. ]
   ->common()
   + <go jungle> <south> {homestead}
     [You f[F]ollow the path into the jungle. ]
@@ -121,7 +128,7 @@
   + <go beach> <south east> {bridge}
     [You c[C]ut across the bridge down to the beach. ]
     //->beach
-  ->maybe.chat()
+  ->maybe.break()
   >
   ->hills.choice
 
@@ -170,7 +177,7 @@
   + <go beach> <east> {bridge} [You c[C]ross the bridge over the river[ to the beach.]]
     and head down to the beach.
     //->beach
-  ->maybe.chat()
+  ->maybe.break()
   >
   ->jungle.choice
 
@@ -203,7 +210,7 @@
     ->beach
   + <> [You r[R]eturn to the jungle. ]
     ->jungle
-  ->maybe.chat()
+  ->maybe.break()
   >
   ->return
 
@@ -233,7 +240,7 @@
     [You m[M]ake your way over the isthmus to the volcano'}s
     {~summit|peak|caldera}. ]
     //->mountain
-  ->maybe.chat()
+  ->maybe.break()
   >
   ->beach.choice
 
@@ -268,14 +275,14 @@
     if you found something to blow through.
   @mountain.choice
   + <get rock>
-    {+rock} {-hand}
+    {not rock} {+rock} {-hand}
     [You p[P]ick up a volcanic rock[.]],
     holding it with one hand.
   ->common()
   + <go beach> <south> <down>
     [You d[D]escend to the beach. ]
     //->beach
-  ->maybe.chat()
+  ->maybe.break()
   >
   ->mountain.choice
 
@@ -763,13 +770,11 @@
     You don'}t even see it splash.
     {"It seems a waste of a stone,"} the {~boy|girl}
     says, {"but it freed a hand."}
-  + <break ballista> {-ballista} {+bamboo} {+rubber}
-    [You b[B]reak down the giant slingshot. ]
   + <drop ballista> {-ballista} {+2hand}
     [You d[D]estroy the giant slingshot. ]
   + <put ballista>
     {at==hills} {-ballista} {+placed.ballista} {+2hand}
-    [You p[P]ut your giant slingshot down. ]
+    [You i[I]nstall the giant slingshot atop a rolling hill. ]
     You aim it toward home.
     - {not airplane and not giant.airplane}
       Now you need something to launch.
@@ -898,18 +903,18 @@
 - @return
   //
   {(at)
-  | ->hills
-  | ->jungle
-  | ->beach
-  | ->mountain
+  |->hills
+  |->jungle
+  |->beach
+  |->mountain
   }
 
-- @maybe.chat()
-  + <chat> [{~Talk|Discuss|Chat|Take a break|Rest}. ]
-    ->chat() ->return
+- @maybe.break()
+  + <break> [Take a break. ]
+    ->break() ->return
 
-- @chat()
-  {@(chat)|
+- @break()
+  {@(break)|
     The {~boy|girl} cries, {"I sorely wish we had not lost our potions in the crash."}
   | The {~boy{=0reply}|girl{=1reply}} asks, {"Do you wonder if we will ever get home?"}
     The {(reply)|girl|boy} replies, {"Oh, I do not wonder at all. We will surely."}
@@ -932,9 +937,9 @@
   | {"I am not sure whether I like cats or dogs better,"} says the
     {~boy|girl}, {"but I would sure love for us to take one
     on our adventures."}
-  } {+chat}
-  + <more> [{"Let'}s {~chat|rest|talk} more."} ] ->chat
+  } {+break}
   + <> <back> [{"Let'}s get back to work."} ] <-
+  + <more> [{"Let'}s {~chat|rest|talk} more."} ] ->break
   + <> <reset> [{"Let'}s start over from the beginning."} ]
     Are you certain that you would like to start over?
     All progress will be lost.
@@ -949,10 +954,6 @@
   >
 
 - @credits
-  + [Anything else? ]
-  + [Play again? ] ->start
-  >
-
   The boy says, {"Escape from Peruácru Island was illustrated by my sister,
   Kathleen Kowal"}.
   + [What else then? ]

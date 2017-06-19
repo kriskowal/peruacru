@@ -93,6 +93,12 @@ exports.triggers = {
     'fill vial with freshwater from pumpkin': function () {
         return this.replace('vial', 'freshwater-vial');
     },
+    'store hammer': function () {
+        return this.drop('hammer', 'over-homestead');
+    },
+    'retrieve hammer': function () {
+        return this.take('hammer', 'over-homestead');
+    },
     'grow homestead': function () {
         var pumpkin = this.move('freshwater-pumpkin', 'over-homestead');
         var flower = this.move('flower', 'over-homestead');
