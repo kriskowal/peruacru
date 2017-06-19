@@ -40,6 +40,21 @@ exports.props = [
     'launch-pad',
 ];
 
+exports.targets = exports.props.concat([
+    'flowers',
+    'stream',
+    'pumpkins',
+    'bamboos',
+    'bridgewater',
+    'mushrooms',
+    'rubber-tree',
+    'trail',
+    'lava-flow',
+    'corner',
+    'reeds',
+    'sea'
+]);
+
 exports.big = {
     'pumpkin': true,
     'freshwater-pumpkin': true,
@@ -92,6 +107,15 @@ exports.triggers = {
     },
     'fill vial with freshwater from pumpkin': function () {
         return this.replace('vial', 'freshwater-vial');
+    },
+    'spill growing potion': function () {
+        return this.replace('growing-potion', 'vial');
+    },
+    'spill shrinking potion': function () {
+        return this.replace('shrinking-potion', 'vial');
+    },
+    'get reed': function () {
+        return this.take('reed', 'over-reeds');
     },
     'store hammer': function () {
         return this.drop('hammer', 'over-homestead');

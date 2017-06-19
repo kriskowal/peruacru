@@ -110,6 +110,12 @@ Play.prototype.draw = function draw() {
 Play.prototype.handleEvent = function handleEvent(event) {
     if (event.type === 'resize') {
         this.animator.requestMeasure();
+    } else if (event.type === 'click') {
+        if (this.click(event.currentTarget.keyword)) {
+            console.log('clicked', event.currentTarget.keyword);
+            event.stopPropagation();
+            event.preventDefault();
+        }
     }
 };
 
@@ -169,16 +175,28 @@ Play.prototype.initItem = function initItem(iteration, scope) {
     item.slot = scope.components.slot;
     item.element = scope.components.item;
     item.element.classList.add(item.name);
+    item.element.keyword = item.name;
+    item.element.addEventListener('click', this);
 };
 
 Play.prototype.init = function init(scope) {
-    var main = this;
+    var play = this;
 
     this.viewport = scope.components.viewport;
     this.stage = scope.components.stage;
     this.peruacru = scope.components.peruacru;
     this.narrative = scope.components.narrative;
     this.items = scope.components.items;
+
+    for (var i = 0; i < stage.targets.length; i++) {
+        var name = stage.targets[i];
+        var target = scope.components[name];
+        target.keyword = name;
+        target.addEventListener('click', this);
+    }
+
+    this.peruacru.keyword = 'scene';
+    this.peruacru.addEventListener('click', this);
 
     window.addEventListener('resize', this);
 
@@ -228,13 +246,13 @@ Play.prototype.init = function init(scope) {
             engine.goto('start');
             engine.resume();
         } else if (key === 'KeyH' || key === 'KeyA') {
-            main.go('west');
+            play.go('west');
         } else if (key === 'KeyJ' || key === 'KeyS') {
-            main.go('south');
+            play.go('south');
         } else if (key === 'KeyK' || key === 'KeyW') {
-            main.go('north');
+            play.go('north');
         } else if (key === 'KeyL' || key === 'KeyD') {
-            main.go('east');
+            play.go('east');
         } else if (key === 'Space') {
             engine.answer('');
         }
@@ -243,28 +261,42 @@ Play.prototype.init = function init(scope) {
     window.onkeyup = function onkeyup(event) {
         var key = event.code;
         if (key === 'ArrowDown') {
-            main.go('south');
+            play.go('south');
         } else if (key === 'ArrowLeft') {
-            main.go('west');
+            play.go('west');
         } else if (key === 'ArrowRight') {
-            main.go('east');
+            play.go('east');
         } else if (key === 'ArrowUp') {
-            main.go('north');
+            play.go('north');
         }
     };
 };
 
 Play.prototype.go = function _go(answer) {
     var engine = this.engine;
+    var went = false;
     if (
         engine.keywords[answer] == null &&
         engine.keywords[""] != null
     ) {
         engine.answer('');
+        went = true;
     }
-    engine.answer(answer);
+    if (engine.keywords[answer] != null) {
+        engine.answer(answer);
+        went = true;
+    }
+    return went;
 };
 
+Play.prototype.click = function click(answer) {
+    var engine = this.engine;
+    if (engine.keywords[answer] != null) {
+        engine.answer(answer);
+        return true;
+    }
+    return false;
+};
 
 // -- SYNCHRONIZE MODEL AND STAGE/INVENTORY --
 

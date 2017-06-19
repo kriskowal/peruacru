@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 html {
@@ -65,6 +66,8 @@ body {
 
 .peruacru {
     transition: transform 1s ease;
+    width: calc(1024px * 2);
+    height: calc(702px * 2);
 }
 
 .peruacru.at-hills {
@@ -462,6 +465,102 @@ td:hover {
     background: url(assets/launch-pad.png) no-repeat;
     top: 50px;
     left: 420px;
+}
+
+/*
+ * TARGETS
+ */
+
+.target {
+    position: absolute;
+}
+
+.flowers {
+    left: 400px;
+    top: 250px;
+    height: 200px;
+    width: 200px;
+}
+
+.stream {
+    left: 590px;
+    top: 357px;
+    width: 330px;
+    height: 357px;
+}
+
+.pumpkins {
+    left: calc(1025px - 300px);
+    top: 90px;
+    width: 300px;
+    height: 200px;
+}
+
+.bamboos {
+    width: 1024px;
+    height: calc(714px / 2);
+    top: calc(714px + 714px / 2);
+    left: 0px;
+}
+
+.bridgewater {
+    left: calc(1024px - 200px);
+    top: 714px;
+    width: 400px;
+    height: 350px;
+}
+
+.mushrooms {
+    left: 260px;
+    top: calc(714px + 350px);
+    width: 740px;
+    height: 220px;
+}
+
+.rubber-tree {
+    left: 500px;
+    top: calc(714px + 100px);
+    width: 200px;
+    height: 400px;
+}
+
+.trail {
+    left: 0px;
+    top: calc(714px - 150px/2);
+    height: 200px;
+    width: calc(1024px - 150px/2);
+}
+
+.lava-flow {
+    left: 1024px;
+    top: calc(714px - 150px/2);
+    height: 200px;
+    width: 1024px;
+}
+
+.corner {
+    left: calc(1024px - 150px/2);
+    top: calc(714px - 150px/2);
+    height: 240px;
+    width: 400px;
+}
+
+.reeds {
+    height: 400px;
+    width: 200px;
+    top: calc(714px + 100px);
+    left: calc(1024px * 2 - 200px);
+}
+
+.over-reeds {
+    transform: translate(375px, -470px);
+}
+
+.sea {
+    width: 1024px;
+    left: 1024px;
+    height: 150px;
+    top: calc(714px * 2 - 150px);
 }
 
 @media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {

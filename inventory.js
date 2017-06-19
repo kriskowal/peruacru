@@ -264,7 +264,7 @@ Inventory.prototype.replaceUtility = function (beforeName, afterName) {
     } else if (after.position === 'slot-0-1') {
         this.boyLeft = this.boyRight = this.boy = after;
     } else if (after.position === 'slot-1-2') {
-        this.boyRight = this.girlsLeft = this.boy = this.girl = after;
+        this.boyRight = this.girlLeft = this.boy = this.girl = after;
     } else if (after.position === 'slot-2-3') {
         this.girlLeft = this.girlRight = this.girl = after;
     }

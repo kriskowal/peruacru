@@ -104,7 +104,7 @@
     + [Congratulations! ]
     >
     ->credits
-  + <get pumpkin>
+  + <get pumpkin> <pumpkins>
     {
       not pumpkin and
       not sap.pumpkin and
@@ -114,18 +114,15 @@
     }
     {+pumpkin} {-2hand}
     [You g[G]et a pumpkin[.]], grasping it with two hands.
-  + <get flower> {not flower} {+flower} {-hand}
+  + <get flower> <flowers> {not flower} {+flower} {-hand}
     [You p[P]luck a blue flower. ]
     ->grow.airplane.clue()
-  + <store hammer> {-hammer} {+stored.hammer} {+hand} {not stored.hammer}
-    [You s[S]tore {(hammer)||the|a} hammer in your pumpkin hut. ]
-  + <retrieve hammer> {+hammer} {-stored.hammer} {-hand}
-    [You r[R]etrieve the hammer from your pumpkin hut. ]
+  ->hammer.storage()
   ->common()
-  + <go jungle> <south> {homestead}
+  + <go jungle> <south> <trail> {homestead}
     [You f[F]ollow the path into the jungle. ]
     //->jungle
-  + <go beach> <south east> {bridge}
+  + <go beach> <south east> <corner> {bridge}
     [You c[C]ut across the bridge down to the beach. ]
     //->beach
   ->maybe.break()
@@ -136,17 +133,21 @@
   - {at==hills and homestead and flower and freshwater.pumpkin}
     {"Well, we already have a giant pumpkin house.  We don'}t have much
     use for another,"} says the {~boy|girl}.
-  + <grow homestead> {at==hills and not homestead}
+  + <grow homestead>
+    {at==hills and not homestead}
     {-flower} {-freshwater.pumpkin} {+3hand} {+homestead}
     [You f[F]erment the blue flower in the pumpkin water. ]
-    The pumpkin grows as big as a house.
-    You may need to find a way to make a growing potion without a pumpkin.
-    // The two of you establish a base around
-    the house, planting a garden and laying a path that leads to the southerly
-    jungle.
-    + <> <south> <continue> [Continue... ]
-    >
-    ->jungle
+    ->homestead.creation()
+
+- @homestead.creation()
+  The pumpkin grows as big as a house.
+  You may need to find a way to make a growing potion without a pumpkin.
+  // The two of you establish a base around
+  the house, planting a garden and laying a path that leads to the southerly
+  jungle.
+  + <> <south> <continue> [Continue... ]
+  >
+  ->jungle
 
 - @jungle
   ! at = jungle
@@ -161,20 +162,26 @@
   - {ballista} Your giant slingshot is getting heavy, but neither of you can see a
     clearing large enough to put it down {~nearby|near here}.
   @jungle.choice
-  + <get all bamboo> {hand} {not bamboo} {not bridge}
+  + <get all bamboo> <bamboos> {hand} {not bamboo} {not bridge}
     [You f[F]ill your {(hand<4)?remaining} arms with bamboo. ]
     {+hand bamboo} {=0 hand}
-  + <get bamboo> {not bamboo} {bridge} {+bamboo} {-hand}
+  + <get bamboo> <bamboos> {not bamboo} {bridge} {+bamboo} {-hand}
     [You c[C]ut some bamboo. ]
     ->bamboo.choice
-  + <get mushroom> {not mushroom} {+mushroom} {-hand}
+  + <get mushroom> <mushrooms>
+    {not mushroom} {+mushroom} {-hand}
     [You p[P]ick a mushroom. ]
   ->common()
-  + <go hills> <north> [You r[R]eturn to your homestead in the hills. ]
+  + <go hills> <north> <trail>
+    [You r[R]eturn to your homestead in the hills. ]
     //->hills
-  + <go river> <east> {not bridge} [You w[W]alk through the jungle to a river. ]
+  + <go river> <east> <bridgewater>
+    {not bridge}
+    [You w[W]alk through the jungle to a river. ]
     ->river
-  + <go beach> <east> {bridge} [You c[C]ross the bridge over the river[ to the beach.]]
+  + <go beach> <east> <bridgewater>
+    {bridge}
+    [You c[C]ross the bridge over the river[ to the beach.]]
     and head down to the beach.
     //->beach
   ->maybe.break()
@@ -182,7 +189,7 @@
   ->jungle.choice
 
 - @tap.formula()
-  + <tap rubber tree>
+  + <tap rubber tree> <rubber-tree>
     {at==jungle} {rock or hammer} {not tap} {-bamboo} {+hand} {+tap}
     [You t[T]ap a shoot of bamboo into a rubber tree with the
     {(hammer)?hammer|rock}. ]
@@ -190,8 +197,8 @@
     ->jungle.choice
 
 - @bridge.formula()
-  + <build bridge>
-    {at==jungle} {-3bamboo} {+bridge} {+3hand}
+  + <build bridge> <bridgewater>
+    {at==jungle} {not bridge} {-3bamboo} {+bridge} {+3hand}
     [You b[B]uild a bridge with the bamboo[.]],
     crossing over and walking down to the beach.
     //->beach
@@ -200,13 +207,15 @@
   - {bamboo>0 and bamboo<3}
     You might make a safe bridge with more bamboo.
   ->bridge.formula()
-  + <fill pumpkin with fresh water>
+  + <fill pumpkin with fresh water> <stream>
     {-pumpkin} {+freshwater.pumpkin}
     [You f[F]ill your pumpkin with fresh water from the river. ]
-  + <fill vial with fresh water>
+  + <fill vial with fresh water> <stream>
     {-vial} {+freshwater.vial}
     [You f[F]ill {(vial)|the|a} vial with fresh water from the river. ]
-  + <go beach> <east> {bridge} [You c[C]ross the bridge to the beach. ]
+  + <go beach> <east> <bridgewater>
+    {bridge}
+    [You c[C]ross the bridge to the beach. ]
     ->beach
   + <> [You r[R]eturn to the jungle. ]
     ->jungle
@@ -221,21 +230,21 @@
     like a good place to keep it. It'}ll get stuck in the sand, and
     it would be a burden to carry up the mountain.
   @beach.choice
-  + <get reed> {not reed} {+reed} {-hand}
+  + <get reed> <reeds> {not reed} {+reed} {-hand}
     [You c[C]ut a reed from the marsh grasses. ]
     ->reed.choice
   ->common()
-  + <go jungle> <west>
+  + <go jungle> <west> <bridgewater>
     [You c[C]ross the bridge and return to the jungle. ]
     //->jungle
-  + <go hills> <north west>
+  + <go hills> <north west> <corner>
     [You c[C]ross the bridge and cut back to your homestead in the hills. ]
     //->hills
-  + <go mountain> <north>
+  + <go mountain> <north> <lava-flow>
     {lion and not ballista}
     [You w[W]alk north across an isthmus to the foot of a volcano. ]
     //->mountain.gate
-  + <go mountain> <north>
+  + <go mountain> <north> <lava-flow>
     {not lion and not ballista}
     [You m[M]ake your way over the isthmus to the volcano'}s
     {~summit|peak|caldera}. ]
@@ -258,7 +267,7 @@
     You offer the mushroom to the lion.
     ->give.lion.mushroom
   ->common()
-  + <go beach> <south> <down>
+  + <go beach> <south> <down> <lava-flow> <corner>
     [You f[F]lee back to the beach. ]
     //->beach
   >
@@ -274,12 +283,12 @@
   - {sand.pumpkin and not reed} Perhaps you could blow glass from molten sand
     if you found something to blow through.
   @mountain.choice
-  + <get rock>
+  + <get rock> <scene>
     {not rock} {+rock} {-hand}
     [You p[P]ick up a volcanic rock[.]],
     holding it with one hand.
   ->common()
-  + <go beach> <south> <down>
+  + <go beach> <south> <down> <corner> <lava-flow>
     [You d[D]escend to the beach. ]
     //->beach
   ->maybe.break()
@@ -298,51 +307,66 @@
   ->maybe.drop()
 
 - @inventory()
-  + <pumpkin> {pumpkin}
+  + <pumpkin> <pumpkins>
+    {pumpkin}
     [You have a pumpkin. ]
     ->pumpkin
-  + <freshwater pumpkin> {freshwater.pumpkin}
+  + <freshwater pumpkin> <freshwater-pumpkin>
+    {freshwater.pumpkin}
     [You have a pumpkin full of fresh water. ]
     ->freshwater.pumpkin
-  + <brine pumpkin> {brine.pumpkin}
+  + <brine pumpkin> <brine-pumpkin>
+    {brine.pumpkin}
     [You have a pumpkin full of briny sea water. ]
     ->brine.pumpkin
-  + <sap pumpkin> {sap.pumpkin}
+  + <sap pumpkin> <sap-pumpkin>
+    {sap.pumpkin}
     [You have a pumpkin full of rubber sap. ]
     ->sap.pumpkin
-  + <sand pumpkin> {sand.pumpkin}
+  + <sand pumpkin> <sand-pumpkin>
+    {sand.pumpkin}
     [You have a pumpkin full of sand. ]
     ->sand.pumpkin
-  + <flower> {flower}
+  + <flower> <flowers>
+    {flower}
     [You have {(flower)||a|->number(flower)} blue flower{(flower)|s||s}. ]
     ->flower
-  + <bamboo> {bamboo}
+  + <bamboo> <bamboos>
+    {bamboo}
     [You have bamboo. ]
     ->bamboo
-  + <mushroom> {mushroom}
+  + <mushroom> <mushrooms>
+    {mushroom}
     [You have {(mushroom)||a|->number(mushroom)}
     mushroom{(mushroom)|s||s}. ]
     ->mushroom
-  + <reed> {reed}
+  + <reed> <reeds>
+    {reed}
     [You have some reeds. ]
     ->reed
-  + <soaked reed> {soaked.reed}
+  + <soaked reed> <reeds>
+    {soaked.reed}
     [You have some soaked reeds. ]
     ->soaked.reed
-  + <rock> {rock}
+  + <rock>
+    {rock}
     [You have {(rock)||a|->number(rock)} rock{(rock)|s||s}. ]
     ->rock
-  + <rubber> {rubber}
+  + <rubber>
+    {rubber}
     [You have a mass of rubber. ]
     ->rubber
-  + <brine vial> {brine.vial}
+  + <brine vial> <brine-vial>
+    {brine.vial}
     [You have {(brine.vial)||a|->number(brine.vial)} vial{(brine.vial)|s||s} of
     brine. ]
     ->brine.vial
-  + <freshwater vial> {freshwater.vial}
+  + <freshwater vial> <freshwater.vial>
+    {freshwater.vial}
     [You have {(freshwater.vial)||a|->number(freshwater.vial)}
     vial{(freshwater.vial)|s||s} of fresh water. ] ->freshwater.vial
-  + <vial> {vial}
+  + <vial>
+    {vial}
     [You have
       {(brine.vial or freshwater.vial)?
       | {(vial)||an empty|a pair of empty|->number(vial) empty}
@@ -351,11 +375,13 @@
       glass vial{(vial)|s||s}.
     ]
     ->vial
-  + <shrinking potion> {shrinking.potion}
+  + <shrinking potion> <shrinking-potion>
+    {shrinking.potion}
     [You have {(shrinking.potion)||a|a pair of|->number(vial)}
     vial{(shrinking.potion)|s||s} of shrinking potion. ]
     ->shrinking.potion
-  + <growing potion> {growing.potion}
+  + <growing potion> <growing-potion>
+    {growing.potion}
     [You have {(growing.potion)||a|a pair of|->number(vial)}
     vial{(growing.potion)|s||s} of growing potion. ]
     ->growing.potion
@@ -368,7 +394,9 @@
     ->paper
   + <airplane> {airplane} [You have a paper airplane. ]
     ->airplane
-  + <giant airplane> {giant.airplane} [You have a giant paper airplane. ]
+  + <giant airplane> <giant-airplane>
+    {giant.airplane}
+    [You have a giant paper airplane. ]
     ->giant.airplane
 
 - @maybe.drop()
@@ -389,24 +417,27 @@
   # TODO tiny pumpkin formula (from vial)
   # TODO giant pumpkin formula (from vial)
   ->brine.vial.pumpkin.formula()
-  + <fill pumpkin with fresh water>
+  + <fill pumpkin with fresh water> <stream>
     {at==hills} {-pumpkin} {+freshwater.pumpkin}
     [You f[F]ill the pumpkin with water from the river. ]
     ->freshwater.pumpkin.choice
-  + <fill pumpkin with sap>
+  + <fill pumpkin with sap> <rubber-tree>
     {at==jungle} {tap} {-pumpkin} {+sap.pumpkin}
     [You f[F]ill the pumpkin with sap from the tapped rubber tree. ]
     ->sap.pumpkin.choice
-  + <fill pumpkin with sand> {at==beach} {-pumpkin} {+sand.pumpkin}
+  + <fill pumpkin with sand> <scene>
+    {at==beach} {-pumpkin} {+sand.pumpkin}
     [You f[F]ill the pumpkin with white beach sand. ]
     ->sand.pumpkin.choice
-  + <fill pumpkin with brine> {at==beach} {-pumpkin} {+brine.pumpkin}
+  + <fill pumpkin with brine> <sea>
+    {at==beach} {-pumpkin} {+brine.pumpkin}
     [You f[F]ill the pumpkin with briny water from the sea. ]
     ->brine.pumpkin.choice
-  + <drop pumpkin> {-pumpkin} {+2hand}
+  + <drop pumpkin> <scene> {-pumpkin} {+2hand}
     [You d[D]rop the pumpkin[.]], smashing it to pulpy bits.
     ->return
-  + <> <keep> [You k[K]eep the pumpkin. ] ->return
+  + <> <keep> <pumpkin>
+    [You k[K]eep the pumpkin. ] ->return
   >
 
 - @freshwater.pumpkin
@@ -418,11 +449,12 @@
     {-freshwater.pumpkin} {+2hand} [You d[D]rop the pumpkin. ]
     The pumpkin goes to pieces and the water flows away.
     ->return
-  + <spill freshwater pumpkin>
+  + <spill freshwater pumpkin> <scene>
     {-freshwater.pumpkin} {+pumpkin} [You s[S]pill the water
     from the pumpkin. ]
     ->pumpkin.choice
-  + <> <keep> [You k[K]eep the pumpkin. ] ->return
+  + <> <keep> <freshwater-pumpkin>
+    [You k[K]eep the pumpkin. ] ->return
   >
 
 - @brine.pumpkin
@@ -435,28 +467,30 @@
     {-brine.pumpkin} {+2hand} [You d[D]rop the pumpkin. ]
     The pumpkin goes to pieces and the water flows away.
     ->return
-  + <spill brine pumpkin>
+  + <spill brine pumpkin> <scene>
     {-brine.pumpkin} {+pumpkin} [You s[S]pill the water
     from the pumpkin. ]
     ->pumpkin.choice
-  + <> <keep> [You k[K]eep the pumpkin. ] ->return
+  + <> <keep> <brine-pumpkin> [You k[K]eep the pumpkin. ] ->return
   >
 
 - @sap.pumpkin
   You hold a pumpkin full of rubber sap with two hands.
   @sap.pumpkin.choice
-  + <cook rubber sap>
+  + <cook rubber sap> <scene>
     {at==mountain} {-sap.pumpkin} {+rubber} {+hand}
     [You c[C]ook the rubber sap on the brimstone. ]
     In time, the pumpkin burns away revealing a mass of vulcanized rubber.
     ->mountain.choice
-  + <drop pumpkin full of sap> {-sap.pumpkin} {+2hand} [You d[D]rop the pumpkin[.]],
+  + <drop pumpkin full of sap>
+    {-sap.pumpkin} {+2hand}
+    [You d[D]rop the pumpkin[.]],
     losing the rubber.
     ->return
-  + <spill sap from pumpkin> {-sap.pumpkin} {+pumpkin}
+  + <spill sap from pumpkin> <scene> {-sap.pumpkin} {+pumpkin}
     [You s[S]pill the rubber sap.]
     ->return
-  + <> <keep> [You k[K]eep the pumpkin. ] ->return
+  + <> <keep> <sap-pumpkin> [You k[K]eep the pumpkin. ] ->return
   >
 
 - @sand.pumpkin
@@ -473,11 +507,11 @@
     {-sand.pumpkin} {+2hand} [You d[D]rop the pumpkin. ]
     It goes to pieces and the sand spills.
     ->return
-  + <spill sand pumpkin>
+  + <spill sand pumpkin> <scene>
     {-sand.pumpkin} {+pumpkin}
     [You s[S]pill the sand from the pumpkin. ]
     ->pumpkin.choice
-  + <> <keep> [You k[K]eep the pumpkin. ] ->return
+  + <> <keep> <sand-pumpkin> [You k[K]eep the pumpkin. ] ->return
   >
 
 - @flower
@@ -486,19 +520,23 @@
   @flower.choice
   # TODO giant flower formula (with growing potion)
   # TODO tiny flower formula (with shrinking potion)
-  ->homestead.formula()
+  + <grow homestead> <freshwater-pumpkin>
+    {at==hills and not homestead}
+    {-flower} {-freshwater.pumpkin} {+3hand} {+homestead}
+    [You f[F]erment the blue flower in the pumpkin water. ]
+    ->homestead.creation()
   ->growing.potion.formula()
-  + <drop flower>
+  + <drop flower> <scene>
     {-flower} {+hand}
     [You t[T]oss {(flower)|the|a} blue flower {~away|aside}. ]
     - {at == mountain}
       The flower withers to dust in the fiery chasm.
     {(flower)?->flower}
     ->return
-  + <get flower>
+  + <get flower> <flowers>
     {at==hills} {+flower} {-hand}
     [You p[P]luck another blue flower. ] ->flower
-  + <> <keep> [You k[K]eep the blue flower{(flower)|s||s}. ] ->return
+  + <> <keep> <flower> [You k[K]eep the blue flower{(flower)|s||s}. ] ->return
   >
 
 - @bamboo
@@ -511,15 +549,16 @@
   ->ballista.formula()
   ->tap.formula()
   ->hammer.formula()
-  + <drop bamboo>
+  + <drop bamboo> <scene> <mushrooms> <rubber-tree> <bridgewater> <trail>
     {-bamboo} {+hand}
     [You d[D]rop {(bamboo)|the|a} bamboo shoot. ]
     {(bamboo)?->bamboo}
     ->return
-  + <get bamboo>
+  + <get bamboo> <bamboos>
     {at==jungle} {+bamboo} {-hand}
     [You c[C]ut another stalk of bamboo. ] ->bamboo
-  + <> <keep> [You k[K]eep the bamboo. ] ->return
+  + <> <keep> <bamboo>
+    [You k[K]eep the bamboo. ] ->return
   >
 
 - @mushroom
@@ -530,16 +569,16 @@
   # TODO tiny mushroom formula
   ->shrinking.potion.formula()
   ->growing.potion.formula()
-  + <give lion mushroom>
+  + <give lion mushroom> <lion>
     {at==mountain} {-lion} {+cat} {-mushroom} {+hand}
     [You o[O]ffer the lion a mushroom. ]
     @give.lion.mushroom
     The lion greedily accepts and shrinks to a diminutive size, becoming a
     gentle cat, opening the way to the volcano.
-    + <go mountain> <north>
+    + <go mountain> <north> <scene>
       [You t[T]ravel across the isthmus up the vulcan terraces. ]
       //->mountain
-    + <go beach> <south>
+    + <go beach> <south> <lava-flow> <corner>
       [You r[R]eturn to the beach. ]
       //->beach
     >
@@ -552,14 +591,15 @@
     + <> <continue> [ Continue. ]
     >
     ->return
-  + <get mushroom>
+  + <get mushroom> <mushrooms>
     {at==jungle} {+mushroom} {-hand}
     [You p[P]ick another mushroom. ]
-  + <drop mushroom>
+  + <drop mushroom> <mushrooms> <bamboo> <scene>
     {-mushroom} {+hand}
     [You t[T]oss {(mushroom)|the|a} red mushroom {~away|aside}. ]
     {(not mushroom)?->return}
-  + <> <keep> [You k[K]eep the mushroom{(mushroom)|s||s}. ]
+  + <> <keep> <mushroom>
+    [You k[K]eep the mushroom{(mushroom)|s||s}. ]
     ->return
   >
   ->mushroom.choice
@@ -575,21 +615,21 @@
   ->soaked.reed.formula()
   # TODO giant reed formula (bamboo) with growing potion
   # TODO tiny reed formula (straw) with shrinking potion
-  + <drop reed>
+  + <drop reed> <scene>
     {-reed} {+hand}
     [You d[D]rop {(reed)|the remaining|some} reeds. ]
     {(not reed)?->return}
-    + <drop reed>
+    + <drop reed> <scene>
       [You d[D]rop the remaining reeds, freeing up ->number(reed)
       hand{(reed)|s||s}. ]
       {+reed hand} {=0 reed}
-    + <> <keep> [You k[K]eep the reeds. ]
+    + <> <keep> <reed> [You k[K]eep the reeds. ]
     >
     ->return
-  + <get reed>
+  + <get reed> <reeds>
     {at==beach} {+reed} {-hand}
     [You c[C]ut more reeds from the marsh. ]
-  + <> <keep> [You k[K]eep the reeds. ]
+  + <> <keep> <reed> [You k[K]eep the reeds. ]
     ->return
   >
   ->reed
@@ -613,11 +653,11 @@
   @soaked.reed.choice
   ->hammer.formula()
   ->paper.formula()
-  + <drop soaked reed>
+  + <drop soaked reed> <scene>
     {-soaked.reed} {+hand}
     [You d[D]iscard {(reed)|the|some} reeds. ]
     {(not soaked.reed)?->return}
-  + <> <keep> [You k[K]eep the reeds. ]
+  + <> <keep> <reed> [You k[K]eep the reeds. ]
     ->return
   >
   ->soaked.reed
@@ -643,10 +683,11 @@
     {not airplane} {-paper} {+airplane}
     [You f[F]old a sheet of paper into an airplane. ]
     ->airplane.choice
-  + <drop paper> {-paper} {+hand}
+  + <drop paper> <scene>
+    {-paper} {+hand}
     [You d[D]rop the paper. ]
     ->airplane.choice
-  + <> <keep> [You k[K]eep the paper. ]
+  + <> <keep> <paper> [You k[K]eep the paper. ]
     ->return
   >
   ->paper
@@ -670,11 +711,11 @@
   You have a paper airplane.
   It isn'}t quite big enough to carry the boy and girl, even if they were tiny.
   @airplane.choice
-  + <drop airplane> <throw airplane>
+  + <drop airplane> <throw airplane> <scene>
     {-airplane} {+hand}
     [You t[T]hrow the airplane. ]
     It catches the wind and flies away into the sea.
-  + <> <keep> [You k[K]eep the airplane. ]
+  + <> <keep> <airplane> [You k[K]eep the airplane. ]
   >
   ->return
 
@@ -686,10 +727,10 @@
   + <put giant airplane on ballista>
     {at==hills} {-placed.ballista} {+launch.pad} {-giant.airplane} {+2hand}
     [You p[P]lace the plane on the launch platform. ]
-  + <drop giant airplane> <throw airplane>
+  + <drop giant airplane> <throw airplane> <scene>
     {-giant.airplane} {+2hand}
     [You l[L]et the wind take the plane. ]
-  + <> <keep> [You h[H]old the plane firmly. ]
+  + <> <keep> <airplane> [You h[H]old the plane firmly. ]
   >
   ->return
 
@@ -701,6 +742,15 @@
     Perhaps you can use this to mash things to pulp.
     ->return
 
+- @hammer.storage()
+  + <store hammer> <homestead> {-hammer} {+stored.hammer} {+hand}
+    {not stored.hammer}
+    [You s[S]tore {(hammer)||the|a} hammer in your pumpkin hut. ]
+    ->return
+  + <retrieve hammer> <homestead> {+hammer} {-stored.hammer} {-hand}
+    [You r[R]etrieve the hammer from your pumpkin hut. ]
+    ->hammer
+
 - @hammer
   You have a hammer.
   - {not airplane and not paper and not soaked.reed}
@@ -709,9 +759,11 @@
     island.
   @hammer.choice
   ->paper.formula()
+  ->hammer.storage()
   # TODO giant hammer formula
   # TODO tiny hammer formula
-  + <drop hammer> {-hammer} {+hand}
+  + <drop hammer> <scene>
+    {-hammer} {+hand} {at<>hills}
     [You d[D]rop the hammer[.]], (in the quite literal sense) losing it
     {(at)
     | in the grass.
@@ -734,11 +786,12 @@
   ->hammer.formula()
   # TODO giant rock formula
   # TODO tiny rock formula (sand)
-  + <drop rock>
+  + <drop rock> <scene>
     {-rock} {+hand}
     [You d[D]rop {(rock)|the|a} rock. ]
     {(not rock)?->return}
-  + <> <keep> [You k[K]eep the rock{(rock)|s||s}. ]
+  + <> <keep> <rock>
+    [You k[K]eep the rock{(rock)|s||s}. ]
     ->return
   >
   ->rock
@@ -746,11 +799,12 @@
 - @rubber
   You have a mass of rubber held in ->number(rubber) hand{(rubber)|s||s}.
   ->ballista.formula()
-  + <drop rubber> [You d[D]rop the mass of rubber[.]],
+  + <drop rubber> <scene>
+    [You d[D]rop the mass of rubber[.]],
     freeing ->number(rubber) hand{(rubber)|s||s}.
     {+rubber hand} {=0 rubber}
     ->return
-  + <> <keep> [You k[K]eep the rubber. ]
+  + <> <keep> <rubber> [You k[K]eep the rubber. ]
     ->return
   >
 
@@ -770,9 +824,10 @@
     You don'}t even see it splash.
     {"It seems a waste of a stone,"} the {~boy|girl}
     says, {"but it freed a hand."}
-  + <drop ballista> {-ballista} {+2hand}
+  + <drop ballista>
+    {-ballista} {+2hand}
     [You d[D]estroy the giant slingshot. ]
-  + <put ballista>
+  + <put ballista> <scene>
     {at==hills} {-ballista} {+placed.ballista} {+2hand}
     [You i[I]nstall the giant slingshot atop a rolling hill. ]
     You aim it toward home.
@@ -781,12 +836,13 @@
     - {airplane} You could send an airplane really far with this,
       if the airplane were big enough for it.
     ->hills.choice
-  + <> <keep> [You k[K]eep the giant slingshot. ]
+  + <> <keep> <ballista>
+    [You k[K]eep the giant slingshot. ]
   >
   ->return
 
 - @vial.formula()
-  + <make vials> <blow glass>
+  + <make vials> <blow glass> <scene>
     {at==mountain} {reed or bamboo} {-sand.pumpkin} {+2vial}
     [You b[B]low a pair of of glass vials from molten sand in the cinder cone. ]
     ->mountain.choice
@@ -795,26 +851,26 @@
   You have {(vial)||a vial|->number(vial) vials} held in ->number(vial)
   hand{(vial)|s||s}.
   @vial.choice
-  + <drop vial> {-vial} {+hand}
+  + <drop vial> <scene> {-vial} {+hand}
     [You d[D]rop {(vial)|the|a} glass vial[.]]
     and it shatters into sharp bits.
     - {vial} You have ->number(vial) remaining vial{(vial)|s||s}.
       ->vial.choice
     ->return
-  + <fill vial with brine>
+  + <fill vial with brine> <sea>
     {at==beach} {-vial} {+brine.vial}
     [You f[F]ill {(vial)|the|a} vial with brine from the sea. ]
     ->brine.vial.choice
-  + <fill vial with freshwater>
+  + <fill vial with freshwater> <stream>
     {at==hills} {-vial} {+freshwater.vial}
     [You f[F]ill {(vial)|the|a} vial with fresh water from the river.]
     ->freshwater.vial.choice
-  + <> <keep> [You k[K]eep the vial{(vial)|s||s}. ] ->return
+  + <> <keep> <vial> [You k[K]eep the vial{(vial)|s||s}. ] ->return
   >
   ->vial
 
 - @brine.vial.pumpkin.formula()
-  + <fill vial with brine from pumpkin>
+  + <fill vial with brine from pumpkin> <brine-pumpkin>
     {brine.pumpkin} {-vial} {+brine.vial}
     [You f[F]ill a vial with brine from the pumpkin. ]
     ->brine.vial.choice
@@ -825,11 +881,12 @@
   @brine.vial.choice
   ->shrinking.potion.formula()
   ->growing.potion.formula()
-  + <spill brine from vial>
+  + <spill brine from vial> <scene>
     {-brine.vial} {+vial}
     [You s[S]pill the brine from the vial. ]
     ->vial.choice
-  + <> <keep> [You k[K]eep the brine vial{(brine.vial)|s||s}. ]
+  + <> <keep> <brine-vial>
+    [You k[K]eep the brine vial{(brine.vial)|s||s}. ]
     ->return
   >
   ->brine.vial.choice
@@ -839,7 +896,7 @@
     You might be able to make a shrinking potion with this mushroom,
     since it did quite well on the lion, but perhaps sweet water
     won'}t ferment a mushroom like it does the blue flowers.
-  + <make shrinking potion>
+  + <make shrinking potion> <mushroom> <brine-vial>
     {-mushroom} {-brine.vial} {+shrinking.potion} {+hand}
     [You f[F]erment a mushroom in the vial of brine. ]
     ->shrinking.potion.choice
@@ -849,15 +906,17 @@
   of shrinking potion.
   @shrinking.potion.choice
   # TODO shrink lion back to cat
-  + <spill shrinking potion> {-shrinking.potion} {+vial}
+  + <spill shrinking potion> <scene>
+    {-shrinking.potion} {+vial}
     [You s[S]pill the shrinking potion from the vial. ]
     ->vial.choice
-  + <> <keep> [You r[R]etain the vial of shrinking potion. ]
+  + <> <keep> <shrinking-potion>
+    [You k[K]eep the vial of shrinking potion. ]
     ->return
   >
 
 - @freshwater.vial.pumpkin.formula()
-  + <fill vial with freshwater from pumpkin>
+  + <fill vial with freshwater from pumpkin> <freshwater-pumpkin>
     {freshwater.pumpkin} {-vial} {+freshwater.vial}
     [You f[F]ill a vial with fresh water from the pumpkin. ]
     ->freshwater.vial.choice
@@ -868,10 +927,12 @@
   @freshwater.vial.choice
   ->shrinking.potion.formula()
   ->growing.potion.formula()
-  + <spill freshwater from vial> {-freshwater.vial} {+vial}
+  + <spill freshwater from vial> <scene>
+    {-freshwater.vial} {+vial}
     [You s[S]pill the water from the vial. ]
     ->vial.choice
-  + <> <keep> [You k[K]eep the fresh water vial{(freshwater.vial)|s||s}. ]
+  + <> <keep> <freshwater-vial>
+    [You k[K]eep the fresh water vial{(freshwater.vial)|s||s}. ]
     ->return
   >
   ->freshwater.vial.choice
@@ -880,7 +941,7 @@
   - {flower and brine.vial and not freshwater.vial}
     You recall that you grew your homestead with a pumpkin filled with fresh
     water. This vial of brine might not be the key to a growing potion.
-  + <make growing potion>
+  + <make growing potion> <flower> <freshwater-vial>
     {-flower} {-freshwater.vial} {+growing.potion} {+hand}
     [You f[F]erment a flower in the vial of fresh water. ]
     The water turns into a blue potion for growing.
@@ -892,11 +953,12 @@
   @growing.potion.choice
   # TODO grow cat to lion
   ->grow.airplane.formula()
-  + <spill growing potion>
+  + <spill growing potion> <scene>
     {-growing.potion} {+vial}
     [You s[S]pill the growing potion from the vial. ]
     ->vial.choice
-  + <> <keep> [You r[R]etain the vial of growing potion. ]
+  + <> <keep> <growing-potion>
+    [You k[K]eep the vial of growing potion. ]
     ->return
   >
 
