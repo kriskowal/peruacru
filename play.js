@@ -111,6 +111,7 @@ Play.prototype.handleEvent = function handleEvent(event) {
     if (event.type === 'resize') {
         this.animator.requestMeasure();
     } else if (event.type === 'click') {
+        console.log('click', event.currentTarget.keyword)
         if (this.click(event.currentTarget.keyword)) {
             console.log('clicked', event.currentTarget.keyword);
             event.stopPropagation();

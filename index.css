@@ -467,6 +467,54 @@ td:hover {
     left: 420px;
 }
 
+@keyframes curtain {
+    0% {
+        top: 256px;
+        left: 1024px;
+    }
+    25% {
+        top: -256px;
+        left: -512px;
+        transform: scale(0.25);
+    }
+    50% {
+        top: -256px;
+        left: -512px;
+        transform: scaleX(-1);
+    }
+    50% {
+        top: 256px;
+        left: -512px;
+        transform: scaleX(-1);
+    }
+    75% {
+        top: -256px;
+        left: 1024px;
+        transform: scaleX(-1) scale(0.25);
+    }
+    100% {
+        top: -256px;
+        left: 1024px;
+    }
+}
+
+.curtain {
+    background-image: url(assets/curtain-airplane.png);
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 512px;
+    width: 512px;
+    animation: curtain linear 8s infinite;
+
+    z-index: 4;
+}
+
+.curtain.show {
+    display: block;
+}
+
 /*
  * TARGETS
  */
@@ -539,10 +587,10 @@ td:hover {
 }
 
 .corner {
-    left: calc(1024px - 150px/2);
-    top: calc(714px - 150px/2);
-    height: 240px;
-    width: 400px;
+    left: calc(1024px - 290px/2);
+    top: calc(714px - 290px/2);
+    height: 290px;
+    width: 450px;
 }
 
 .reeds {

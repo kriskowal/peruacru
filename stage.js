@@ -38,6 +38,7 @@ exports.props = [
     'tap',
     'placed-ballista',
     'launch-pad',
+    'curtain',
 ];
 
 exports.targets = exports.props.concat([
@@ -123,6 +124,12 @@ exports.triggers = {
     'retrieve hammer': function () {
         return this.take('hammer', 'over-homestead');
     },
+    'store airplane': function () {
+        return this.drop('airplane', 'over-homestead');
+    },
+    'retrieve airplane': function () {
+        return this.take('airplane', 'over-homestead');
+    },
     'grow homestead': function () {
         var pumpkin = this.move('freshwater-pumpkin', 'over-homestead');
         var flower = this.move('flower', 'over-homestead');
@@ -195,10 +202,14 @@ exports.triggers = {
         ]);
     },
     'launch': function () {
-        return new A.Parallel([
-            this.replace('shrinking-potion', 'vial'),
-            this.replace('shrinking-potion', 'vial')
-        ]);
+        return new A.Series([
+            new A.Parallel([
+                this.drop('shrinking-potion'),
+                this.drop('shrinking-potion')
+            ]),
+            this.hideProp('giant-airplane'),
+            this.showProp('curtain'),
+        ])
     },
     'soak reeds in pumpkin': function () {
         return this.replace('reed', 'soaked-reed');

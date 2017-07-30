@@ -34,6 +34,8 @@ resize 'images/formed materials/airplane.png' 128x128 assets/airplane.png
 resize 'images/formed materials/airplane.png' 128x128 assets/giant-airplane.png
 resize 'images/formed materials/launchpad + rubberband.png' 128x128 assets/ballista.png
 
+resize 'images/formed materials/airplane.png' 512x512 assets/curtain-airplane.png
+
 # this is a place holder for missing materials
 resize 'images/raw materials/sand.png' 128x128 assets/sand.png
 

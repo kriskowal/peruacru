@@ -320,7 +320,7 @@ function ShowProp(component) {
 
 ShowProp.prototype.act = function act() {
     if (!this.component.classList.contains('show-prop')) {
-        this.component.classList.add('show-prop');
+        this.component.classList.add('show-prop', 'show');
         return new A.AwaitTransitionEnd(this.component, 'show prop').act();
     }
     return A.idle;
@@ -341,7 +341,7 @@ function HideProp(component) {
 
 HideProp.prototype.act = function act() {
     if (this.component.classList.contains('show-prop')) {
-        this.component.classList.remove('show-prop');
+        this.component.classList.remove('show-prop', 'show');
         return new A.AwaitTransitionEnd(this.component, 'hide prop').act();
     }
     return A.idle;
