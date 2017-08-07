@@ -43,7 +43,7 @@ body {
 .stage {
     top: 0;
     left: 0;
-    width: 1536px;
+    width: 1024px;
     height: 842px;
     position: absolute;
     transform: scale(0.20);
