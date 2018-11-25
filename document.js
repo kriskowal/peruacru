@@ -21,6 +21,9 @@ function Document(element, createPage) {
     this.br = false;
     this.onclick = onclick;
     this.createPage = createPage || this.createPage;
+
+    this.credits = this.document.body.querySelector('#credits');
+
     function onclick(event) {
         self.answer(event.target.number);
     }
@@ -157,6 +160,10 @@ Document.prototype.createPage = function createPage(document) {
     this.options = document.createElement('table');
     this.body.appendChild(this.options);
     this.afterBody = this.options;
+
+    if (this.credits != null) {
+        this.body.appendChild(this.credits);
+    }
 };
 
 Document.prototype.ask = function ask() {
