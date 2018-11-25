@@ -18,7 +18,7 @@ to honor our patrons.
 https://www.patreon.com/kriskowal
 
 The game and its tooling are written in JavaScript and a narrative language
-called Kni[Kni], in turn inspired by Inkle’s [Ink].
+called [Kni][], in turn inspired by Inkle’s [Ink][].
 To spoil the game entirely, read `peruacru.kni`.
 
 [Kni]: https://github.com/kriskowal/kni
