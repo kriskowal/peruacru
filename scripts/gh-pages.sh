@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ueo pipefail
 
 HERE=$(cd -L "$(dirname -- "$0")"; cd ..; pwd)
 
