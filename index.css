@@ -625,6 +625,12 @@ td:hover {
 
 }
 
-#credits {
-    margin-top: 4em;
+.credits {
+    display: block;
+    position: absolute;
+    background-color: hsl(190, 48%, 63%);
+    text-shadow: 0 0 5px hsl(190, 48%, 63%);
+    bottom: 0;
+    right: 0;
+    padding: 4px 6px;
 }

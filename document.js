@@ -2,10 +2,11 @@
 
 module.exports = Document;
 
-function Document(element, createPage) {
+function Document(parent, nextSibling, createPage) {
     var self = this;
-    this.document = element.ownerDocument;
-    this.parent = element;
+    this.document = parent.ownerDocument;
+    this.parent = parent;
+    this.nextSibling = nextSibling;
     this.frame = null;
     this.body = null;
     this.afterBody = null;
@@ -21,8 +22,6 @@ function Document(element, createPage) {
     this.br = false;
     this.onclick = onclick;
     this.createPage = createPage || this.createPage;
-
-    this.credits = this.document.body.querySelector('#credits');
 
     function onclick(event) {
         self.answer(event.target.number);
@@ -65,7 +64,7 @@ Document.prototype.startOption = function startOption() {
     this.options.appendChild(tr);
     var th = document.createElement('th');
     tr.appendChild(th);
-    th.innerText = this.optionIndex + '.';
+    th.textContent = this.optionIndex + '.';
     var td = document.createElement('td');
     td.number = this.optionIndex;
     // td.onclick = this.onclick;
@@ -94,7 +93,7 @@ Document.prototype.pardon = function pardon() {
 Document.prototype.display = function display() {
     this.frame.style.opacity = 0;
     this.frame.style.transform = 'translateX(2ex)';
-    this.parent.appendChild(this.frame);
+    this.parent.insertBefore(this.frame, this.nextSibling);
 
     // TODO not this
     var frame = this.frame;
@@ -160,10 +159,6 @@ Document.prototype.createPage = function createPage(document) {
     this.options = document.createElement('table');
     this.body.appendChild(this.options);
     this.afterBody = this.options;
-
-    if (this.credits != null) {
-        this.body.appendChild(this.credits);
-    }
 };
 
 Document.prototype.ask = function ask() {

@@ -201,7 +201,7 @@ Play.prototype.init = function init(scope) {
 
     window.addEventListener('resize', this);
 
-    var doc = new Document(scope.components.narrative);
+    var doc = new Document(scope.components.narrative, scope.components.credits, null);
     var engine = this.engine = new Engine({
         story: story,
         render: doc,
