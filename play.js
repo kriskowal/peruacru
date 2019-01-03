@@ -201,7 +201,7 @@ Play.prototype.init = function init(scope) {
 
     window.addEventListener('resize', this);
 
-    var doc = new Document(scope.components.narrative, scope.components.credits, null);
+    var doc = new Document(scope.components.narrative, null, null);
     var engine = this.engine = new Engine({
         story: story,
         render: doc,
@@ -397,8 +397,10 @@ function SceneChange(main, source, target) {
 
 SceneChange.prototype.act = function act() {
     var main = this.main;
+
     main.peruacru.classList.remove('at-' + stage.scenes[this.source]);
     main.narrative.classList.remove('at-' + stage.scenes[this.source]);
+
     main.peruacru.classList.add('at-' + stage.scenes[this.target]);
     main.narrative.classList.add('at-' + stage.scenes[this.target]);
 };

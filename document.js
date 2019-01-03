@@ -29,6 +29,8 @@ function Document(parent, nextSibling, createPage) {
     Object.seal(this);
 }
 
+var linkMatcher = /\s*(\w+:\/\/\S+)$/;
+
 Document.prototype.write = function write(lift, text, drop) {
     var document = this.document;
     lift = this.carry || lift;
@@ -44,8 +46,21 @@ Document.prototype.write = function write(lift, text, drop) {
         this.br = false;
         lift = '';
     }
-    // TODO merge with prior text node
-    this.cursor.appendChild(document.createTextNode(lift + text));
+    var match = linkMatcher.exec(text);
+    if (match === null) {
+        this.cursor.appendChild(document.createTextNode(lift + text));
+    } else {
+        // Support a hyperlink convention.
+        if (lift !== '') {
+            this.cursor.appendChild(document.createTextNode(lift));
+        }
+        var link = document.createElement('a');
+        link.href = match[1];
+        link.target = '_blank';
+        link.rel = 'noreferrer';
+        link.appendChild(document.createTextNode(text.slice(0, match.index)));
+        this.cursor.appendChild(link);
+    }
     this.carry = drop;
 };
 

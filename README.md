@@ -8,8 +8,8 @@ The game is free to play online.
 
 https://peruacru.then.land/
 
-Kathleen contributed all of the games illustrations and Kris contributed the
-games programming.
+Kathleen contributed all of the game's illustrations and Kris contributed the
+game's programming.
 
 This, the source code for the game is freely available under the terms of the
 Creative Commons Attribution-NonCommercial 4.0 International license,
