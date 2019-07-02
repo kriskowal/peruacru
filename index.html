@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>The Island of Peruácru</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <link rel="manifest" href="manifest.json">
+        <meta name="application-name" content="Peruácru">
+        <link rel="icon" sizes="512x512" href="marketing/icon-512x512.png">
+        <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <script src="https://cdn.ravenjs.com/3.12.1/raven.min.js"></script>
+        <script src="index.js"></script>
+
+        <!-- Error reporting -->
+        <script>Raven.config('https://debdabf60d0b4a2099b0aae678a985e6@sentry.io/147357').install()</script>
+
+        <!-- Global Site Tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-106562677-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', 'UA-106562677-1');
+        </script>
+    </body>
+</html>

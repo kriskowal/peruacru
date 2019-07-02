@@ -1,0 +1,631 @@
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html {
+    background-color: hsl(190, 48%, 63%);
+    color: hsla(240, 42.00%, 25.00%, 1);
+    height: 100%;
+    width: 100%;
+    clip: auto;
+    position: absolute;
+    overflow: hidden;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 20px;
+    touch-action: none;
+}
+
+body {
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.viewport {
+    overflow: hidden;
+    transform-origin: 0 0;
+}
+
+.viewport.landscape {
+    width: 1536px;
+    height: 842px;
+}
+
+.viewport.portrait {
+    width: 1024px;
+    height: 1556px;
+}
+
+.credits {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 4px;
+    background-color: hsl(190, 48%, 63%);
+}
+
+.stage {
+    top: 0;
+    left: 0;
+    width: 1024px;
+    height: 842px;
+    position: absolute;
+    transform: scale(0.20);
+    transform-origin: 0 0;
+}
+
+.scene {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1024px;
+    height: 714px;
+    background-image: url(assets/hills.jpg);
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.scene.handheld {
+}
+
+.peruacru {
+    transition: transform 1s ease;
+    width: calc(1024px * 2);
+    height: calc(702px * 2);
+}
+
+.peruacru.at-hills {
+    transform: translate(0, 0);
+}
+
+.peruacru.at-jungle {
+    transform: translate(0, -714px);
+}
+
+.peruacru.at-beach {
+    transform: translate(-1024px, -714px);
+}
+
+.peruacru.at-mountain {
+    transform: translate(-1024px, 0);
+}
+
+.hills {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 714px;
+    width: 1024px;
+    background-image: url(assets/hills.jpg);
+}
+
+.jungle {
+    position: absolute;
+    top: 714px;
+    left: 0px;
+    height: 714px;
+    width: 1024px;
+    background-image: url(assets/jungle.jpg);
+}
+
+.beach {
+    position: absolute;
+    top: 714px;
+    left: 1024px;
+    height: 714px;
+    width: 1024px;
+    background-image: url(assets/beach.jpg);
+}
+
+.mountain {
+    position: absolute;
+    top: 0px;
+    left: 1024px;
+    height: 714px;
+    width: 1024px;
+    background-image: url(assets/mountain.jpg);
+}
+
+.inventory {
+    position: absolute;
+    top: 714px;
+    height: 128px;
+    left: 0;
+    width: 1024px;
+}
+
+.item {
+    position: relative;
+    left: calc((1024px / 2) - (128px / 2));
+    top: 0;
+    height: 128px;
+    width: 128px;
+    background-repeat: no-repeat;
+    transition: opacity 1s ease, transform 1s ease, position 1s ease;
+    opacity: 0;
+    transform: translate(0, -450px) scale(0.5);
+}
+
+.item-store {
+    transform: scale(0.8);
+}
+
+.item-show {
+    opacity: 1;
+}
+
+.slot {
+    height: 0;
+    width: 0;
+    transition: transform ease 1s;
+}
+
+.slot-0 {
+    transform: translate(calc((1024px - 102.4px) / 8 * -3));
+}
+
+.slot-0-1 {
+    transform: translate(calc((1024px - 102.4px) / 8 * -2));
+}
+
+.slot-1 {
+    transform: translate(calc((1024px - 102.4px) / 8 * -1));
+}
+
+.slot-1-2 {
+}
+
+.slot-2 {
+    transform: translate(calc((1024px - 102.4px) / 8 * 1));
+}
+
+.slot-2-3 {
+    transform: translate(calc((1024px - 102.4px) / 8 * 2));
+}
+
+.slot-3 {
+    transform: translate(calc((1024px - 102.4px) / 8 * 3));
+}
+
+.narrative {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+.narrative.landscape {
+    left: 1024px;
+    height: 714px;
+    font-size: 24px;
+}
+
+.narrative.portrait {
+    top: 824px;
+    width: 1024px;
+    font-size: 36px;
+}
+
+.kni-frame {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    transition: transform .5s ease, opacity .5s ease-out;
+}
+
+.kni-frame-a {
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+
+.kni-frame-b {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 1em;
+    width: 40ex;
+}
+
+.kni-frame-c {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.kni-body {
+    display: flex-item;
+    flex: 0 1 auto;
+    max-width: 60ex;
+    text-align: justify;
+}
+
+th {
+    vertical-align: top;
+    padding-right: 1ex;
+}
+
+td {
+    vertical-align: top;
+    cursor: pointer;
+}
+
+td:hover {
+    font-weight: bold;
+    text-shadow: 0 0 15px hsl(60, 50%, 79%);
+}
+
+/*
+ * ITEMS
+ */
+
+.airplane {
+    background-image: url(assets/airplane.png);
+}
+
+.giant-airplane {
+    background-image: url(assets/giant-airplane.png);
+}
+
+.bamboo {
+    background-image: url(assets/bamboo.png);
+}
+
+.ballista {
+    background-image: url(assets/ballista.png);
+}
+
+.brine-pumpkin {
+    background-image: url(assets/brine-pumpkin.png);
+}
+
+.brine-vial {
+    background-image: url(assets/brine-vial.png);
+}
+
+.flower {
+    background-image: url(assets/flower.png);
+    z-index: 2;
+}
+
+.freshwater-pumpkin {
+    background-image: url(assets/freshwater-pumpkin.png);
+    z-index: 1;
+}
+
+.freshwater-vial {
+    background-image: url(assets/freshwater-vial.png);
+}
+
+.growing-potion {
+    background-image: url(assets/growing-potion.png);
+}
+
+.hammer {
+    background-image: url(assets/hammer.png);
+}
+
+.mushroom {
+    background-image: url(assets/mushroom.png);
+}
+
+.paper {
+    background-image: url(assets/paper.png);
+}
+
+.pumpkin {
+    background-image: url(assets/pumpkin.png);
+}
+
+.reed {
+    background-image: url(assets/reed.png);
+}
+
+.rock {
+    background-image: url(assets/rock.png);
+}
+
+.rubber {
+    background-image: url(assets/rubber.png);
+}
+
+.sand-pumpkin {
+    background-image: url(assets/sand-pumpkin.png);
+}
+
+.sap-pumpkin {
+    background-image: url(assets/sap-pumpkin.png);
+}
+
+.shrinking-potion {
+    background-image: url(assets/shrinking-potion.png);
+}
+
+.soaked-reed {
+    background-image: url(assets/soaked-reed.png);
+}
+
+.vial {
+    background-image: url(assets/vial.png);
+}
+
+/*
+ * PROPS
+ */
+
+.prop {
+    position: absolute;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.show-prop {
+    opacity: 1;
+    transform: scale(1.0);
+}
+
+.item-replace-transition {
+    transition: opacity 0.5s ease;
+}
+
+.no-transition {
+    transition: none;
+}
+
+.prop-no-transition {
+    transition: none;
+}
+
+.homestead {
+    width: 256px;
+    height: 256px;
+    background: url(assets/homestead.png) no-repeat;
+    top: 128px;
+    left: 128px;
+    z-index: 3;
+}
+
+.over-homestead {
+    transform: translate(-250px, -470px);
+}
+
+.bridge {
+    width: 256px;
+    height: 256px;
+    background: url(assets/bridge.png) no-repeat;
+    left: calc(1024px - 128px);
+    top: calc(714px + 125px);
+}
+
+.over-bridge {
+    transform: translate(480px, -460px);
+}
+
+.lion {
+    width: 128px;
+    height: 128px;
+    background: url(assets/lion.png) no-repeat;
+    top: 125px;
+    left: calc(1024px + 350px);
+    transform: translate(-40px, 15px) scale(0.5);
+}
+
+.lion.show-prop {
+    transform: none;
+}
+
+.over-lion {
+    transform: translate(-150px, -530px) scale(0.6);
+}
+
+.cat {
+    width: 64px;
+    height: 64px;
+    background: url(assets/cat.png) no-repeat;
+    top: 189px;
+    left: calc(1024px + 320px);
+    transform: scale(1.5) translate(20px, -15px);
+}
+
+.cat.show-prop {
+    transform: none;
+}
+
+.tap {
+    width: 256px;
+    height: 256px;
+    background: url(assets/tap.png) no-repeat;
+    left: 518px;
+    top: calc(714px + 375px);
+}
+
+.placed-ballista {
+    width: 256px;
+    height: 256px;
+    background: url(assets/placed-ballista.png) no-repeat;
+    top: 50px;
+    left: 420px;
+    z-index: 2;
+}
+
+.over-ballista {
+    transform: translate(120px, -625px) rotate(9deg) scale(0.65);
+    z-index: 1;
+}
+
+.launch-pad {
+    width: 256px;
+    height: 256px;
+    background: url(assets/launch-pad.png) no-repeat;
+    top: 50px;
+    left: 420px;
+}
+
+@keyframes curtain {
+    0% {
+        top: 256px;
+        left: 1024px;
+    }
+    25% {
+        top: -256px;
+        left: -512px;
+        transform: scale(0.25);
+    }
+    50% {
+        top: -256px;
+        left: -512px;
+        transform: scaleX(-1);
+    }
+    50% {
+        top: 256px;
+        left: -512px;
+        transform: scaleX(-1);
+    }
+    75% {
+        top: -256px;
+        left: 1024px;
+        transform: scaleX(-1) scale(0.25);
+    }
+    100% {
+        top: -256px;
+        left: 1024px;
+    }
+}
+
+.curtain {
+    background-image: url(assets/curtain-airplane.png);
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 512px;
+    width: 512px;
+    animation: curtain linear 8s infinite;
+
+    z-index: 4;
+}
+
+.curtain.show {
+    display: block;
+}
+
+/*
+ * TARGETS
+ */
+
+.target {
+    position: absolute;
+}
+
+.flowers {
+    left: 400px;
+    top: 250px;
+    height: 200px;
+    width: 200px;
+}
+
+.stream {
+    left: 590px;
+    top: 357px;
+    width: 330px;
+    height: 357px;
+}
+
+.pumpkins {
+    left: calc(1025px - 300px);
+    top: 90px;
+    width: 300px;
+    height: 200px;
+}
+
+.bamboos {
+    width: 1024px;
+    height: calc(714px / 2);
+    top: calc(714px + 714px / 2);
+    left: 0px;
+}
+
+.bridgewater {
+    left: calc(1024px - 200px);
+    top: 714px;
+    width: 400px;
+    height: 350px;
+}
+
+.mushrooms {
+    left: 260px;
+    top: calc(714px + 350px);
+    width: 740px;
+    height: 220px;
+}
+
+.rubber-tree {
+    left: 500px;
+    top: calc(714px + 100px);
+    width: 200px;
+    height: 400px;
+}
+
+.trail {
+    left: 0px;
+    top: calc(714px - 150px/2);
+    height: 200px;
+    width: calc(1024px - 150px/2);
+}
+
+.lava-flow {
+    left: 1024px;
+    top: calc(714px - 150px/2);
+    height: 200px;
+    width: 1024px;
+}
+
+.corner {
+    left: calc(1024px - 290px/2);
+    top: calc(714px - 290px/2);
+    height: 290px;
+    width: 450px;
+}
+
+.reeds {
+    height: 400px;
+    width: 200px;
+    top: calc(714px + 100px);
+    left: calc(1024px * 2 - 200px);
+}
+
+.over-reeds {
+    transform: translate(375px, -470px);
+}
+
+.sea {
+    width: 1024px;
+    left: 1024px;
+    height: 150px;
+    top: calc(714px * 2 - 150px);
+}
+
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+
+    td, th {
+        padding-top: .3em;
+        padding-bottom: .7em;
+    }
+
+    td:hover {
+        font-weight: normal;
+        text-shadow: none;
+    }
+
+}
