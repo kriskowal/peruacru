@@ -11,7 +11,7 @@
     "./main.html": "./play.html"
   },
   "devDependencies": {
-    "eslint": "^3.13.1"
+    "eslint": "^6.6.0"
   },
   "dependencies": {
     "blick": "^1.1.0",
